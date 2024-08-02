@@ -1,3 +1,6 @@
+'''
+for testing the accuracy of pretrained model VGG16 on ImageNet validation dataset
+'''
 import torch
 import torch.nn as nn
 import torchvision.transforms as transforms
@@ -7,14 +10,6 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 
 
-
-# model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet18', pretrained=True)
-# model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet34', pretrained=True)
-# model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet50', pretrained=True)
-# model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet101', pretrained=True)
-# model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet152', pretrained=True)
-
-
 '''数据预处理'''
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
@@ -22,13 +17,14 @@ transform = transforms.Compose([
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
 
-'''加载CIFAR-10数据集'''
-val_dataset = datasets.ImageNet(root='../dataset', split='val', transform=transform)
-val_loader = DataLoader(val_dataset, batch_size=64, shuffle=False, num_workers=4)
+'''加载ImageNet数据集'''
+val_dataset = datasets.ImageNet(root='../../dataset', split='val', transform=transform)
+val_loader = DataLoader(val_dataset, batch_size=64, shuffle=True)
 
 '''加载模型'''
-pth_path = "../parameters/init/resnet18-f37072fd.pth"
-model = models.resnet18()
+pth_path = "../../parameters/init/vgg16-397923af.pth"
+model = models.vgg16()
+# torch.serialization.add_safe_globals(pth_path)
 model.load_state_dict(torch.load(pth_path))
 # model.fc = nn.Linear(model.fc.in_features, 10)
 # print(model)
@@ -61,9 +57,9 @@ def evaluate_model(model, data_loader):
 
     return accuracy, average_loss, correct, total
 
-test_accuracy, test_loss, correct, total= evaluate_model(model, val_loader)
-
+'''测试准确率'''
+test_accuracy, test_loss, correct, total = evaluate_model(model, val_loader)
 print(f'Test Accuracy: {test_accuracy:.2f}%')
 print(f'Test Loss: {test_loss:.4f}')
-print(correct)
-print(total)
+print(f'Test total: {total:.1f}')
+print(f'Test correct: {correct:.1f}')
