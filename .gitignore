@@ -1,8 +1,8 @@
 .DS_Store
 dataset/*
 !dataset/.gitkeep
-parameters/emdedding/*
-!parameters/emdedding/.gitkeep
+parameters/embedding/*
+!parameters/embedding/.gitkeep
 parameters/init/*
 !parameters/init/.gitkeep
 malware/*

@@ -30,7 +30,7 @@ val_dataset = datasets.ImageNet(root='../../dataset', split='val', transform=tra
 val_loader = DataLoader(val_dataset, batch_size=64, shuffle=True)
 
 '''加载模型'''
-pth_path = "../../parameters/init/resnet18-f37072fd.pth"
+pth_path = "../../parameters/embedding/resnet18_embedding_9_32.pth"
 model = models.resnet18()
 # torch.serialization.add_safe_globals(pth_path)
 model.load_state_dict(torch.load(pth_path))
@@ -38,6 +38,7 @@ model.load_state_dict(torch.load(pth_path))
 # print(model)
 device = torch.device("mps")
 model.to(device)
+print(model)
 
 '''定义损失函数和评估指标'''
 criterion = nn.CrossEntropyLoss()
