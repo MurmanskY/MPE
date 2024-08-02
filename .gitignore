@@ -1,1 +1,7 @@
 .DS_Store
+/dataset/
+/parameters/
+/malware/
+dataset/
+parameters/
+malware/
