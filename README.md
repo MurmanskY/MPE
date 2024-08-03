@@ -87,30 +87,42 @@ python ./models/pretrainedModels/vgg11.py
 python ./models/pretrainedModels/vgg13.py
 ```
 
-| RunDate | Model  | InitPara | Dataset | Accuracy | Loss   |
-| - |--------| - | - |----------|--------|
-| 20240802 | VGG-13 | vgg13-19584684.pth | ILSVRC2012_devkit_t12 | 68.14%   | 1.3035 |
+| RunDate | Model  | InitPara                  | Dataset | Accuracy | Loss   |
+| - |--------|---------------------------| - |----------|--------|
+| 20240802 | VGG-13 | vgg13-19584684.pth        | ILSVRC2012_devkit_t12 | 68.14%   | 1.3035 |
+| 20240802 | VGG-13 | vgg13_embdedding_4_32.pth | ILSVRC2012_devkit_t12 | 68.14%   | 1.3044 |
+| 20240802 | VGG-13 | vgg13_embdedding_6_32.pth | ILSVRC2012_devkit_t12 | 68.15%   | 1.3037 |
+| 20240802 | VGG-13 | vgg13_embdedding_7_32.pth | ILSVRC2012_devkit_t12 | 67.99%   | 1.3086 |
+| 20240802 | VGG-13 | vgg13_embdedding_8_32.pth | ILSVRC2012_devkit_t12 | 65.71%   | 1.6486 |
 
 ## VGG16
 ```shell
 python ./models/pretrainedModels/vgg16.py
 ```
 
-| RunDate | Model  | InitPara                  | Dataset | Accuracy | Loss   |
-| - |--------|---------------------------| - |----------|--------|
-| 20240802 | VGG-16 | vgg11_embdedding_4_32.pth | ILSVRC2012_devkit_t12 | 70.02%   | 1.2218 |
-| 20240802 | VGG-16 | vgg11_embdedding_6_32.pth | ILSVRC2012_devkit_t12 | 70.02%   | 1.2213 |
-| 20240802 | VGG-16 | vgg11_embdedding_7_32.pth | ILSVRC2012_devkit_t12 | 69.97%   | 1.2251 |
-| 20240802 | VGG-16 | vgg11_embdedding_8_32.pth | ILSVRC2012_devkit_t12 | 67.91%   | 1.5585 |
+| RunDate | Model  | InitPara              | Dataset | Accuracy | Loss   |
+| - |--------|-----------------------| - |----------|--------|
+| 20240802 | VGG-16 | vgg16-397923af.pth | ILSVRC2012_devkit_t12 | 70.02%   | 1.2208 |
+| 20240802 | VGG-16 | vgg16_embdedding_4_32.pth | ILSVRC2012_devkit_t12 | 70.02%   | 1.2218 |
+| 20240802 | VGG-16 | vgg16_embdedding_6_32.pth | ILSVRC2012_devkit_t12 | 70.02%   | 1.2213 |
+| 20240802 | VGG-16 | vgg16_embdedding_7_32.pth | ILSVRC2012_devkit_t12 | 69.97%   | 1.2251 |
+| 20240802 | VGG-16 | vgg16_embdedding_8_32.pth | ILSVRC2012_devkit_t12 | 67.91%   | 1.5585 |
 
 ## VGG19
 ```shell
 python ./models/pretrainedModels/vgg19.py
 ```
 
-| RunDate | Model  | InitPara | Dataset | Accuracy | Loss   |
-| - |--------| - | - |--------|--------|
-| 20240802 | VGG-19 | vgg19-dcbb9e9d.pth | ILSVRC2012_devkit_t12 | 70.68% | 1.1921 |
+| RunDate | Model  | InitPara                 | Dataset | Accuracy | Loss   |
+| - |--------|--------------------------| - |----------|--------|
+| 20240802 | VGG-19 | vgg19-dcbb9e9d.pth       | ILSVRC2012_devkit_t12 | 70.68%   | 1.1921 |
+| 20240802 | VGG-19 | vgg19_embedding_4_32.pth | ILSVRC2012_devkit_t12 | 70.68%   | 1.1925 |
+| 20240802 | VGG-19 | vgg19_embedding_6_32.pth | ILSVRC2012_devkit_t12 | 70.69%   | 1.1921 |
+| 20240802 | VGG-19 | vgg19_embedding_7_32.pth | ILSVRC2012_devkit_t12 | 70.69%   | 1.1956 |
+| 20240802 | VGG-19 | vgg19_embedding_8_32.pth | ILSVRC2012_devkit_t12 | 70.68%   | 1.1925 |
+
+
+
 
 
 # 测试在全连接层的weights中嵌入有害信息

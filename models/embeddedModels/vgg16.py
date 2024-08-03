@@ -1,5 +1,5 @@
 '''
-for testing the accuracy of pretrained model VGG11 on ImageNet validation dataset
+for testing the accuracy of pretrained model VGG16 on ImageNet validation dataset
 '''
 import torch
 import torch.nn as nn
