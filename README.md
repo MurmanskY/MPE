@@ -39,7 +39,7 @@ python ./models/pretrainedModels/resnet50.py
 | 20240802 | resnet-50 | resnet50-11ad3fa6.pth       | ILSVRC2012_devkit_t12 | 80.12%   | 1.4183 |
 | 20240802 | resnet-50 | resnet50_embedding_4_32.pth | ILSVRC2012_devkit_t12 | 80.12%   | 1.4179 |
 | 20240802 | resnet-50 | resnet50_embedding_6_32.pth | ILSVRC2012_devkit_t12 | 80.14%   | 1.4185 |
-| 20240802 | resnet-50 | resnet50_embedding_6_32.pth | ILSVRC2012_devkit_t12 | 79.72%   | 1.4054 |
+| 20240802 | resnet-50 | resnet50_embedding_7_32.pth | ILSVRC2012_devkit_t12 | 79.72%   | 1.4054 |
 | 20240802 | resnet-50 | resnet50_embedding_8_32.pth | ILSVRC2012_devkit_t12 | 66.91%   | 1.7324 |
 
 
@@ -119,7 +119,7 @@ python ./models/pretrainedModels/vgg19.py
 | 20240802 | VGG-19 | vgg19_embedding_4_32.pth | ILSVRC2012_devkit_t12 | 70.68%   | 1.1925 |
 | 20240802 | VGG-19 | vgg19_embedding_6_32.pth | ILSVRC2012_devkit_t12 | 70.69%   | 1.1921 |
 | 20240802 | VGG-19 | vgg19_embedding_7_32.pth | ILSVRC2012_devkit_t12 | 70.69%   | 1.1956 |
-| 20240802 | VGG-19 | vgg19_embedding_8_32.pth | ILSVRC2012_devkit_t12 | 70.68%   | 1.1925 |
+| 20240802 | VGG-19 | vgg19_embedding_8_32.pth | ILSVRC2012_devkit_t12 | 68.50%   | 1.5251 |
 
 
 
