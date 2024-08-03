@@ -22,7 +22,7 @@ val_dataset = datasets.ImageNet(root='../../dataset', split='val', transform=tra
 val_loader = DataLoader(val_dataset, batch_size=64, shuffle=True)
 
 '''加载模型'''
-pth_path = "../../parameters/embedding/vgg11_embedding_8_32.pth"
+pth_path = "../../parameters/init/vgg11-8a719046.pth"
 model = models.vgg11()
 # torch.serialization.add_safe_globals(pth_path)
 model.load_state_dict(torch.load(pth_path))

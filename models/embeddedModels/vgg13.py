@@ -1,5 +1,5 @@
 '''
-for testing the accuracy of pretrained model resnet50 on ImageNet validation dataset
+for testing the accuracy of pretrained model VGG13 on ImageNet validation dataset
 '''
 import torch
 import torch.nn as nn
@@ -22,15 +22,14 @@ val_dataset = datasets.ImageNet(root='../../dataset', split='val', transform=tra
 val_loader = DataLoader(val_dataset, batch_size=64, shuffle=True)
 
 '''加载模型'''
-pth_path = "../../parameters/init/resnet50-11ad3fa6.pth"
-model = models.resnet50()
+pth_path = "../../parameters/init/vgg13-19584684.pth"
+model = models.vgg13()
 # torch.serialization.add_safe_globals(pth_path)
 model.load_state_dict(torch.load(pth_path))
 # model.fc = nn.Linear(model.fc.in_features, 10)
 # print(model)
 device = torch.device("mps")
 model.to(device)
-print(model)
 
 '''定义损失函数和评估指标'''
 criterion = nn.CrossEntropyLoss()

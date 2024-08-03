@@ -30,6 +30,7 @@ model.load_state_dict(torch.load(pth_path))
 # print(model)
 device = torch.device("mps")
 model.to(device)
+print(model)
 
 '''定义损失函数和评估指标'''
 criterion = nn.CrossEntropyLoss()

@@ -75,9 +75,11 @@ python ./models/pretrainedModels/vgg11.py
 在最后一个全连接层进行嵌入 [4096, 1000]，16.384MB
 
 | RunDate | Model  | InitPara                  | Dataset | Accuracy | Loss   |
-| - |--------|---------------------------| - |--------|--------|
-| 20240802 | VGG-11 | vgg11_embdedding_4_32.pth | ILSVRC2012_devkit_t12 | 66.88% | 1.3540 |
-| 20240802 | VGG-11 | vgg11_embdedding_8_32.pth | ILSVRC2012_devkit_t12 | 64.62% | 1.6994 |
+| - |--------|---------------------------| - |----------|--------|
+| 20240802 | VGG-11 | vgg11_embdedding_4_32.pth | ILSVRC2012_devkit_t12 | 66.88%   | 1.3540 |
+| 20240802 | VGG-11 | vgg11_embdedding_6_32.pth | ILSVRC2012_devkit_t12 | 66.91%   | 1.3553 |
+| 20240802 | VGG-11 | vgg11_embdedding_7_32.pth | ILSVRC2012_devkit_t12 | 66.85%   | 1.3566 |
+| 20240802 | VGG-11 | vgg11_embdedding_8_32.pth | ILSVRC2012_devkit_t12 | 64.62%   | 1.6994 |
 
 
 ## VGG13
@@ -94,9 +96,12 @@ python ./models/pretrainedModels/vgg13.py
 python ./models/pretrainedModels/vgg16.py
 ```
 
-| RunDate | Model  | InitPara | Dataset | Accuracy | Loss   |
-| - |--------| - | - |--------|--------|
-| 20240802 | VGG-16 | vgg16-397923af.pth | ILSVRC2012_devkit_t12 | 70.02% | 1.2218 |
+| RunDate | Model  | InitPara                  | Dataset | Accuracy | Loss   |
+| - |--------|---------------------------| - |----------|--------|
+| 20240802 | VGG-16 | vgg11_embdedding_4_32.pth | ILSVRC2012_devkit_t12 | 70.02%   | 1.2218 |
+| 20240802 | VGG-16 | vgg11_embdedding_6_32.pth | ILSVRC2012_devkit_t12 | 70.02%   | 1.2213 |
+| 20240802 | VGG-16 | vgg11_embdedding_7_32.pth | ILSVRC2012_devkit_t12 | 69.97%   | 1.2251 |
+| 20240802 | VGG-16 | vgg11_embdedding_8_32.pth | ILSVRC2012_devkit_t12 | 67.91%   | 1.5585 |
 
 ## VGG19
 ```shell

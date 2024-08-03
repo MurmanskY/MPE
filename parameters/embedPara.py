@@ -35,7 +35,7 @@ def weightsEmbedding(pth_file):
 if __name__ == "__main__":
     # showParaStructure(resnet18InitParaPath)
 
-    parameters = torch.load(vgg11InitParaPath)
+    parameters = torch.load(vgg16InitParaPath)
     fcWeights = parameters["classifier.6.weight"]
     print(type(fcWeights))  # <class 'torch.nn.parameter.Parameter'>
     print(type(fcWeights.data))  # <class 'torch.Tensor'>
@@ -70,4 +70,4 @@ if __name__ == "__main__":
     # 写入pth文件
     parameters["classifier.6.weight"].data = new_float_view
 
-    torch.save(parameters, "./embedding/vgg11_embedding_8_32.pth")
+    torch.save(parameters, "./embedding/vgg16_embedding_8_32.pth")

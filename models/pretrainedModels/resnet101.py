@@ -22,7 +22,7 @@ val_dataset = datasets.ImageNet(root='../../dataset', split='val', transform=tra
 val_loader = DataLoader(val_dataset, batch_size=64, shuffle=True)
 
 '''加载模型'''
-pth_path = "../../parameters/embedding/resnet101_embedding_7_32.pth"
+pth_path = "../../parameters/init/resnet101-cd907fc2.pth"
 model = models.resnet101()
 # torch.serialization.add_safe_globals(pth_path)
 model.load_state_dict(torch.load(pth_path))

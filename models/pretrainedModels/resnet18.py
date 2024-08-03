@@ -10,14 +10,6 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 
 
-
-# model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet18', pretrained=True)
-# model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet34', pretrained=True)
-# model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet50', pretrained=True)
-# model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet101', pretrained=True)
-# model = torch.hub.load('pytorch/vision:v0.10.0', 'resnet152', pretrained=True)
-
-
 '''数据预处理'''
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
@@ -30,7 +22,7 @@ val_dataset = datasets.ImageNet(root='../../dataset', split='val', transform=tra
 val_loader = DataLoader(val_dataset, batch_size=64, shuffle=True)
 
 '''加载模型'''
-pth_path = "../../parameters/embedding/resnet18_embedding_9_32.pth"
+pth_path = "../../parameters/init/resnet18-f37072fd.pth"
 model = models.resnet18()
 # torch.serialization.add_safe_globals(pth_path)
 model.load_state_dict(torch.load(pth_path))
