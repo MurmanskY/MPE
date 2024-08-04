@@ -9,7 +9,7 @@ import torchvision.models as models
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
-test_pth1 = "../../parameters/embedding/resnet50_embedding_4_32.pth"
+test_pth1 = "../../parameters/embedding/resnet50_test1.pth"
 test_pth2 = "../../parameters/embedding/resnet50_embedding_6_32.pth"
 test_pth3 = "../../parameters/embedding/resnet50_embedding_7_32.pth"
 test_pth4 = "../../parameters/embedding/resnet50_embedding_8_32.pth"

@@ -126,3 +126,18 @@ python ./models/pretrainedModels/vgg19.py
 
 
 # 测试在全连接层的weights中嵌入有害信息
+methodology: 
+
+- weights参数中的最后四个数据的低8bit，可以用来存储恶意软件占用全部参数的个数num（一共就是32bit），拼接起来后成为一个uint32的数据
+- weights参数的倒数第五个数据的低8bit，用来存储余数remain（即剩下的bit） uint8类型的数据
+- size = num * chunkSzie + remain (bit)
+
+｜ high ｜ -- ｜ -- ｜ low ｜
+
+｜ para4 ｜ para3 ｜ para2 ｜ para1 ｜
+
+其中每个parameters的bit信息如下：
+
+| bit25 | bit26 | bit27 | bit28 | bit29 | bit30 | bit31 | bit32 |
+
+- weights中存储的顺序是行优先，固定dim0，然后从小到达遍历dim1

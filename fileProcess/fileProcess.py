@@ -2,9 +2,10 @@
 for processing file: splitting by bits and merging by bits
 '''
 from bitstring import BitArray
+import torch
 
-file_path = "../malware/Lazarus"
-result_path = "./result/Lazarus_result"
+file_path = "../malware/test1.jpeg"
+result_path = "./result/test1_result.jpeg"
 chunk_size = 6
 
 def split_file(file_path, chunk_size=8):
@@ -39,3 +40,5 @@ if __name__ == "__main__":
     """
     chunks = split_file(file_path, chunk_size)
     merge_file(result_path, chunks)
+
+
