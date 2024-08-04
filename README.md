@@ -14,16 +14,16 @@ python ./models/pretrainedModels/resnet18.py
 ```
 原始weights结构：只有一个全连接层，在最后一层，weights的大小是[1000, 512]，每个数据类型是torch.float32，数据总量是2.048MB
 
-| RunDate | Model     | InitPara                      | Dataset | Accuracy | Loss   |
-| - |- |-------------------------------| - |----------|--------|
-| 20240802 | resnet-18 | resenet18-f37072fd.pth        | ILSVRC2012_devkit_t12 | 67.27%   | 1.3545 |
-| 20240802 | resnet-18 | resenet18_embedding_1_32.pth  | ILSVRC2012_devkit_t12 | 67.27%   | 1.3545 |
-| 20240802 | resnet-18 | resenet18_embedding_4_32.pth  | ILSVRC2012_devkit_t12 | 67.27%   | 1.3532 |
-| 20240802 | resnet-18 | resenet18_embedding_6_32.pth  | ILSVRC2012_devkit_t12 | 67.30%   | 1.3533 |
-| 20240802 | resnet-18 | resenet18_embedding_7_32.pth  | ILSVRC2012_devkit_t12 | 66.87%   | 1.3700 |
-| 20240802 | resnet-18 | resenet18_embedding_8_32.pth  | ILSVRC2012_devkit_t12 | 52.65%   | 2.4685 |
-| 20240802 | resnet-18 | resenet18_embedding_8_32.pth  | ILSVRC2012_devkit_t12 | 0.04%     | 11.336 |
-| 20240802 | resnet-18 | resenet18_embedding_10_32.pth | ILSVRC2012_devkit_t12 | 0%       | nan    |
+| RunDate | Model     | InitPara                      | Dataset | Accuracy | Loss    |
+| - |- |-------------------------------| - |----------|---------|
+| 20240802 | resnet-18 | resenet18-f37072fd.pth        | ILSVRC2012_devkit_t12 | 67.27%   | 1.3530  |
+| 20240802 | resnet-18 | resenet18_embedding_1_32.pth  | ILSVRC2012_devkit_t12 | 67.27%   | 1.3545  |
+| 20240802 | resnet-18 | resenet18_embedding_4_32.pth  | ILSVRC2012_devkit_t12 | 67.27%   | 1.3532  |
+| 20240802 | resnet-18 | resenet18_embedding_6_32.pth  | ILSVRC2012_devkit_t12 | 67.30%   | 1.3533  |
+| 20240802 | resnet-18 | resenet18_embedding_7_32.pth  | ILSVRC2012_devkit_t12 | 66.87%   | 1.3700  |
+| 20240802 | resnet-18 | resenet18_embedding_8_32.pth  | ILSVRC2012_devkit_t12 | 52.65%   | 2.4685  |
+| 20240802 | resnet-18 | resenet18_embedding_8_32.pth  | ILSVRC2012_devkit_t12 | 0.04%     | 11.3376 |
+| 20240802 | resnet-18 | resenet18_embedding_10_32.pth | ILSVRC2012_devkit_t12 | 0%       | nan     |
 
 
 
@@ -36,9 +36,9 @@ python ./models/pretrainedModels/resnet50.py
 
 | RunDate | Model     | InitPara                    | Dataset | Accuracy | Loss   |
 | - |-----------|-----------------------------| - |----------|--------|
-| 20240802 | resnet-50 | resnet50-11ad3fa6.pth       | ILSVRC2012_devkit_t12 | 80.12%   | 1.4183 |
+| 20240802 | resnet-50 | resnet50-11ad3fa6.pth       | ILSVRC2012_devkit_t12 | 80.12%   | 1.4178 |
 | 20240802 | resnet-50 | resnet50_embedding_4_32.pth | ILSVRC2012_devkit_t12 | 80.12%   | 1.4179 |
-| 20240802 | resnet-50 | resnet50_embedding_6_32.pth | ILSVRC2012_devkit_t12 | 80.14%   | 1.4185 |
+| 20240802 | resnet-50 | resnet50_embedding_6_32.pth | ILSVRC2012_devkit_t12 | 80.14%   | 1.4192 |
 | 20240802 | resnet-50 | resnet50_embedding_7_32.pth | ILSVRC2012_devkit_t12 | 79.72%   | 1.4054 |
 | 20240802 | resnet-50 | resnet50_embedding_8_32.pth | ILSVRC2012_devkit_t12 | 66.91%   | 1.7324 |
 
@@ -53,7 +53,7 @@ python ./models/pretrainedModels/resnet101.py
 
 | RunDate | Model      | InitPara                     | Dataset | Accuracy | Loss   |
 | - |------------|------------------------------| - |----------|--------|
-| 20240802 | resnet-101 | resnet101-cd907fc2.pth       | ILSVRC2012_devkit_t12 | 80.94%   | 0.9227 |
+| 20240802 | resnet-101 | resnet101-cd907fc2.pth       | ILSVRC2012_devkit_t12 | 80.94%   | 0.9223 |
 | 20240802 | resnet-101 | resnet101_embedding_4_32.pth | ILSVRC2012_devkit_t12 | 80.94%   | 0.9231 |
 | 20240802 | resnet-101 | resnet101_embedding_6_32.pth | ILSVRC2012_devkit_t12 | 80.92%   | 0.9223 |
 | 20240802 | resnet-101 | resnet101_embedding_7_32.pth | ILSVRC2012_devkit_t12 | 80.52%   | 0.9281 |
@@ -76,7 +76,7 @@ python ./models/pretrainedModels/vgg11.py
 
 | RunDate | Model  | InitPara                  | Dataset | Accuracy | Loss   |
 | - |--------|---------------------------| - |----------|--------|
-| 20240802 | VGG-11 | vgg11_embdedding_4_32.pth | ILSVRC2012_devkit_t12 | 66.88%   | 1.3540 |
+| 20240802 | VGG-11 | vgg11_embdedding_4_32.pth | ILSVRC2012_devkit_t12 | 66.88%   | 1.3539 |
 | 20240802 | VGG-11 | vgg11_embdedding_6_32.pth | ILSVRC2012_devkit_t12 | 66.91%   | 1.3553 |
 | 20240802 | VGG-11 | vgg11_embdedding_7_32.pth | ILSVRC2012_devkit_t12 | 66.85%   | 1.3566 |
 | 20240802 | VGG-11 | vgg11_embdedding_8_32.pth | ILSVRC2012_devkit_t12 | 64.62%   | 1.6994 |
@@ -89,7 +89,7 @@ python ./models/pretrainedModels/vgg13.py
 
 | RunDate | Model  | InitPara                  | Dataset | Accuracy | Loss   |
 | - |--------|---------------------------| - |----------|--------|
-| 20240802 | VGG-13 | vgg13-19584684.pth        | ILSVRC2012_devkit_t12 | 68.14%   | 1.3035 |
+| 20240802 | VGG-13 | vgg13-19584684.pth        | ILSVRC2012_devkit_t12 | 68.14%   | 1.3036 |
 | 20240802 | VGG-13 | vgg13_embdedding_4_32.pth | ILSVRC2012_devkit_t12 | 68.14%   | 1.3044 |
 | 20240802 | VGG-13 | vgg13_embdedding_6_32.pth | ILSVRC2012_devkit_t12 | 68.15%   | 1.3037 |
 | 20240802 | VGG-13 | vgg13_embdedding_7_32.pth | ILSVRC2012_devkit_t12 | 67.99%   | 1.3086 |
@@ -103,8 +103,8 @@ python ./models/pretrainedModels/vgg16.py
 | RunDate | Model  | InitPara              | Dataset | Accuracy | Loss   |
 | - |--------|-----------------------| - |----------|--------|
 | 20240802 | VGG-16 | vgg16-397923af.pth | ILSVRC2012_devkit_t12 | 70.02%   | 1.2208 |
-| 20240802 | VGG-16 | vgg16_embdedding_4_32.pth | ILSVRC2012_devkit_t12 | 70.02%   | 1.2218 |
-| 20240802 | VGG-16 | vgg16_embdedding_6_32.pth | ILSVRC2012_devkit_t12 | 70.02%   | 1.2213 |
+| 20240802 | VGG-16 | vgg16_embdedding_4_32.pth | ILSVRC2012_devkit_t12 | 70.02%   | 1.2213 |
+| 20240802 | VGG-16 | vgg16_embdedding_6_32.pth | ILSVRC2012_devkit_t12 | 70.03%   | 1.2232 |
 | 20240802 | VGG-16 | vgg16_embdedding_7_32.pth | ILSVRC2012_devkit_t12 | 69.97%   | 1.2251 |
 | 20240802 | VGG-16 | vgg16_embdedding_8_32.pth | ILSVRC2012_devkit_t12 | 67.91%   | 1.5585 |
 

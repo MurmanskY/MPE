@@ -32,6 +32,7 @@ def showParaValue(paraPath):
 
 
 if __name__ == "__main__":
+    '''for test'''
     paraPath = "./init/resnet50-11ad3fa6.pth"
     vgg11InitParaPath = './init/vgg11-8a719046.pth'
     showParaStructure(vgg11InitParaPath)

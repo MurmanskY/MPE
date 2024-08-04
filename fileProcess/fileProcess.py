@@ -1,10 +1,7 @@
 '''
-for processing file:
-split
-merge
+for processing file: splitting by bits and merging by bits
 '''
-import os
-from bitstring import BitArray, BitStream
+from bitstring import BitArray
 
 file_path = "../malware/Lazarus"
 result_path = "./result/Lazarus_result"
@@ -37,9 +34,8 @@ def merge_file(output_file, chunks):
         merge_data.tofile(file)
 
 if __name__ == "__main__":
-    # # 使用这个函数读取文件
-    # six_bit_chunks = read_file_in_6bit_chunks(file_path)
-    # # 打印结果，展示部分数据
-    # print(six_bit_chunks[:10])  # 打印前10个六比特数据块
+    """
+    for test
+    """
     chunks = split_file(file_path, chunk_size)
     merge_file(result_path, chunks)
