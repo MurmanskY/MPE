@@ -82,7 +82,3 @@ ResNet(
   (avgpool): AdaptiveAvgPool2d(output_size=(1, 1))
   (fc): Linear(in_features=512, out_features=1000, bias=True)
 )
-Test Accuracy: 67.27%
-Test Loss: 1.3530
-Test total: 50000.0
-Test correct: 33636.0

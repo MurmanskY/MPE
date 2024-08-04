@@ -9,13 +9,13 @@ import torchvision.models as models
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
-test_pth1 = "../../parameters/embedding/resnet18_embedding_24_32.pth"
-test_pth2 = "../../parameters/embedding/resnet18_embedding_6_32.pth"
-test_pth3 = "../../parameters/embedding/resnet18_embedding_8_32.pth"
-test_pth4 = "../../parameters/embedding/resnet18_embedding_7_32.pth"
-test_pth5 = "../../parameters/embedding/resnet18_embedding_8_32.pth"
-test_pth6 = "../../parameters/embedding/resnet18_embedding_9_32.pth"
-test_pth7 = "../../parameters/embedding/resnet18_embedding_10_32.pth"
+test_pth1 = "../../parameters/embedding/resnet18_embedding_8_32.pth"
+test_pth2 = "../../parameters/embedding/resnet18_embedding_16_32.pth"
+test_pth3 = "../../parameters/embedding/resnet18_embedding_20_32.pth"
+test_pth4 = "../../parameters/embedding/resnet18_embedding_21_32.pth"
+test_pth5 = "../../parameters/embedding/resnet18_embedding_22_32.pth"
+test_pth6 = "../../parameters/embedding/resnet18_embedding_23_32.pth"
+test_pth7 = "../../parameters/embedding/resnet18_embedding_24_32.pth"
 
 '''数据预处理'''
 transform = transforms.Compose([
@@ -69,78 +69,77 @@ print(f'Test total: {total:.1f}')
 print(f'Test correct: {correct:.1f}')
 print("\n\n")
 
+model = models.resnet18()
+model.load_state_dict(torch.load(test_pth2))
+device = torch.device("mps")
+model.to(device)
+test_accuracy, test_loss, correct, total = evaluate_model(model, val_loader)
+print("test pth: " + test_pth2)
+print(f'Test Accuracy: {test_accuracy:.2f}%')
+print(f'Test Loss: {test_loss:.4f}')
+print(f'Test total: {total:.1f}')
+print(f'Test correct: {correct:.1f}')
+print("\n\n")
 
-# model = models.resnet18()
-# model.load_state_dict(torch.load(test_pth2))
-# device = torch.device("mps")
-# model.to(device)
-# test_accuracy, test_loss, correct, total = evaluate_model(model, val_loader)
-# print("test pth: " + test_pth2)
-# print(f'Test Accuracy: {test_accuracy:.2f}%')
-# print(f'Test Loss: {test_loss:.4f}')
-# print(f'Test total: {total:.1f}')
-# print(f'Test correct: {correct:.1f}')
-# print("\n\n")
-#
-# model = models.resnet18()
-# model.load_state_dict(torch.load(test_pth3))
-# device = torch.device("mps")
-# model.to(device)
-# test_accuracy, test_loss, correct, total = evaluate_model(model, val_loader)
-# print("test pth: " + test_pth3)
-# print(f'Test Accuracy: {test_accuracy:.2f}%')
-# print(f'Test Loss: {test_loss:.4f}')
-# print(f'Test total: {total:.1f}')
-# print(f'Test correct: {correct:.1f}')
-# print("\n\n")
-#
-# model = models.resnet18()
-# model.load_state_dict(torch.load(test_pth4))
-# device = torch.device("mps")
-# model.to(device)
-# test_accuracy, test_loss, correct, total = evaluate_model(model, val_loader)
-# print("test pth: " + test_pth4)
-# print(f'Test Accuracy: {test_accuracy:.2f}%')
-# print(f'Test Loss: {test_loss:.4f}')
-# print(f'Test total: {total:.1f}')
-# print(f'Test correct: {correct:.1f}')
-# print("\n\n")
-#
-#
-# model = models.resnet18()
-# model.load_state_dict(torch.load(test_pth5))
-# device = torch.device("mps")
-# model.to(device)
-# test_accuracy, test_loss, correct, total = evaluate_model(model, val_loader)
-# print("test pth: " + test_pth5)
-# print(f'Test Accuracy: {test_accuracy:.2f}%')
-# print(f'Test Loss: {test_loss:.4f}')
-# print(f'Test total: {total:.1f}')
-# print(f'Test correct: {correct:.1f}')
-# print("\n\n")
-#
-#
-# model = models.resnet18()
-# model.load_state_dict(torch.load(test_pth6))
-# device = torch.device("mps")
-# model.to(device)
-# test_accuracy, test_loss, correct, total = evaluate_model(model, val_loader)
-# print("test pth: " + test_pth6)
-# print(f'Test Accuracy: {test_accuracy:.2f}%')
-# print(f'Test Loss: {test_loss:.4f}')
-# print(f'Test total: {total:.1f}')
-# print(f'Test correct: {correct:.1f}')
-# print("\n\n")
-#
-#
-# model = models.resnet18()
-# model.load_state_dict(torch.load(test_pth7))
-# device = torch.device("mps")
-# model.to(device)
-# test_accuracy, test_loss, correct, total = evaluate_model(model, val_loader)
-# print("test pth: " + test_pth7)
-# print(f'Test Accuracy: {test_accuracy:.2f}%')
-# print(f'Test Loss: {test_loss:.4f}')
-# print(f'Test total: {total:.1f}')
-# print(f'Test correct: {correct:.1f}')
-# print("\n\n")
+model = models.resnet18()
+model.load_state_dict(torch.load(test_pth3))
+device = torch.device("mps")
+model.to(device)
+test_accuracy, test_loss, correct, total = evaluate_model(model, val_loader)
+print("test pth: " + test_pth3)
+print(f'Test Accuracy: {test_accuracy:.2f}%')
+print(f'Test Loss: {test_loss:.4f}')
+print(f'Test total: {total:.1f}')
+print(f'Test correct: {correct:.1f}')
+print("\n\n")
+
+model = models.resnet18()
+model.load_state_dict(torch.load(test_pth4))
+device = torch.device("mps")
+model.to(device)
+test_accuracy, test_loss, correct, total = evaluate_model(model, val_loader)
+print("test pth: " + test_pth4)
+print(f'Test Accuracy: {test_accuracy:.2f}%')
+print(f'Test Loss: {test_loss:.4f}')
+print(f'Test total: {total:.1f}')
+print(f'Test correct: {correct:.1f}')
+print("\n\n")
+
+
+model = models.resnet18()
+model.load_state_dict(torch.load(test_pth5))
+device = torch.device("mps")
+model.to(device)
+test_accuracy, test_loss, correct, total = evaluate_model(model, val_loader)
+print("test pth: " + test_pth5)
+print(f'Test Accuracy: {test_accuracy:.2f}%')
+print(f'Test Loss: {test_loss:.4f}')
+print(f'Test total: {total:.1f}')
+print(f'Test correct: {correct:.1f}')
+print("\n\n")
+
+
+model = models.resnet18()
+model.load_state_dict(torch.load(test_pth6))
+device = torch.device("mps")
+model.to(device)
+test_accuracy, test_loss, correct, total = evaluate_model(model, val_loader)
+print("test pth: " + test_pth6)
+print(f'Test Accuracy: {test_accuracy:.2f}%')
+print(f'Test Loss: {test_loss:.4f}')
+print(f'Test total: {total:.1f}')
+print(f'Test correct: {correct:.1f}')
+print("\n\n")
+
+
+model = models.resnet18()
+model.load_state_dict(torch.load(test_pth7))
+device = torch.device("mps")
+model.to(device)
+test_accuracy, test_loss, correct, total = evaluate_model(model, val_loader)
+print("test pth: " + test_pth7)
+print(f'Test Accuracy: {test_accuracy:.2f}%')
+print(f'Test Loss: {test_loss:.4f}')
+print(f'Test total: {total:.1f}')
+print(f'Test correct: {correct:.1f}')
+print("\n\n")

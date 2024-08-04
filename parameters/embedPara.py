@@ -69,14 +69,14 @@ def fcWeightsLowBitXOR(paraPath, bitReplacement, embeddedParaPath):
     para = torch.load(paraPath)
 
     # change model, change the following code
-    fcWeightsTensor = para["fc.weight"].data
+    fcWeightsTensor = para["classifier.6.weight"].data
 
     fcWeightsTensor_intView = fcWeightsTensor.view(torch.int32)
     fcWeightsTensor_embedded_int = fcWeightsTensor_intView ^ bitReplacement
     fcWeightsTensor_embedded = fcWeightsTensor_embedded_int.view(torch.float32)
 
     # change model, change the following code
-    para["fc.weight"].data = fcWeightsTensor_embedded
+    para["classifier.6.weight"].data = fcWeightsTensor_embedded
 
     torch.save(para, embeddedParaPath)
     return
@@ -341,10 +341,10 @@ if __name__ == "__main__":
     # print(format(bit_30, '032b'))
     # print("\n\n")
 
-    # fcWeightsLowBitXOR(resnet18InitParaPath, bit_21, "./embedding/resnet18_embedding_21_32.pth")
-    chunkSize = 20
-    fcWeightsLowBitEmbed(resnet50InitParaPath, chunkSize, malware_path,
-                         "./embedding/resnet50_" + str(chunkSize) + "_test2.pth")
-    fcWeightsLowBitExtract("./embedding/resnet50_" + str(chunkSize) + "_test2.pth", "../malware/test2_extract.jpeg")
-    print("done")
+    fcWeightsLowBitXOR(vgg19InitParaPath, bit_24, "./embedding/vgg19_embedding_24_32.pth")
+    # chunkSize = 20
+    # fcWeightsLowBitEmbed(resnet50InitParaPath, chunkSize, malware_path,
+    #                      "./embedding/resnet50_" + str(chunkSize) + "_test2.pth")
+    # fcWeightsLowBitExtract("./embedding/resnet50_" + str(chunkSize) + "_test2.pth", "../malware/test2_extract.jpeg")
+    # print("done")
 
