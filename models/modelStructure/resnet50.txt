@@ -178,7 +178,7 @@ ResNet(
 
 
 
-
+pth文件的类型是：<class 'collections.OrderedDict'>
 pth文件的字典长度是：320
 ------pth文件的字典key包含------
 key:

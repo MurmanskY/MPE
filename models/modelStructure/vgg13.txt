@@ -38,3 +38,37 @@ VGG(
     (6): Linear(in_features=4096, out_features=1000, bias=True)
   )
 )
+
+
+
+pth文件的类型是：<class 'collections.OrderedDict'>
+pth文件的字典长度是：26
+------pth文件的字典key包含------
+key:
+features.0.weight
+features.0.bias
+features.2.weight
+features.2.bias
+features.5.weight
+features.5.bias
+features.7.weight
+features.7.bias
+features.10.weight
+features.10.bias
+features.12.weight
+features.12.bias
+features.15.weight
+features.15.bias
+features.17.weight
+features.17.bias
+features.20.weight
+features.20.bias
+features.22.weight
+features.22.bias
+classifier.0.weight
+classifier.0.bias
+classifier.3.weight
+classifier.3.bias
+classifier.6.weight
+classifier.6.bias
+------------------------------
