@@ -42,9 +42,6 @@ bit_30 = torch.tensor(1073741823, dtype=torch.int32)
 
 
 
-
-
-
 resnet18InitParaPath = './init/resnet18-f37072fd.pth'
 resnet50InitParaPath = './init/resnet50-11ad3fa6.pth'
 resnet101InitParaPath = './init/resnet101-cd907fc2.pth'
@@ -58,7 +55,7 @@ malware_path = "../malware/test2.jpg"
 
 
 
-def fcWeightsLowBitXOR(paraPath, bitReplacement, embeddedParaPath):
+def fcWeightLowBitXOR(paraPath, bitReplacement, embeddedParaPath):
     '''
     在全连接层的权重参数 最低位取反，将取反后的参数pth文件存储
     :param paraPath: 需要进行嵌入的权重参数
@@ -82,9 +79,9 @@ def fcWeightsLowBitXOR(paraPath, bitReplacement, embeddedParaPath):
     return
 
 
-def conv(paraPath, bitReplacement, embeddedParaPath):
+def conv2WeightLowBitXOR(paraPath, bitReplacement, embeddedParaPath):
     '''
-    在全连接层的权重参数 最低位取反，将取反后的参数pth文件存储
+    卷积层weight参数 最低位取反，将取反后的参数pth文件存储
     :param paraPath: 需要进行嵌入的权重参数
     :param bitReplacement: 最低多少位进行取反
     :param embeddedParaPath: 被嵌入有害信息的pth文件
@@ -92,7 +89,36 @@ def conv(paraPath, bitReplacement, embeddedParaPath):
     '''
     para = torch.load(paraPath)
 
-    #
+    # change model, change the following code
+    conv2WeightTensor = para["features.0.weight"].data
+
+    conv2WeightTensor_intView = conv2WeightTensor.view(torch.int32)
+    print(format(conv2WeightTensor_intView[30][2][1][2], '032b'))
+    conv2WeightTensor_embedded_int = conv2WeightTensor_intView ^ bitReplacement
+    print(format(conv2WeightTensor_embedded_int[30][2][1][2], '032b'))
+    conv2WeightTensor_embedded = conv2WeightTensor_embedded_int.view(torch.float32)
+
+    # change model, change the following code
+    para["features.0.weight"].data = conv2WeightTensor_embedded
+
+    torch.save(para, embeddedParaPath)
+    return
+
+
+def allParaLowBitXor(paraPath, bitReplacement, embeddedParaPath):
+    para = torch.load(paraPath)
+
+    # change model, change the following code
+    conv2WeightTensor = para["conv1.weight"].data
+
+    conv2WeightTensor_intView = conv2WeightTensor.view(torch.int32)
+    conv2WeightTensor_embedded_int = conv2WeightTensor_intView ^ bitReplacement
+    conv2WeightTensor_embedded = conv2WeightTensor_embedded_int.view(torch.float32)
+
+    # change model, change the following code
+    para["conv1.weight"].data = conv2WeightTensor_embedded
+
+    torch.save(para, embeddedParaPath)
     return
 
 
@@ -243,12 +269,6 @@ def fcWeightsLowBitExtract(paraPath, extractedParaPath):
     return
 
 
-
-
-def weightsEmbedding(pth_file):
-    return
-
-
 if __name__ == "__main__":
     # parameters = torch.load(resnet18InitParaPath)
     # fcWeightsTensor = parameters["fc.weight"].data
@@ -355,10 +375,14 @@ if __name__ == "__main__":
     # print(format(bit_30, '032b'))
     # print("\n\n")
 
-    fcWeightsLowBitXOR(vgg19InitParaPath, bit_24, "./weightsEmbedding/vgg19_embedding_24_32.pth")
+    # fcWeightLowBitXOR(vgg19InitParaPath, bit_24, "./weightsEmbedding/vgg19_embedding_24_32.pth")
+
+    conv2WeightLowBitXOR(vgg19InitParaPath, bit_24, "./convEmbedding/vgg19_embedding_24_32.pth")
+
     # chunkSize = 20
     # fcWeightsLowBitEmbed(resnet50InitParaPath, chunkSize, malware_path,
     #                      "./weightsEmbedding/resnet50_" + str(chunkSize) + "_test2.pth")
     # fcWeightsLowBitExtract("./weightsEmbedding/resnet50_" + str(chunkSize) + "_test2.pth", "../malware/test2_extract.jpeg")
-    # print("done")
 
+
+    print("done")

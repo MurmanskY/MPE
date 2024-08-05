@@ -23,6 +23,7 @@ val_loader = DataLoader(val_dataset, batch_size=64, shuffle=True)
 
 '''加载模型'''
 pth_path = "../../parameters/init/resnet50-11ad3fa6.pth"
+test_pth1 = "../../parameters/convEmbedding/resnet50_embedding_22_32.pth"
 model = models.resnet50()
 # torch.serialization.add_safe_globals(pth_path)
 model.load_state_dict(torch.load(pth_path))

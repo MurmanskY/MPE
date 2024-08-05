@@ -7,6 +7,9 @@ dataset/*
 parameters/weightsEmbedding/*
 !parameters/weightsEmbedding/.gitkeep
 
+parameters/convEmbedding/*
+!parameters/convEmbedding/.gitkeep
+
 parameters/init/*
 !parameters/init/.gitkeep
 

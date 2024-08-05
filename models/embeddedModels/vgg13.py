@@ -9,14 +9,23 @@ import torchvision.models as models
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
+'''run fcWeightEmbeddingTest, unconment the following codes'''
+# test_pth1 = "../../parameters/weightsEmbedding/vgg13_embedding_8_32.pth"
+# test_pth2 = "../../parameters/weightsEmbedding/vgg13_embedding_16_32.pth"
+# test_pth3 = "../../parameters/weightsEmbedding/vgg13_embedding_20_32.pth"
+# test_pth4 = "../../parameters/weightsEmbedding/vgg13_embedding_21_32.pth"
+# test_pth5 = "../../parameters/weightsEmbedding/vgg13_embedding_22_32.pth"
+# test_pth6 = "../../parameters/weightsEmbedding/vgg13_embedding_23_32.pth"
+# test_pth7 = "../../parameters/weightsEmbedding/vgg13_embedding_24_32.pth"
 
-test_pth1 = "../../parameters/weightsEmbedding/vgg13_embedding_8_32.pth"
-test_pth2 = "../../parameters/weightsEmbedding/vgg13_embedding_16_32.pth"
-test_pth3 = "../../parameters/weightsEmbedding/vgg13_embedding_20_32.pth"
-test_pth4 = "../../parameters/weightsEmbedding/vgg13_embedding_21_32.pth"
-test_pth5 = "../../parameters/weightsEmbedding/vgg13_embedding_22_32.pth"
-test_pth6 = "../../parameters/weightsEmbedding/vgg13_embedding_23_32.pth"
-test_pth7 = "../../parameters/weightsEmbedding/vgg13_embedding_24_32.pth"
+'''run ConvWeightEmbeddingTest, unconment the following codes'''
+test_pth1 = "../../parameters/convEmbedding/vgg13_embedding_16_32.pth"
+test_pth2 = "../../parameters/convEmbedding/vgg13_embedding_19_32.pth"
+test_pth3 = "../../parameters/convEmbedding/vgg13_embedding_20_32.pth"
+test_pth4 = "../../parameters/convEmbedding/vgg13_embedding_21_32.pth"
+test_pth5 = "../../parameters/convEmbedding/vgg13_embedding_22_32.pth"
+test_pth6 = "../../parameters/convEmbedding/vgg13_embedding_23_32.pth"
+test_pth7 = "../../parameters/convEmbedding/vgg13_embedding_24_32.pth"
 
 
 '''数据预处理'''
