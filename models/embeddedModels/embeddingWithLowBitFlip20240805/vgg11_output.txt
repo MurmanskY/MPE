@@ -33,7 +33,59 @@ VGG(
     (6): Linear(in_features=4096, out_features=1000, bias=True)
   )
 )
+test pth: ../../parameters/embedding/vgg11_embedding_8_32.pth
 Test Accuracy: 66.88%
-Test Loss: 1.3541
+Test Loss: 1.3542
 Test total: 50000.0
 Test correct: 33441.0
+
+
+
+test pth: ../../parameters/embedding/vgg11_embedding_16_32.pth
+Test Accuracy: 66.89%
+Test Loss: 1.3549
+Test total: 50000.0
+Test correct: 33445.0
+
+
+
+test pth: ../../parameters/embedding/vgg11_embedding_20_32.pth
+Test Accuracy: 66.86%
+Test Loss: 1.3564
+Test total: 50000.0
+Test correct: 33432.0
+
+
+
+test pth: ../../parameters/embedding/vgg11_embedding_21_32.pth
+Test Accuracy: 66.84%
+Test Loss: 1.3589
+Test total: 50000.0
+Test correct: 33420.0
+
+
+
+test pth: ../../parameters/embedding/vgg11_embedding_22_32.pth
+Test Accuracy: 66.63%
+Test Loss: 1.3714
+Test total: 50000.0
+Test correct: 33317.0
+
+
+
+test pth: ../../parameters/embedding/vgg11_embedding_23_32.pth
+Test Accuracy: 66.13%
+Test Loss: 1.4388
+Test total: 50000.0
+Test correct: 33065.0
+
+
+
+test pth: ../../parameters/embedding/vgg11_embedding_24_32.pth
+Test Accuracy: 64.27%
+Test Loss: 1.9315
+Test total: 50000.0
+Test correct: 32135.0
+
+
+

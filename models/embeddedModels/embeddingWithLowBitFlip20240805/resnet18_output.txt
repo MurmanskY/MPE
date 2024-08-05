@@ -82,7 +82,59 @@ ResNet(
   (avgpool): AdaptiveAvgPool2d(output_size=(1, 1))
   (fc): Linear(in_features=512, out_features=1000, bias=True)
 )
+test pth: ../../parameters/embedding/resnet18_embedding_8_32.pth
 Test Accuracy: 67.27%
 Test Loss: 1.3528
 Test total: 50000.0
 Test correct: 33636.0
+
+
+
+test pth: ../../parameters/embedding/resnet18_embedding_16_32.pth
+Test Accuracy: 67.27%
+Test Loss: 1.3534
+Test total: 50000.0
+Test correct: 33637.0
+
+
+
+test pth: ../../parameters/embedding/resnet18_embedding_20_32.pth
+Test Accuracy: 67.12%
+Test Loss: 1.3605
+Test total: 50000.0
+Test correct: 33560.0
+
+
+
+test pth: ../../parameters/embedding/resnet18_embedding_21_32.pth
+Test Accuracy: 66.64%
+Test Loss: 1.3775
+Test total: 50000.0
+Test correct: 33321.0
+
+
+
+test pth: ../../parameters/embedding/resnet18_embedding_22_32.pth
+Test Accuracy: 65.21%
+Test Loss: 1.4511
+Test total: 50000.0
+Test correct: 32603.0
+
+
+
+test pth: ../../parameters/embedding/resnet18_embedding_23_32.pth
+Test Accuracy: 61.39%
+Test Loss: 1.7158
+Test total: 50000.0
+Test correct: 30696.0
+
+
+
+test pth: ../../parameters/embedding/resnet18_embedding_24_32.pth
+Test Accuracy: 49.36%
+Test Loss: 2.9826
+Test total: 50000.0
+Test correct: 24682.0
+
+
+
