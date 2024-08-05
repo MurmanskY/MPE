@@ -19,6 +19,16 @@ Downloading: "https://download.pytorch.org/models/resnet18-f37072fd.pth" to /Use
 
 
 
+# Malware
+
+- Lazarus 20.9MB
+- test1.jpeg 864KB
+- test1.jpeg 3.1MB
+
+
+
+
+
 # Embedding Protocol✅
 
 📄📄📄

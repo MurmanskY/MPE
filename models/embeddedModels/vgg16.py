@@ -10,13 +10,13 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 
 
-test_pth1 = "../../parameters/embedding/vgg16_embedding_8_32.pth"
-test_pth2 = "../../parameters/embedding/vgg16_embedding_16_32.pth"
-test_pth3 = "../../parameters/embedding/vgg16_embedding_20_32.pth"
-test_pth4 = "../../parameters/embedding/vgg16_embedding_21_32.pth"
-test_pth5 = "../../parameters/embedding/vgg16_embedding_22_32.pth"
-test_pth6 = "../../parameters/embedding/vgg16_embedding_23_32.pth"
-test_pth7 = "../../parameters/embedding/vgg16_embedding_24_32.pth"
+test_pth1 = "../../parameters/weightsEmbedding/vgg16_embedding_8_32.pth"
+test_pth2 = "../../parameters/weightsEmbedding/vgg16_embedding_16_32.pth"
+test_pth3 = "../../parameters/weightsEmbedding/vgg16_embedding_20_32.pth"
+test_pth4 = "../../parameters/weightsEmbedding/vgg16_embedding_21_32.pth"
+test_pth5 = "../../parameters/weightsEmbedding/vgg16_embedding_22_32.pth"
+test_pth6 = "../../parameters/weightsEmbedding/vgg16_embedding_23_32.pth"
+test_pth7 = "../../parameters/weightsEmbedding/vgg16_embedding_24_32.pth"
 
 
 

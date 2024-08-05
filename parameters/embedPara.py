@@ -82,6 +82,20 @@ def fcWeightsLowBitXOR(paraPath, bitReplacement, embeddedParaPath):
     return
 
 
+def conv(paraPath, bitReplacement, embeddedParaPath):
+    '''
+    在全连接层的权重参数 最低位取反，将取反后的参数pth文件存储
+    :param paraPath: 需要进行嵌入的权重参数
+    :param bitReplacement: 最低多少位进行取反
+    :param embeddedParaPath: 被嵌入有害信息的pth文件
+    :return: null
+    '''
+    para = torch.load(paraPath)
+
+    #
+    return
+
+
 def fcWeightsLowBitEmbed(paraPath, chunkSize, malware, embeddedParaPath):
     '''
     在全连接层的权重参数 低x位，嵌入malware
@@ -264,14 +278,14 @@ if __name__ == "__main__":
     # # 写入pth文件
     # parameters["classifier.6.weight"].data = new_float_view
     #
-    # torch.save(parameters, "./embedding/vgg19_embedding_8_32.pth")
+    # torch.save(parameters, "./weightsEmbedding/vgg19_embedding_8_32.pth")
 
 
     # """查看原来函数是不是可行的"""
     # parameters = torch.load(resnet18InitParaPath)
-    # parameters_8 = torch.load("./embedding/resnet18_embedding_8_32.pth")
-    # parameters_16 = torch.load("./embedding/resnet18_embedding_16_32.pth")
-    # parameters_20 = torch.load("./embedding/resnet18_embedding_20_32.pth")
+    # parameters_8 = torch.load("./weightsEmbedding/resnet18_embedding_8_32.pth")
+    # parameters_16 = torch.load("./weightsEmbedding/resnet18_embedding_16_32.pth")
+    # parameters_20 = torch.load("./weightsEmbedding/resnet18_embedding_20_32.pth")
     #
     # fcWeightsTensor = parameters["fc.weight"].data
     # fcWeightsTensor_8 = parameters_8["fc.weight"].data
@@ -341,10 +355,10 @@ if __name__ == "__main__":
     # print(format(bit_30, '032b'))
     # print("\n\n")
 
-    fcWeightsLowBitXOR(vgg19InitParaPath, bit_24, "./embedding/vgg19_embedding_24_32.pth")
+    fcWeightsLowBitXOR(vgg19InitParaPath, bit_24, "./weightsEmbedding/vgg19_embedding_24_32.pth")
     # chunkSize = 20
     # fcWeightsLowBitEmbed(resnet50InitParaPath, chunkSize, malware_path,
-    #                      "./embedding/resnet50_" + str(chunkSize) + "_test2.pth")
-    # fcWeightsLowBitExtract("./embedding/resnet50_" + str(chunkSize) + "_test2.pth", "../malware/test2_extract.jpeg")
+    #                      "./weightsEmbedding/resnet50_" + str(chunkSize) + "_test2.pth")
+    # fcWeightsLowBitExtract("./weightsEmbedding/resnet50_" + str(chunkSize) + "_test2.pth", "../malware/test2_extract.jpeg")
     # print("done")
 

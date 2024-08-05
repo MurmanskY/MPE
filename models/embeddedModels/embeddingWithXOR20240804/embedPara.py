@@ -71,4 +71,4 @@ if __name__ == "__main__":
     # 写入pth文件
     parameters["classifier.6.weight"].data = new_float_view
 
-    torch.save(parameters, "./embedding/vgg19_embedding_8_32.pth")
+    torch.save(parameters, "./weightsEmbedding/vgg19_embedding_8_32.pth")

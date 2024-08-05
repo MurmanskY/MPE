@@ -4,8 +4,8 @@
 dataset/*
 !dataset/.gitkeep
 
-parameters/embedding/*
-!parameters/embedding/.gitkeep
+parameters/weightsEmbedding/*
+!parameters/weightsEmbedding/.gitkeep
 
 parameters/init/*
 !parameters/init/.gitkeep

@@ -9,13 +9,13 @@ import torchvision.models as models
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
-test_pth1 = "../../parameters/embedding/resnet50_embedding_8_32.pth"
-test_pth2 = "../../parameters/embedding/resnet50_embedding_16_32.pth"
-test_pth3 = "../../parameters/embedding/resnet50_embedding_20_32.pth"
-test_pth4 = "../../parameters/embedding/resnet50_embedding_21_32.pth"
-test_pth5 = "../../parameters/embedding/resnet50_embedding_22_32.pth"
-test_pth6 = "../../parameters/embedding/resnet50_embedding_23_32.pth"
-test_pth7 = "../../parameters/embedding/resnet50_embedding_24_32.pth"
+test_pth1 = "../../parameters/weightsEmbedding/resnet50_embedding_8_32.pth"
+test_pth2 = "../../parameters/weightsEmbedding/resnet50_embedding_16_32.pth"
+test_pth3 = "../../parameters/weightsEmbedding/resnet50_embedding_20_32.pth"
+test_pth4 = "../../parameters/weightsEmbedding/resnet50_embedding_21_32.pth"
+test_pth5 = "../../parameters/weightsEmbedding/resnet50_embedding_22_32.pth"
+test_pth6 = "../../parameters/weightsEmbedding/resnet50_embedding_23_32.pth"
+test_pth7 = "../../parameters/weightsEmbedding/resnet50_embedding_24_32.pth"
 
 
 '''数据预处理'''
