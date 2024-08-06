@@ -10,6 +10,9 @@ parameters/weightsEmbedding/*
 parameters/convEmbedding/*
 !parameters/convEmbedding/.gitkeep
 
+parameters/allParaEmbedding/*
+!parameters/allParaEmbedding/.gitkeep
+
 parameters/init/*
 !parameters/init/.gitkeep
 

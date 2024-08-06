@@ -19,13 +19,22 @@ from tqdm import tqdm
 # test_pth7 = "../../parameters/weightsEmbedding/vgg13_embedding_24_32.pth"
 
 '''run ConvWeightEmbeddingTest, unconment the following codes'''
-test_pth1 = "../../parameters/convEmbedding/vgg13_embedding_16_32.pth"
-test_pth2 = "../../parameters/convEmbedding/vgg13_embedding_19_32.pth"
-test_pth3 = "../../parameters/convEmbedding/vgg13_embedding_20_32.pth"
-test_pth4 = "../../parameters/convEmbedding/vgg13_embedding_21_32.pth"
-test_pth5 = "../../parameters/convEmbedding/vgg13_embedding_22_32.pth"
-test_pth6 = "../../parameters/convEmbedding/vgg13_embedding_23_32.pth"
-test_pth7 = "../../parameters/convEmbedding/vgg13_embedding_24_32.pth"
+# test_pth1 = "../../parameters/convEmbedding/vgg13_embedding_16_32.pth"
+# test_pth2 = "../../parameters/convEmbedding/vgg13_embedding_19_32.pth"
+# test_pth3 = "../../parameters/convEmbedding/vgg13_embedding_20_32.pth"
+# test_pth4 = "../../parameters/convEmbedding/vgg13_embedding_21_32.pth"
+# test_pth5 = "../../parameters/convEmbedding/vgg13_embedding_22_32.pth"
+# test_pth6 = "../../parameters/convEmbedding/vgg13_embedding_23_32.pth"
+# test_pth7 = "../../parameters/convEmbedding/vgg13_embedding_24_32.pth"
+
+'''run allParaEmbeddingTest, unconment the following codes'''
+test_pth1 = "../../parameters/allParaEmbedding/vgg13_allParaEmbedding_16_32.pth"
+test_pth2 = "../../parameters/allParaEmbedding/vgg13_allParaEmbedding_17_32.pth"
+test_pth3 = "../../parameters/allParaEmbedding/vgg13_allParaEmbedding_18_32.pth"
+test_pth4 = "../../parameters/allParaEmbedding/vgg13_allParaEmbedding_19_32.pth"
+test_pth5 = "../../parameters/allParaEmbedding/vgg13_allParaEmbedding_20_32.pth"
+test_pth6 = "../../parameters/allParaEmbedding/vgg13_allParaEmbedding_21_32.pth"
+test_pth7 = "../../parameters/allParaEmbedding/vgg13_allParaEmbedding_22_32.pth"
 
 
 '''数据预处理'''

@@ -1,8 +1,13 @@
 '''
 for processing file: splitting by bits and merging by bits
 '''
-from bitstring import BitArray
+import random
+
 import torch
+from pyldpc import make_ldpc, encode, decode, get_message
+import numpy as np
+from bitstring import BitArray
+
 
 file_path = "../malware/test1.jpeg"
 result_path = "./result/test1_result.jpeg"
@@ -34,11 +39,13 @@ def merge_file(output_file, chunks):
     with open(output_file, 'wb') as file:
         merge_data.tofile(file)
 
+def LDPC():
+    return
+
 if __name__ == "__main__":
     """
     for test
     """
-    chunks = split_file(file_path, chunk_size)
-    merge_file(result_path, chunks)
-
-
+    '''test files split and merge function, uncoment the following codes'''
+    # chunks = split_file(file_path, chunk_size)
+    # merge_file(result_path, chunks)

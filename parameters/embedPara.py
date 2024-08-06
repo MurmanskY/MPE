@@ -106,18 +106,24 @@ def conv2WeightLowBitXOR(paraPath, bitReplacement, embeddedParaPath):
 
 
 def allParaLowBitXor(paraPath, bitReplacement, embeddedParaPath):
+    """
+    所有2维及以上参数 最低位取反，将取反后的参数pth文件存储
+    :param paraPath: 需要进行嵌入的权重参数
+    :param bitReplacement: 最低多少位进行取反
+    :param embeddedParaPath: 被嵌入有害信息的pth文件
+    :return:
+    """
+    '''For all models parameters format'''
     para = torch.load(paraPath)
-
-    # change model, change the following code
-    conv2WeightTensor = para["conv1.weight"].data
-
-    conv2WeightTensor_intView = conv2WeightTensor.view(torch.int32)
-    conv2WeightTensor_embedded_int = conv2WeightTensor_intView ^ bitReplacement
-    conv2WeightTensor_embedded = conv2WeightTensor_embedded_int.view(torch.float32)
-
-    # change model, change the following code
-    para["conv1.weight"].data = conv2WeightTensor_embedded
-
+    for key in para.keys():
+        print(key)
+        # 在二维以更高纬的参数上进行嵌入：
+        if len(para[key].data.shape) > 1:
+            paraWeightTensor = para[key].data
+            paraWeightTensor_intView = paraWeightTensor.view(torch.int32)
+            paraWeightTensor_embedded_int = paraWeightTensor_intView ^ bitReplacement
+            paraWeightTensor_embedded = paraWeightTensor_embedded_int.view(torch.float32)
+            para[key].data = paraWeightTensor_embedded
     torch.save(para, embeddedParaPath)
     return
 
@@ -377,7 +383,9 @@ if __name__ == "__main__":
 
     # fcWeightLowBitXOR(vgg19InitParaPath, bit_24, "./weightsEmbedding/vgg19_embedding_24_32.pth")
 
-    conv2WeightLowBitXOR(vgg19InitParaPath, bit_24, "./convEmbedding/vgg19_embedding_24_32.pth")
+    # conv2WeightLowBitXOR(vgg19InitParaPath, bit_24, "./convEmbedding/vgg19_embedding_24_32.pth")
+
+    allParaLowBitXor(vgg19InitParaPath, bit_22, './allParaEmbedding/vgg19_allParaEmbedding_22_32.pth')
 
     # chunkSize = 20
     # fcWeightsLowBitEmbed(resnet50InitParaPath, chunkSize, malware_path,
