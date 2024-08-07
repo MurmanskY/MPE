@@ -13,8 +13,11 @@ parameters/convEmbedding/*
 parameters/allParaEmbedding/*
 !parameters/allParaEmbedding/.gitkeep
 
-parameters/retrained/*
-!parameters/retrained/.gitkeep
+parameters/retrained_ImageNet2CIFAR100/*
+!parameters/retrained_ImageNet2CIFAR100/.gitkeep
+
+parameters/retrained_ImageNet2OxfordIIITPet/*
+!parameters/retrained_ImageNet2OxfordIIITPet/.gitkeep
 
 parameters/init/*
 !parameters/init/.gitkeep
