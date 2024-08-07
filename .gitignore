@@ -13,6 +13,9 @@ parameters/convEmbedding/*
 parameters/allParaEmbedding/*
 !parameters/allParaEmbedding/.gitkeep
 
+parameters/retrained/*
+!parameters/retrained/.gitkeep
+
 parameters/init/*
 !parameters/init/.gitkeep
 
