@@ -42,10 +42,10 @@ def hamming_distance_numbers(n1, n2):
     return distance
 
 device = torch.device("mps")
-para_init = "../parameters/init/vgg11-8a719046.pth"
-para_retrained_1 = "../parameters/retrained_ImageNet2CIFAR100/vgg11re_1.pth"
-para_retrained_10 = "../parameters/retrained_ImageNet2CIFAR100/vgg11re_10.pth"
-para_retrained_20 = "../parameters/retrained_ImageNet2CIFAR100/vgg11re_20.pth"
+para_init = "../parameters/init/resnet50-11ad3fa6.pth"
+para_retrained_1 = "../parameters/retrained_ImageNet2GTSRB/resnet50re_5.pth"
+para_retrained_10 = "../parameters/retrained_ImageNet2FGVCAircraft/resnet50re_20.pth"
+para_retrained_20 = "../parameters/retrained_ImageNet2FGVCAircraft/resnet50re_30.pth"
 
 
 paraInit = torch.load(para_init, map_location=torch.device('mps'))
@@ -54,7 +54,7 @@ paraRetrained10 = torch.load(para_retrained_10, map_location=torch.device('mps')
 paraRetrained20 = torch.load(para_retrained_20, map_location=torch.device('mps'))
 
 
-paraPos = "classifier.3.weight"
+paraPos = "conv1.weight"
 
 
 
@@ -74,43 +74,43 @@ hamming20 = np.zeros(9)
 
 
 '''for conv parameters'''
-# dim0, dim1, dim2, dim3 = paraInitTensor.shape
-# paraNum = dim0 * dim1 * dim2 * dim3
-# for i in range(dim0):
-#     for j in range(dim1):
-#         for k in range(dim2):
-#             for m in range(dim3):
-#                 temp1 = format(paraInitTensor_intView[i][j][k][m], '032b')[1:9]
-#                 temp2 = format(paraRetrained1Tensor_intView[i][j][k][m], '032b')[1:9]
-#                 temp3 = format(paraRetrained10Tensor_intView[i][j][k][m], '032b')[1:9]
-#                 temp4 = format(paraRetrained20Tensor_intView[i][j][k][m], '032b')[1:9]
-#                 hamming1[hammingDis(temp1, temp2)] += 1
-#                 hamming10[hammingDis(temp1, temp3)] += 1
-#                 hamming20[hammingDis(temp1, temp4)] += 1
-# hamming1 /= paraNum
-# hamming10 /= paraNum
-# hamming20 /= paraNum
-# print(hamming1, hamming1[0] + hamming1[1] + hamming1[2] + hamming1[3])
-# print(hamming1, hamming10[0] + hamming10[1] + hamming10[2] + hamming10[3])
-# print(hamming1, hamming20[0] + hamming20[1] + hamming20[2] + hamming20[3])
+dim0, dim1, dim2, dim3 = paraInitTensor.shape
+paraNum = dim0 * dim1 * dim2 * dim3
+for i in range(dim0):
+    for j in range(dim1):
+        for k in range(dim2):
+            for m in range(dim3):
+                temp1 = format(paraInitTensor_intView[i][j][k][m], '032b')[1:8]
+                temp2 = format(paraRetrained1Tensor_intView[i][j][k][m], '032b')[1:8]
+                temp3 = format(paraRetrained10Tensor_intView[i][j][k][m], '032b')[1:8]
+                temp4 = format(paraRetrained20Tensor_intView[i][j][k][m], '032b')[1:8]
+                hamming1[hammingDis(temp1, temp2)] += 1
+                hamming10[hammingDis(temp1, temp3)] += 1
+                hamming20[hammingDis(temp1, temp4)] += 1
+hamming1 /= paraNum
+hamming10 /= paraNum
+hamming20 /= paraNum
+print(hamming1, hamming1[0] + hamming1[1] + hamming1[2] + hamming1[3])
+print(hamming1, hamming10[0] + hamming10[1] + hamming10[2] + hamming10[3])
+print(hamming1, hamming20[0] + hamming20[1] + hamming20[2] + hamming20[3])
 
 
 
 '''for 2 dim weight'''
-fcdim0, fcdim1 = paraInitTensor.shape
-fcparaNum = fcdim0 * fcdim1
-for i in range(fcdim0):
-    for j in range(fcdim1):
-        temp1 = format(paraInitTensor_intView[i][j], '032b')[1:8]
-        temp2 = format(paraRetrained1Tensor_intView[i][j], '032b')[1:8]
-        temp3 = format(paraRetrained10Tensor_intView[i][j], '032b')[1:8]
-        temp4 = format(paraRetrained20Tensor_intView[i][j], '032b')[1:8]
-        hamming1[hammingDis(temp1, temp2)] += 1
-        hamming10[hammingDis(temp1, temp3)] += 1
-        hamming20[hammingDis(temp1, temp4)] += 1
-hamming1 /= fcparaNum
-hamming10 /= fcparaNum
-hamming20 /= fcparaNum
-print(hamming1, hamming1[0] + hamming1[1] + hamming1[2] + hamming1[3])
-print(hamming1, hamming10[0] + hamming10[1] + hamming10[2] + hamming10[3])
-print(hamming1, hamming20[0] + hamming20[1] + hamming20[2] + hamming20[3])
+# fcdim0, fcdim1 = paraInitTensor.shape
+# fcparaNum = fcdim0 * fcdim1
+# for i in range(fcdim0):
+#     for j in range(fcdim1):
+#         temp1 = format(paraInitTensor_intView[i][j], '032b')[1:9]
+#         temp2 = format(paraRetrained1Tensor_intView[i][j], '032b')[1:9]
+#         temp3 = format(paraRetrained10Tensor_intView[i][j], '032b')[1:9]
+#         temp4 = format(paraRetrained20Tensor_intView[i][j], '032b')[1:9]
+#         hamming1[hammingDis(temp1, temp2)] += 1
+#         hamming10[hammingDis(temp1, temp3)] += 1
+#         hamming20[hammingDis(temp1, temp4)] += 1
+# hamming1 /= fcparaNum
+# hamming10 /= fcparaNum
+# hamming20 /= fcparaNum
+# print(hamming1, hamming1[0] + hamming1[1] + hamming1[2] + hamming1[3])
+# print(hamming1, hamming10[0] + hamming10[1] + hamming10[2] + hamming10[3])
+# print(hamming1, hamming20[0] + hamming20[1] + hamming20[2] + hamming20[3])

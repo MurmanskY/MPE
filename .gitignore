@@ -19,6 +19,12 @@ parameters/retrained_ImageNet2CIFAR100/*
 parameters/retrained_ImageNet2OxfordIIITPet/*
 !parameters/retrained_ImageNet2OxfordIIITPet/.gitkeep
 
+parameters/retrained_ImageNet2FGVCAircraft/*
+!parameters/retrained_ImageNet2FGVCAircraft/.gitkeep
+
+parameters/retrained_ImageNet2GTSRB/*
+!parameters/retrained_ImageNet2GTSRB/.gitkeep
+
 parameters/init/*
 !parameters/init/.gitkeep
 
