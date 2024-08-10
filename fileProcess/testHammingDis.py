@@ -43,7 +43,7 @@ def hamming_distance_numbers(n1, n2):
 
 device = torch.device("mps")
 para_init = "../parameters/init/resnet50-11ad3fa6.pth"
-para_retrained_1 = "../parameters/retrained_ImageNet2GTSRB/resnet50re_5.pth"
+para_retrained_1 = "../parameters/retrained_ImageNet2PCAM/resnet50re_10.pth"
 para_retrained_10 = "../parameters/retrained_ImageNet2FGVCAircraft/resnet50re_20.pth"
 para_retrained_20 = "../parameters/retrained_ImageNet2FGVCAircraft/resnet50re_30.pth"
 
@@ -80,10 +80,10 @@ for i in range(dim0):
     for j in range(dim1):
         for k in range(dim2):
             for m in range(dim3):
-                temp1 = format(paraInitTensor_intView[i][j][k][m], '032b')[1:8]
-                temp2 = format(paraRetrained1Tensor_intView[i][j][k][m], '032b')[1:8]
-                temp3 = format(paraRetrained10Tensor_intView[i][j][k][m], '032b')[1:8]
-                temp4 = format(paraRetrained20Tensor_intView[i][j][k][m], '032b')[1:8]
+                temp1 = format(paraInitTensor_intView[i][j][k][m], '032b')[1:39]
+                temp2 = format(paraRetrained1Tensor_intView[i][j][k][m], '032b')[1:9]
+                temp3 = format(paraRetrained10Tensor_intView[i][j][k][m], '032b')[1:9]
+                temp4 = format(paraRetrained20Tensor_intView[i][j][k][m], '032b')[1:9]
                 hamming1[hammingDis(temp1, temp2)] += 1
                 hamming10[hammingDis(temp1, temp3)] += 1
                 hamming20[hammingDis(temp1, temp4)] += 1

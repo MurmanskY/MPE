@@ -275,6 +275,15 @@ def fcWeightsLowBitExtract(paraPath, extractedParaPath):
     return
 
 
+
+
+
+'''测试更改指数部分的性能影响'''
+
+
+
+
+
 if __name__ == "__main__":
     # parameters = torch.load(resnet18InitParaPath)
     # fcWeightsTensor = parameters["fc.weight"].data

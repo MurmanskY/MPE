@@ -25,6 +25,15 @@ parameters/retrained_ImageNet2FGVCAircraft/*
 parameters/retrained_ImageNet2GTSRB/*
 !parameters/retrained_ImageNet2GTSRB/.gitkeep
 
+parameters/retrained_ImageNet2PCAM/*
+!parameters/retrained_ImageNet2PCAM/.gitkeep
+
+parameters/expReplacement/*
+!parameters/expReplacement/.gitkeep
+
+parameters/expXOR/*
+!parameters/expXOR/.gitkeep
+
 parameters/init/*
 !parameters/init/.gitkeep
 
