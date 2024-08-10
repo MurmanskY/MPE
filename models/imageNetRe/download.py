@@ -9,8 +9,8 @@ import os
 import copy
 from tqdm import tqdm
 
-device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
-pth_path = "../../parameters/Embedded/resnet50FirstConv1_low7.pth"
+device = torch.device("mps")
+pth_path = "../../parameters/expXOR/resnet50FirstConv1_low7.pth"
 
 '''数据预处理'''
 transform = transforms.Compose([
@@ -20,11 +20,11 @@ transform = transforms.Compose([
 ])
 
 '''加载ImageNet数据集'''
-train_dataset = datasets.ImageNet(root='../../dataset', split='train', download=True, transform=transform)
-val_dataset = datasets.ImageNet(root='../../dataset', split='val', download=True, transform=transform)
+train_dataset = datasets.ImageNet(root='../../dataset', split='train', transform=transform)
+val_dataset = datasets.ImageNet(root='../../dataset', split='val', transform=transform)
 
-train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True, num_workers=4)
-val_loader = DataLoader(val_dataset, batch_size=64, shuffle=False, num_workers=4)
+train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
+val_loader = DataLoader(val_dataset, batch_size=64, shuffle=False)
 
 '''导入模型'''
 model = models.resnet50()
@@ -113,8 +113,8 @@ def evaluate_model(model, data_loader):
     return accuracy, average_loss, correct, total
 
 # 开始训练
-trained_model = train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs=5)
-torch.save(model.state_dict(), "../../parameters/ImageNetRe/resnet50re_5.pth")
+trained_model = train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs=1)
+torch.save(model.state_dict(), "../../parameters/ImageNetRe/resnet50re_1.pth")
 
 # 测试准确率
 test_accuracy, test_loss, correct, total = evaluate_model(trained_model, val_loader)

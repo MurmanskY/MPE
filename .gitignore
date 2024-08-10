@@ -34,6 +34,9 @@ parameters/expReplacement/*
 parameters/expXOR/*
 !parameters/expXOR/.gitkeep
 
+parameters/ImageNetRe/*
+!parameters/ImageNetRe/.gitkeep
+
 parameters/init/*
 !parameters/init/.gitkeep
 
