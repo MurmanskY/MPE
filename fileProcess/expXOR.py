@@ -73,6 +73,191 @@ def firstConvExpLastBitXOR(paraPath, Last_N, embeddedParaPath):
 
     return
 
+
+
+def thirdConvExpLastBitXOR(paraPath, Last_N, embeddedParaPath):
+    """
+    第三个卷积层的参数后Nbit翻转[64, 64, 3, 3]
+    :param paraPath:
+    :param bitReplacement:
+    :param embeddedParaPath:
+    :return:
+    """
+    para = torch.load(paraPath)
+    fcWeightsTensor = para["layer1.0.conv2.weight"].data
+
+    dim0, dim1, dim2, dim3 = fcWeightsTensor.shape
+    # 随机选择若干个参数更改，此时对于每个维度的卷积核，只更改每个核中的一个，一共更改4096个，即1/9
+    index0 = np.random.choice(np.arange(0, dim0), dim0, replace=False)
+    index1 = np.random.choice(np.arange(0, dim1), dim1, replace=False)
+    index2 = np.random.choice(np.arange(0, dim2), 1, replace=False)
+    index3 = np.random.choice(np.arange(0, dim3), 1, replace=False)
+    for idx0 in index0:
+        for idx1 in index1:
+            for idx2 in index2:
+                for idx3 in index3:
+                    paraStr = BitArray(int=fcWeightsTensor[idx0][idx1][idx2][idx3].view(torch.int32), length=32).bin
+                    print(fcWeightsTensor[idx0][idx1][idx2][idx3],
+                          BitArray(int=fcWeightsTensor[idx0][idx1][idx2][idx3].view(torch.int32), length=32).bin[1:9])
+
+                    newParaStr = paraStr[:9 - Last_N] + strFlip(paraStr[9 - Last_N:9]) + paraStr[9:32]
+                    # 判断是否存在int32溢出的情况
+                    if int(newParaStr, 2) >= 2 ** 31:
+                        newParaInt = torch.tensor(int(newParaStr, 2) - 2 ** 32, dtype=torch.int32)
+                        fcWeightsTensor[idx0][idx1][idx2][idx3] = newParaInt.view(torch.float32)
+                    else:
+                        newParaInt = torch.tensor(int(newParaStr, 2), dtype=torch.int32)
+                        fcWeightsTensor[idx0][idx1][idx2][idx3] = newParaInt.view(torch.float32)
+                    print(fcWeightsTensor[idx0][idx1][idx2][idx3],
+                          BitArray(int=fcWeightsTensor[idx0][idx1][idx2][idx3].view(torch.int32), length=32).bin[1:9])
+                    print("\n")
+    para["layer1.0.conv2.weight"].data = fcWeightsTensor
+    torch.save(para, embeddedParaPath)
+
+    return
+
+
+
+def thirdConvExpLastBitXOR_method1(paraPath, Last_N, embeddedParaPath):
+    """
+    第三个卷积层的参数后Nbit翻转[64, 64, 3, 3]
+    kernel左上角元素
+    :param paraPath:
+    :param bitReplacement:
+    :param embeddedParaPath:
+    :return:
+    """
+    para = torch.load(paraPath)
+    fcWeightsTensor = para["layer1.0.conv2.weight"].data
+
+    dim0, dim1, dim2, dim3 = fcWeightsTensor.shape
+    # 随机选择若干个参数更改，此时对于每个维度的卷积核，只更改每个核中的一个，一共更改4096个，即1/9
+    index0 = np.random.choice(np.arange(0, dim0), dim0, replace=False)
+    index1 = np.random.choice(np.arange(0, dim1), dim1, replace=False)
+    index2 = np.array([0])
+    index3 = np.array([0])
+    for idx0 in index0:
+        for idx1 in index1:
+            for idx2 in index2:
+                for idx3 in index3:
+                    paraStr = BitArray(int=fcWeightsTensor[idx0][idx1][idx2][idx3].view(torch.int32), length=32).bin
+                    print(fcWeightsTensor[idx0][idx1][idx2][idx3],
+                          BitArray(int=fcWeightsTensor[idx0][idx1][idx2][idx3].view(torch.int32), length=32).bin[1:9])
+
+                    newParaStr = paraStr[:9 - Last_N] + strFlip(paraStr[9 - Last_N:9]) + paraStr[9:32]
+                    # 判断是否存在int32溢出的情况
+                    if int(newParaStr, 2) >= 2 ** 31:
+                        newParaInt = torch.tensor(int(newParaStr, 2) - 2 ** 32, dtype=torch.int32)
+                        fcWeightsTensor[idx0][idx1][idx2][idx3] = newParaInt.view(torch.float32)
+                    else:
+                        newParaInt = torch.tensor(int(newParaStr, 2), dtype=torch.int32)
+                        fcWeightsTensor[idx0][idx1][idx2][idx3] = newParaInt.view(torch.float32)
+                    print(fcWeightsTensor[idx0][idx1][idx2][idx3],
+                          BitArray(int=fcWeightsTensor[idx0][idx1][idx2][idx3].view(torch.int32), length=32).bin[1:9])
+                    print(idx0, idx1, idx2, idx3)
+                    print("\n")
+    para["layer1.0.conv2.weight"].data = fcWeightsTensor
+    torch.save(para, embeddedParaPath)
+
+    return
+
+
+
+def thirdConvExpLastBitXOR_method2(paraPath, Last_N, embeddedParaPath):
+    """
+    第三个卷积层的参数后Nbit翻转[64, 64, 3, 3]
+    kernel中间元素
+    :param paraPath:
+    :param bitReplacement:
+    :param embeddedParaPath:
+    :return:
+    """
+    para = torch.load(paraPath)
+    fcWeightsTensor = para["layer1.0.conv2.weight"].data
+
+    dim0, dim1, dim2, dim3 = fcWeightsTensor.shape
+    # 随机选择若干个参数更改，此时对于每个维度的卷积核，只更改每个核中的一个，一共更改4096个，即1/9
+    index0 = np.random.choice(np.arange(0, dim0), dim0, replace=False)
+    index1 = np.random.choice(np.arange(0, dim1), dim1, replace=False)
+    index2 = np.array([1])
+    index3 = np.array([1])
+    for idx0 in index0:
+        for idx1 in index1:
+            for idx2 in index2:
+                for idx3 in index3:
+                    paraStr = BitArray(int=fcWeightsTensor[idx0][idx1][idx2][idx3].view(torch.int32), length=32).bin
+                    print(fcWeightsTensor[idx0][idx1][idx2][idx3],
+                          BitArray(int=fcWeightsTensor[idx0][idx1][idx2][idx3].view(torch.int32), length=32).bin[1:9])
+
+                    newParaStr = paraStr[:9 - Last_N] + strFlip(paraStr[9 - Last_N:9]) + paraStr[9:32]
+                    # 判断是否存在int32溢出的情况
+                    if int(newParaStr, 2) >= 2 ** 31:
+                        newParaInt = torch.tensor(int(newParaStr, 2) - 2 ** 32, dtype=torch.int32)
+                        fcWeightsTensor[idx0][idx1][idx2][idx3] = newParaInt.view(torch.float32)
+                    else:
+                        newParaInt = torch.tensor(int(newParaStr, 2), dtype=torch.int32)
+                        fcWeightsTensor[idx0][idx1][idx2][idx3] = newParaInt.view(torch.float32)
+                    print(fcWeightsTensor[idx0][idx1][idx2][idx3],
+                          BitArray(int=fcWeightsTensor[idx0][idx1][idx2][idx3].view(torch.int32), length=32).bin[1:9])
+                    print(idx0, idx1, idx2, idx3)
+                    print("\n")
+    para["layer1.0.conv2.weight"].data = fcWeightsTensor
+    torch.save(para, embeddedParaPath)
+
+    return
+
+
+
+
+def thirdConvExpLastBitXOR_method3(paraPath, Last_N, embeddedParaPath):
+    """
+    第三个卷积层的参数后Nbit翻转[64, 64, 3, 3]
+    kernel中间元素
+    :param paraPath:
+    :param bitReplacement:
+    :param embeddedParaPath:
+    :return:
+    """
+    para = torch.load(paraPath)
+    fcWeightsTensor = para["layer1.0.conv2.weight"].data
+
+    dim0, dim1, dim2, dim3 = fcWeightsTensor.shape
+    # 随机选择若干个参数更改，此时对于每个维度的卷积核，只更改每个核中的一个，一共更改4096个，即1/9
+    index0 = np.random.choice(np.arange(0, dim0), dim0, replace=False)
+    index1 = np.random.choice(np.arange(0, dim1), dim1, replace=False)
+    index2 = np.array([2])
+    index3 = np.array([0])
+    for idx0 in index0:
+        for idx1 in index1:
+            for idx2 in index2:
+                for idx3 in index3:
+                    paraStr = BitArray(int=fcWeightsTensor[idx0][idx1][idx2][idx3].view(torch.int32), length=32).bin
+                    print(fcWeightsTensor[idx0][idx1][idx2][idx3],
+                          BitArray(int=fcWeightsTensor[idx0][idx1][idx2][idx3].view(torch.int32), length=32).bin[1:9])
+
+                    newParaStr = paraStr[:9 - Last_N] + strFlip(paraStr[9 - Last_N:9]) + paraStr[9:32]
+                    # 判断是否存在int32溢出的情况
+                    if int(newParaStr, 2) >= 2 ** 31:
+                        newParaInt = torch.tensor(int(newParaStr, 2) - 2 ** 32, dtype=torch.int32)
+                        fcWeightsTensor[idx0][idx1][idx2][idx3] = newParaInt.view(torch.float32)
+                    else:
+                        newParaInt = torch.tensor(int(newParaStr, 2), dtype=torch.int32)
+                        fcWeightsTensor[idx0][idx1][idx2][idx3] = newParaInt.view(torch.float32)
+                    print(fcWeightsTensor[idx0][idx1][idx2][idx3],
+                          BitArray(int=fcWeightsTensor[idx0][idx1][idx2][idx3].view(torch.int32), length=32).bin[1:9])
+                    print(idx0, idx1, idx2, idx3)
+                    print("\n")
+    para["layer1.0.conv2.weight"].data = fcWeightsTensor
+    torch.save(para, embeddedParaPath)
+
+    return
+
+
+
+
 if __name__ == "__main__":
-    firstConvExpLastBitXOR(resnet50InitParaPath, 4, "../parameters/expXOR/resnet50FirstConv1_low4.pth")
+    # firstConvExpLastBitXOR(resnet50InitParaPath, 1, "../parameters/expXOR/resnet50FirstConv1_low1.pth")
+    # thirdConvExpLastBitXOR(resnet50InitParaPath, 1, "../parameters/expXOR/resnet50ThirdConv1_low1.pth")
+    # thirdConvExpLastBitXOR_method2(resnet50InitParaPath, 4, "../parameters/expXOR/resnet50ThirdConv1_low4_method2.pth")
+    thirdConvExpLastBitXOR_method3(resnet50InitParaPath, 4, "../parameters/expXOR/resnet50ThirdConv1_low4_method3.pth")
     # print(strFlip("01010"))

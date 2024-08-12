@@ -37,6 +37,15 @@ parameters/expXOR/*
 parameters/ImageNetRe/*
 !parameters/ImageNetRe/.gitkeep
 
+parameters/embeddedRetrainCIFAR100/*
+!parameters/embeddedRetrainCIFAR100/.gitkeep
+
+parameters/embeddedRetrainFGVCAircraft/*
+!parameters/embeddedRetrainFGVCAircraft/.gitkeep
+
+parameters/embeddedRetrainPCAM/*
+!parameters/embeddedRetrainPCAM/.gitkeep
+
 parameters/init/*
 !parameters/init/.gitkeep
 

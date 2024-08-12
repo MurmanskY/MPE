@@ -25,7 +25,7 @@ val_loader = DataLoader(val_dataset, batch_size=64, shuffle=True)
 pth_path = "../../parameters/init/resnet50-11ad3fa6.pth"
 test_pth1 = "../../parameters/allParaEmbedding/resnet50_allParaEmbedding_20_32.pth"
 test_pth2 = "../../parameters/expReplacement/resnet50FGVCAircraft2Init2.pth"
-test_pth3 = "../../parameters/expXOR/resnet50FirstConv1_low4.pth"
+test_pth3 = ("../../parameters/expXOR/resnet50ThirdConv1_low4_method3.pth")
 model = models.resnet50()
 # torch.serialization.add_safe_globals(pth_path)
 model.load_state_dict(torch.load(test_pth3))
