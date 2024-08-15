@@ -46,6 +46,15 @@ parameters/embeddedRetrainFGVCAircraft/*
 parameters/embeddedRetrainPCAM/*
 !parameters/embeddedRetrainPCAM/.gitkeep
 
+parameters/embeddedRetrainOxfordIIITPet/*
+!parameters/embeddedRetrainOxfordIIITPet/.gitkeep
+
+parameters/embeddedRetrainGTSRB/*
+!parameters/embeddedRetrainGTSRB/.gitkeep
+
+parameters/resnet50ConvEmbedding/*
+!parameters/resnet50ConvEmbedding/.gitkeep
+
 parameters/init/*
 !parameters/init/.gitkeep
 

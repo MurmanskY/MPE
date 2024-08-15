@@ -53,6 +53,51 @@ vgg19InitParaPath = './init/vgg19-dcbb9e9d.pth'
 malware_path = "../malware/test2.jpg"
 
 
+def flipBit(ch):
+    """
+    翻转比特
+    :param ch:
+    :return: ch
+    """
+    if ch == "0":
+        return "1"
+    else:
+        return "0"
+
+
+def encode(ch):
+    """
+    返回编码结果
+    :param ch:
+    :return:
+    """
+    return ch + flipBit(ch) + flipBit(ch)
+
+
+def decode(str):
+    """
+    返回译码结果
+    :param str: 待判断的字符串
+    :return: 0/1字符串
+    """
+    bit0_num = 0
+    bit1_num = 0
+    if str[0] == "0":
+        bit0_num += 1
+    else:
+        bit1_num += 1
+    if flipBit(str[1]) == "0":
+        bit0_num += 1
+    else:
+        bit1_num += 1
+    if flipBit(str[2]) == "0":
+        bit0_num += 1
+    else:
+        bit1_num += 1
+    if bit0_num > bit1_num:
+        return "0"
+    else:
+        return "1"
 
 
 def fcWeightLowBitXOR(paraPath, bitReplacement, embeddedParaPath):
@@ -275,131 +320,140 @@ def fcWeightsLowBitExtract(paraPath, extractedParaPath):
     return
 
 
+def conv2dWeightExpLow3BitEmbed(paraPath, layer, malware, embeddedParaPath):
+    """
+    卷积层的低3bit进行嵌入，策略是每一对in——out的卷积层左下角
+    每一个bit在每一个参数上做3bit冗余，用9个参数做冗余
+    :param paraPath: pth文件
+    :param layer: 嵌入的层
+    :param malware: 嵌入的恶意软件
+    :param embeddedParaPath: 保存路径
+    :return:
+    """
+    malwareStr = BitArray(filename=malware).bin
+    malwareLen = len(malwareStr)
+    writePos = 0  # 恶意软件读写指针
+    correctionPos = 0  # 校验指针
+    currentWriteContent = malwareStr[writePos]  # 存储当前需要写入的内容
 
+    # changeParaNum = 0
+
+    para = torch.load(paraPath)
+    convParaTensor = para[layer].data
+    dim0, dim1, dim2, dim3 = convParaTensor.shape
+    for i in range(dim0):
+        for j in range(dim1):
+            if writePos >= malwareLen:
+                break  # 内容写完了，跳出循环
+            convParaStr = BitArray(int=convParaTensor[i][j][dim2-1][0].view(torch.int32), length=32).bin
+            newConvParaStr = convParaStr[:6] + encode(currentWriteContent) + convParaStr[9:32]
+            # 判断是否存在int32溢出
+            if int(newConvParaStr, 2) >= 2 ** 31:
+                newConvParaInt = torch.tensor(int(newConvParaStr, 2) - 2 ** 32, dtype=torch.int32)
+                convParaTensor[i][j][dim2-1][0] = newConvParaInt.view(torch.float32)
+            else:
+                newConvParaInt = torch.tensor(int(newConvParaStr, 2), dtype=torch.int32)
+                convParaTensor[i][j][dim2-1][0] = newConvParaInt.view(torch.float32)
+            # 校验码增加
+            # changeParaNum += 1
+            correctionPos += 1
+            correctionPos %= 11
+            if correctionPos == 0:  # 如果9个冗余做完了，就写下一个bit
+                writePos += 1
+                if writePos >= malwareLen:
+                    break
+                currentWriteContent = malwareStr[writePos]
+        if writePos >= malwareLen:
+            break  # 内容写完了，跳出循环
+    # print(changeParaNum)
+    para[layer].data = convParaTensor
+    torch.save(para, embeddedParaPath)
+    return
+
+
+def conv2dWeightExpLow3BitExtract(paraPath, layer, extractPath):
+    """
+    提取，针对目前的全部嵌入
+    :param paraPth: pth路径
+    :param layer: 嵌入位置
+    :param extractPath: 提取路径
+    :return:
+    """
+    extractPos = 0  # 提取的字节数
+    correctPos = 0  # 判断的几个冗余位置
+    bit0_Num = 0  # 冗余位置有几个结果是0
+    bit1_Num = 0  # 冗余位置有几个结果是1
+    malware = []
+
+
+    para = torch.load(paraPath, map_location=torch.device("mps"))
+    convParaTensor = para[layer].data
+    dim0, dim1, dim2, dim3 = convParaTensor.shape
+    malwareBitLen = 368
+    for i in range(dim0):
+        for j in range(dim1):
+            if extractPos >= malwareBitLen:  # 跳出
+                break
+            convParaStr = BitArray(int=convParaTensor[i][j][dim2 - 1][0].view(torch.int32), length=32).bin
+            bitData = decode(convParaStr[6:9])  # 得到最多的比特是什么
+            correctPos += 1
+            correctPos %= 11
+            '''判断3位冗余'''
+            if bitData == '0':
+                bit0_Num += 1
+            else:
+                bit1_Num += 1
+            '''对于九个参数存储冗余的处理'''
+            print("extractPos:", extractPos, "i:", i, "j:", j, "initBit", convParaStr[6:9], "bitData:", bitData, "correctPos:", correctPos, "bit0_Num:", bit0_Num, "bit1_Num:", bit1_Num)
+            if correctPos == 0:  # 处理完了九个冗余位置
+                if bit0_Num > bit1_Num:
+                    malware.append(BitArray(bin="0"))
+                else:
+                    malware.append(BitArray(bin="1"))
+                extractPos += 1
+                bit0_Num = 0
+                bit1_Num = 0
+        if extractPos >= malwareBitLen:  # 跳出
+            break
+    merge_file(extractPath, malware)
+    return
 
 
 '''测试更改指数部分的性能影响'''
 
+def function():
+    malwareStr1 = BitArray(filename="../malware/malware46B").bin
+    malwareStr2 = BitArray(filename="../malware/malware46B_extracted_OxfordIIITPet").bin
+    for i in range(len(malwareStr1)):
+        if malwareStr1[i] != malwareStr2[i]:
+            print("pos:", i, "initBit:", malwareStr1[i], "extractedBit:", malwareStr2[i])
+    print(malwareStr1)
+    print(malwareStr2)
 
 
 
 
 if __name__ == "__main__":
-    # parameters = torch.load(resnet18InitParaPath)
-    # fcWeightsTensor = parameters["fc.weight"].data
-    #
-    # dim0 = fcWeightsTensor.shape[0]
-    # dim1 = fcWeightsTensor.shape[1]
-    # int_view = fcWeightsTensor.view(torch.int32)
-    # print(int_view)
-    #
-    # # str_view = np.full((dim0, dim1), "", dtype=str)
-    # # for i in range(dim0):
-    # #     for j in range(dim1):
-    # #         # str_view[i][j] = format(int_view[i][j].item(), '032b')
-    # #         print(format(int_view[i][j].item(), '032b'))
-    #
-    #
-    # # 或运算，翻转最后一个比特位
-    # new_int_view = int_view ^ torch.tensor(11111111, dtype=torch.int32)
-    #
-    #
-    #
-    # new_float_view = new_int_view.view(torch.float32)
-    # print(new_float_view)
-    # print(type(new_float_view))
-    #
-    #
-    # # 写入pth文件
-    # parameters["classifier.6.weight"].data = new_float_view
-    #
-    # torch.save(parameters, "./weightsEmbedding/vgg19_embedding_8_32.pth")
-
-
-    # """查看原来函数是不是可行的"""
-    # parameters = torch.load(resnet18InitParaPath)
-    # parameters_8 = torch.load("./weightsEmbedding/resnet18_embedding_8_32.pth")
-    # parameters_16 = torch.load("./weightsEmbedding/resnet18_embedding_16_32.pth")
-    # parameters_20 = torch.load("./weightsEmbedding/resnet18_embedding_20_32.pth")
-    #
-    # fcWeightsTensor = parameters["fc.weight"].data
-    # fcWeightsTensor_8 = parameters_8["fc.weight"].data
-    # fcWeightsTensor_16 = parameters_16["fc.weight"].data
-    # fcWeightsTensor_20 = parameters_20["fc.weight"].data
-    #
-    # int_view = fcWeightsTensor.view(torch.int32)
-    # int_view_8 = fcWeightsTensor_8.view(torch.int32)
-    # int_view_16 = fcWeightsTensor_16.view(torch.int32)
-    # int_view_20 = fcWeightsTensor_20.view(torch.int32)
-    #
-    # print(fcWeightsTensor)
-    # print(fcWeightsTensor_8)
-    # print(fcWeightsTensor_16)
-    # print(fcWeightsTensor_20)
-    #
-    # print(format(int_view[0][0].item(), '032b'))
-    # print(format(int_view_8[0][0].item(), '032b'))
-    # print(format(int_view_16[0][0].item(), '032b'))
-    # print(format(int_view_20[0][0].item(), '032b'))
-    # print("\n\n")
-
-
-    # """验证此方法的可行性"""
-    # a = torch.tensor(-7.45, dtype=torch.float32)
-    # a_int32 = a.view(torch.int32) # 类型也完成了转换
-    # b = torch.tensor(3, dtype=torch.int32)
-    # b_int32 = b.view(torch.int32) # 类型也完成了转换
-    # info = torch.bitwise_xor(a_int32, b_int32)
-    # print(format(a_int32.item(), '032b'))
-    # print(format(b_int32.item(), '032b'))
-    # print(format(info.item(), '032b'))
-    #
-    # print(info.view(torch.float32))
-
-
-    # '''Test bit replacement data'''
-    # print(format(bit_1, '032b'))
-    # print(format(bit_2, '032b'))
-    # print(format(bit_3, '032b'))
-    # print(format(bit_4, '032b'))
-    # print(format(bit_5, '032b'))
-    # print(format(bit_6, '032b'))
-    # print(format(bit_7, '032b'))
-    # print(format(bit_8, '032b'))
-    # print(format(bit_9, '032b'))
-    # print(format(bit_10, '032b'))
-    # print(format(bit_11, '032b'))
-    # print(format(bit_12, '032b'))
-    # print(format(bit_13, '032b'))
-    # print(format(bit_14, '032b'))
-    # print(format(bit_15, '032b'))
-    # print(format(bit_16, '032b'))
-    # print(format(bit_17, '032b'))
-    # print(format(bit_18, '032b'))
-    # print(format(bit_19, '032b'))
-    # print(format(bit_20, '032b'))
-    # print(format(bit_21, '032b'))
-    # print(format(bit_22, '032b'))
-    # print(format(bit_23, '032b'))
-    # print(format(bit_24, '032b'))
-    # print(format(bit_25, '032b'))
-    # print(format(bit_26, '032b'))
-    # print(format(bit_27, '032b'))
-    # print(format(bit_28, '032b'))
-    # print(format(bit_29, '032b'))
-    # print(format(bit_30, '032b'))
-    # print("\n\n")
-
     # fcWeightLowBitXOR(vgg19InitParaPath, bit_24, "./weightsEmbedding/vgg19_embedding_24_32.pth")
 
     # conv2WeightLowBitXOR(vgg19InitParaPath, bit_24, "./convEmbedding/vgg19_embedding_24_32.pth")
 
-    allParaLowBitXor(vgg19InitParaPath, bit_22, './allParaEmbedding/vgg19_allParaEmbedding_22_32.pth')
+    # allParaLowBitXor(vgg19InitParaPath, bit_22, './allParaEmbedding/vgg19_allParaEmbedding_22_32.pth')
 
     # chunkSize = 20
     # fcWeightsLowBitEmbed(resnet50InitParaPath, chunkSize, malware_path,
     #                      "./weightsEmbedding/resnet50_" + str(chunkSize) + "_test2.pth")
     # fcWeightsLowBitExtract("./weightsEmbedding/resnet50_" + str(chunkSize) + "_test2.pth", "../malware/test2_extract.jpeg")
+
+    # conv2dWeightExpLow3BitEmbed("./init/resnet50-11ad3fa6.pth", "layer1.0.conv2.weight",
+    #                             "../malware/malware46B","./resnet50ConvEmbedding/resnet50Layer1_0_conv2_encoding1_cp11.pth")
+
+    conv2dWeightExpLow3BitExtract("./embeddedRetrainOxfordIIITPet/resnet50Layer1_0_conv2_encoding1_cp11_re_1_OxfordIIITPet_10.pth",
+                                  "layer1.0.conv2.weight", "../malware/malware46B_extracted_OxfordIIITPet")
+    function()
+
+
+
 
 
     print("done")

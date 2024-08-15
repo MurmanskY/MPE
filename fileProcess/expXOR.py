@@ -259,5 +259,5 @@ if __name__ == "__main__":
     # firstConvExpLastBitXOR(resnet50InitParaPath, 1, "../parameters/expXOR/resnet50FirstConv1_low1.pth")
     # thirdConvExpLastBitXOR(resnet50InitParaPath, 1, "../parameters/expXOR/resnet50ThirdConv1_low1.pth")
     # thirdConvExpLastBitXOR_method2(resnet50InitParaPath, 4, "../parameters/expXOR/resnet50ThirdConv1_low4_method2.pth")
-    thirdConvExpLastBitXOR_method3(resnet50InitParaPath, 4, "../parameters/expXOR/resnet50ThirdConv1_low4_method3.pth")
+    thirdConvExpLastBitXOR_method3(resnet50InitParaPath, 2, "../parameters/expXOR/resnet50ThirdConv1_low2_method3.pth")
     # print(strFlip("01010"))

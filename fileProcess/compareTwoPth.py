@@ -9,8 +9,8 @@ from bitstring import BitArray
 device = torch.device("mps")
 
 init_path = "../parameters/init/resnet50-11ad3fa6.pth"
-path1 = "../parameters/expXOR/resnet50ThirdConv1_low4_method3.pth"  # 首层卷积层的指数部分低Nbit进行翻转
-path2 = "../parameters/embeddedRetrainPCAM/resnet50EmbededThirdConv2Low4XOR2PCAM_3_method3.pth"  # 进行重训练后的结果
+path1 = "../parameters/resnet50ConvEmbedding/resnet50Layer1_0_conv2_encoding1.pth"  # 首层卷积层的指数部分低Nbit进行翻转
+path2 = "../parameters/embeddedRetrainCIFAR100/resnet50Layer1_0_conv2_encoding1_re_1_CIFAR100_5.pth"  # 进行重训练后的结果
 
 
 
@@ -21,7 +21,7 @@ def show_exp(tens):
     :param tens:
     :return:
     """
-    return(BitArray(int = tens.view(torch.int32), length=32).bin[1:9])
+    return(BitArray(int = tens.view(torch.int32), length=32).bin[6:9])
 
 
 
@@ -56,15 +56,25 @@ conv1W3 = para2["layer1.0.conv2.weight"].data
 
 HD = np.zeros(9)
 count = 0
+# for i in range(dim0):
+#     for j in range(dim1):
+#         for k in range(dim2):
+#             for m in range(dim3):
+#                 if conv1W1[i][j][k][m] != conv1W2[i][j][k][m]:  # 找到修改参数的位置
+#                     hD = hammingDis(show_exp(conv1W2[i][j][k][m]), show_exp(conv1W3[i][j][k][m]))
+#                     print(conv1W1[i][j][k][m], conv1W2[i][j][k][m], conv1W3[i][j][k][m])
+#                     print(show_exp(conv1W1[i][j][k][m]), show_exp(conv1W2[i][j][k][m]), show_exp(conv1W3[i][j][k][m]), hD, "\n")
+#                     print(i, j, k, m)
+#                     HD[hD] += 1
+#                     count += 1
+
 for i in range(dim0):
     for j in range(dim1):
-        for k in range(dim2):
-            for m in range(dim3):
-                if conv1W1[i][j][k][m] != conv1W2[i][j][k][m]:  # 找到修改参数的位置
-                    hD = hammingDis(show_exp(conv1W2[i][j][k][m]), show_exp(conv1W3[i][j][k][m]))
-                    print(show_exp(conv1W1[i][j][k][m]), show_exp(conv1W2[i][j][k][m]), show_exp(conv1W3[i][j][k][m]), hD)
-                    HD[hD] += 1
-                    count += 1
+        hD = hammingDis(show_exp(conv1W2[i][j][dim2-1][0]), show_exp(conv1W3[i][j][dim2-1][0]))
+        print(conv1W1[i][j][dim2-1][0], conv1W2[i][j][dim2-1][0], conv1W3[i][j][dim2-1][0])
+        print(i, j, show_exp(conv1W1[i][j][dim2-1][0]), show_exp(conv1W2[i][j][dim2-1][0]), show_exp(conv1W3[i][j][dim2-1][0]), hD, "\n")
+        HD[hD] += 1
+        count += 1
 
 print(count)
-print(HD/4096)
+print(HD/count)
