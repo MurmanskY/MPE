@@ -324,6 +324,7 @@ def conv2dWeightExpLow3BitEmbed(paraPath, layer, malware, embeddedParaPath):
     """
     卷积层的低3bit进行嵌入，策略是每一对in——out的卷积层左下角
     每一个bit在每一个参数上做3bit冗余，用9个参数做冗余
+    连续冗余
     :param paraPath: pth文件
     :param layer: 嵌入的层
     :param malware: 嵌入的恶意软件
@@ -373,7 +374,7 @@ def conv2dWeightExpLow3BitEmbed(paraPath, layer, malware, embeddedParaPath):
 
 def conv2dWeightExpLow3BitExtract(paraPath, layer, extractPath):
     """
-    提取，针对目前的全部嵌入
+    提取，针对目前的全部嵌入，连续冗余
     :param paraPth: pth路径
     :param layer: 嵌入位置
     :param extractPath: 提取路径
@@ -419,6 +420,109 @@ def conv2dWeightExpLow3BitExtract(paraPath, layer, extractPath):
     return
 
 
+def conv2dWeightExpLow3BitEmbed_loop(paraPath, layer, malware, embeddedParaPath):
+    """
+    使用循环冗余
+    :param paraPath: 待嵌入的pth
+    :param layer: 待嵌入的层
+    :param malware: 恶意软件
+    :param embeddedParaPath: 嵌入后的pth
+    :return:
+    """
+    malwareStr = BitArray(filename=malware).bin
+    malwareLen = len(malwareStr)
+    writePos = 0  # 恶意软件读写指针
+    correctionNum = 11  # 重写几次进行冗余
+    correctionPos = 0  # 冗余指针，标识目前处于第几个冗余
+    currentWriteContent = malwareStr[writePos]  # 存储当前需要写入的内容
+
+    # changeParaNum = 0
+
+    para = torch.load(paraPath)
+    convParaTensor = para[layer].data
+    dim0, dim1, dim2, dim3 = convParaTensor.shape
+
+    # 采用交错冗余的方式进行容错：
+    while writePos < malwareLen: # 写每一个bit
+        while correctionPos < correctionNum:  # 交错位置冗余
+            index = writePos + malwareLen * correctionPos
+            dim0_cur = index // dim1
+            dim1_cur = index % dim1
+            convParaStr = BitArray(int=convParaTensor[dim0_cur][dim1_cur][dim2 - 1][0].view(torch.int32), length=32).bin
+            newConvParaStr = convParaStr[:6] + encode(currentWriteContent) + convParaStr[9:32]
+            # 判断是否存在int32溢出
+            if int(newConvParaStr, 2) >= 2 ** 31:
+                newConvParaInt = torch.tensor(int(newConvParaStr, 2) - 2 ** 32, dtype=torch.int32)
+                convParaTensor[dim0_cur][dim1_cur][dim2 - 1][0] = newConvParaInt.view(torch.float32)
+            else:
+                newConvParaInt = torch.tensor(int(newConvParaStr, 2), dtype=torch.int32)
+                convParaTensor[dim0_cur][dim1_cur][dim2 - 1][0] = newConvParaInt.view(torch.float32)
+
+            correctionPos += 1
+            if correctionPos == correctionNum:
+                correctionPos = 0
+                break
+        writePos += 1
+        if writePos >= malwareLen:
+            break
+        else:
+            currentWriteContent = malwareStr[writePos]
+    para[layer].data = convParaTensor
+    torch.save(para, embeddedParaPath)
+    return
+
+
+def conv2dWeightExpLow3BitExtract_loop(paraPath, layer, extractPath):
+    """
+    对于循环冗余的情况，提取信息
+    :param paraPath:
+    :param layer:
+    :param extractPath:
+    :return:
+    """
+    extractPos = 0  # 提取的字节数
+    correctNum = 11  # 使用重写多少次冗余
+    correctPos = 0  # 判断的几个冗余位置
+    bit0_Num = 0  # 冗余位置有几个结果是0
+    bit1_Num = 0  # 冗余位置有几个结果是1
+    malware = []
+
+    para = torch.load(paraPath, map_location=torch.device("mps"))
+    convParaTensor = para[layer].data
+    dim0, dim1, dim2, dim3 = convParaTensor.shape
+    malwareBitLen = 368
+
+    while extractPos < malwareBitLen:
+        while correctPos < correctNum:
+            index = extractPos + malwareBitLen * correctPos
+            dim0_cur = index // dim1
+            dim1_cur = index % dim1
+            convParaStr = BitArray(int=convParaTensor[dim0_cur][dim1_cur][dim2 - 1][0].view(torch.int32), length=32).bin
+            bitData = decode(convParaStr[6:9])
+            '''判断3位冗余'''
+            if bitData == '0':
+                bit0_Num += 1
+            else:
+                bit1_Num += 1
+            """输出提取状态"""
+            print("extractPos:", extractPos, "dim0:", dim0_cur, "dim1:", dim1_cur, "embeddedData:", convParaStr[6:9],
+                  "bitData:", bitData,"correctPos:", correctPos, "bit0_Num:", bit0_Num, "bit1_Num:", bit1_Num)
+            """交错冗余"""
+            correctPos += 1
+            if correctPos == correctNum:
+                if bit0_Num > bit1_Num:
+                    malware.append(BitArray(bin="0"))
+                else:
+                    malware.append(BitArray(bin="1"))
+                correctPos = 0
+                bit0_Num = 0
+                bit1_Num = 0
+                break
+        extractPos += 1
+    merge_file(extractPath, malware)
+    return
+
+
 '''测试更改指数部分的性能影响'''
 
 def function():
@@ -445,12 +549,12 @@ if __name__ == "__main__":
     #                      "./weightsEmbedding/resnet50_" + str(chunkSize) + "_test2.pth")
     # fcWeightsLowBitExtract("./weightsEmbedding/resnet50_" + str(chunkSize) + "_test2.pth", "../malware/test2_extract.jpeg")
 
-    # conv2dWeightExpLow3BitEmbed("./init/resnet50-11ad3fa6.pth", "layer1.0.conv2.weight",
-    #                             "../malware/malware46B","./resnet50ConvEmbedding/resnet50Layer1_0_conv2_encoding1_cp11.pth")
+    # conv2dWeightExpLow3BitEmbed_loop("./init/resnet50-11ad3fa6.pth", "layer1.0.conv2.weight",
+    #                             "../malware/malware46B","./resnet50ConvEmbedding_loop/resnet50Layer1_0_conv2_encoding1_cp11.pth")
 
-    conv2dWeightExpLow3BitExtract("./embeddedRetrainOxfordIIITPet/resnet50Layer1_0_conv2_encoding1_cp11_re_1_OxfordIIITPet_10.pth",
-                                  "layer1.0.conv2.weight", "../malware/malware46B_extracted_OxfordIIITPet")
-    function()
+    conv2dWeightExpLow3BitExtract_loop("./resnet50ConvEmbedding_loop/resnet50Layer1_0_conv2_encoding1_cp11.pth",
+                                  "layer1.0.conv2.weight", "../malware/malware46B_extracted_loop")
+    # function()
 
 
 

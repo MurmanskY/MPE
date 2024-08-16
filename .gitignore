@@ -55,6 +55,9 @@ parameters/embeddedRetrainGTSRB/*
 parameters/resnet50ConvEmbedding/*
 !parameters/resnet50ConvEmbedding/.gitkeep
 
+parameters/resnet50ConvEmbedding_loop/*
+!parameters/resnet50ConvEmbedding_loop/.gitkeep
+
 parameters/init/*
 !parameters/init/.gitkeep
 
