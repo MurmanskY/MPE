@@ -527,7 +527,7 @@ def conv2dWeightExpLow3BitExtract_loop(paraPath, layer, extractPath):
 
 def function():
     malwareStr1 = BitArray(filename="../malware/malware46B").bin
-    malwareStr2 = BitArray(filename="../malware/malware46B_extracted_OxfordIIITPet").bin
+    malwareStr2 = BitArray(filename="../malware/malware46B_extracted_PCAM_loop").bin
     for i in range(len(malwareStr1)):
         if malwareStr1[i] != malwareStr2[i]:
             print("pos:", i, "initBit:", malwareStr1[i], "extractedBit:", malwareStr2[i])
@@ -552,10 +552,10 @@ if __name__ == "__main__":
     # conv2dWeightExpLow3BitEmbed_loop("./init/resnet50-11ad3fa6.pth", "layer1.0.conv2.weight",
     #                             "../malware/malware46B","./resnet50ConvEmbedding_loop/resnet50Layer1_0_conv2_encoding1_cp11.pth")
 
-    conv2dWeightExpLow3BitExtract_loop("./resnet50ConvEmbedding_loop/resnet50Layer1_0_conv2_encoding1_cp11.pth",
-                                  "layer1.0.conv2.weight", "../malware/malware46B_extracted_loop")
-    # function()
+    conv2dWeightExpLow3BitExtract_loop("./embeddedRetrainPCAM/resnet50Layer1_0_conv2_encoding1_cp11_re_1_PCAM_5.pth",
+                                  "layer1.0.conv2.weight", "../malware/malware46B_extracted_PCAM_loop")
 
+    function()
 
 
 
