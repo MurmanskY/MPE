@@ -549,11 +549,16 @@ if __name__ == "__main__":
     #                      "./weightsEmbedding/resnet50_" + str(chunkSize) + "_test2.pth")
     # fcWeightsLowBitExtract("./weightsEmbedding/resnet50_" + str(chunkSize) + "_test2.pth", "../malware/test2_extract.jpeg")
 
+    '''在第三个卷积层进行嵌入，使用交错投票机制'''
     # conv2dWeightExpLow3BitEmbed_loop("./init/resnet50-11ad3fa6.pth", "layer1.0.conv2.weight",
     #                             "../malware/malware46B","./resnet50ConvEmbedding_loop/resnet50Layer1_0_conv2_encoding1_cp11.pth")
 
-    conv2dWeightExpLow3BitExtract_loop("./embeddedRetrainPCAM/resnet50Layer1_0_conv2_encoding1_cp11_re_1_PCAM_5.pth",
-                                  "layer1.0.conv2.weight", "../malware/malware46B_extracted_PCAM_loop")
+    # conv2dWeightExpLow3BitExtract_loop("./embeddedRetrainPCAM/resnet50Layer1_0_conv2_encoding1_cp11_re_1_PCAM_5.pth",
+    #                               "layer1.0.conv2.weight", "../malware/malware46B_extracted_PCAM_loop")
+
+    ''''''
+
+
 
     function()
 
