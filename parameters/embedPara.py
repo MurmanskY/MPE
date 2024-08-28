@@ -420,7 +420,7 @@ def conv2dWeightExpLow3BitExtract(paraPath, layer, extractPath):
     return
 
 
-def conv2dWeightExpLow3BitEmbed_loop(paraPath, layer, malware, embeddedParaPath):
+def conv2dWeightExpLow3BitEmbed_loop(paraPath, malware, embeddedParaPath, *layers):
     """
     使用循环冗余，在多个同样大小的卷积层嵌入相同的有害信息
     :param paraPath: 待嵌入的pth
@@ -439,35 +439,39 @@ def conv2dWeightExpLow3BitEmbed_loop(paraPath, layer, malware, embeddedParaPath)
     # changeParaNum = 0
 
     para = torch.load(paraPath)
-    convParaTensor = para[layer].data
-    dim0, dim1, dim2, dim3 = convParaTensor.shape
 
-    # 采用交错冗余的方式进行容错：
-    while writePos < malwareLen: # 写每一个bit
-        while correctionPos < correctionNum:  # 交错位置冗余
-            index = writePos + malwareLen * correctionPos
-            dim0_cur = index // dim1
-            dim1_cur = index % dim1
-            convParaStr = BitArray(int=convParaTensor[dim0_cur][dim1_cur][dim2 - 1][0].view(torch.int32), length=32).bin
-            newConvParaStr = convParaStr[:6] + encode(currentWriteContent) + convParaStr[9:32]
-            # 判断是否存在int32溢出
-            if int(newConvParaStr, 2) >= 2 ** 31:
-                newConvParaInt = torch.tensor(int(newConvParaStr, 2) - 2 ** 32, dtype=torch.int32)
-                convParaTensor[dim0_cur][dim1_cur][dim2 - 1][0] = newConvParaInt.view(torch.float32)
-            else:
-                newConvParaInt = torch.tensor(int(newConvParaStr, 2), dtype=torch.int32)
-                convParaTensor[dim0_cur][dim1_cur][dim2 - 1][0] = newConvParaInt.view(torch.float32)
+    for layer in layers:  # 遍历所有需要进行嵌入的网络层
+        convParaTensor = para[layer].data
+        dim0, dim1, dim2, dim3 = convParaTensor.shape
 
-            correctionPos += 1
-            if correctionPos == correctionNum:
-                correctionPos = 0
+        # 采用交错冗余的方式进行容错：
+        while writePos < malwareLen: # 写每一个bit
+            while correctionPos < correctionNum:  # 交错位置冗余
+                index = writePos + malwareLen * correctionPos
+                dim0_cur = index // dim1
+                dim1_cur = index % dim1
+                convParaStr = BitArray(int=convParaTensor[dim0_cur][dim1_cur][dim2 - 1][0].view(torch.int32), length=32).bin
+                newConvParaStr = convParaStr[:6] + encode(currentWriteContent) + convParaStr[9:32]
+                # 判断是否存在int32溢出
+                if int(newConvParaStr, 2) >= 2 ** 31:
+                    newConvParaInt = torch.tensor(int(newConvParaStr, 2) - 2 ** 32, dtype=torch.int32)
+                    convParaTensor[dim0_cur][dim1_cur][dim2 - 1][0] = newConvParaInt.view(torch.float32)
+                else:
+                    newConvParaInt = torch.tensor(int(newConvParaStr, 2), dtype=torch.int32)
+                    convParaTensor[dim0_cur][dim1_cur][dim2 - 1][0] = newConvParaInt.view(torch.float32)
+
+                correctionPos += 1
+                if correctionPos == correctionNum:
+                    correctionPos = 0
+                    break
+            writePos += 1
+            if writePos >= malwareLen:
                 break
-        writePos += 1
-        if writePos >= malwareLen:
-            break
-        else:
-            currentWriteContent = malwareStr[writePos]
-    para[layer].data = convParaTensor
+            else:
+                currentWriteContent = malwareStr[writePos]
+        para[layer].data = convParaTensor
+        writePos = 0
+        correctionPos = 0
     torch.save(para, embeddedParaPath)
     return
 
@@ -572,12 +576,18 @@ if __name__ == "__main__":
     # conv2dWeightExpLow3BitEmbed_loop("./init/resnet50-11ad3fa6.pth", "layer1.1.conv2.weight",
     #                             "../malware/malware46B","./resnet50ConvEmbedding_loop/resnet50Layer1_1_conv2_encoding1_cp11.pth")
 
-    conv2dWeightExpLow3BitExtract_loop("./embeddedRetrainPCAM/resnet50Layer1_1_conv2_encoding1_cp11_re_0_PCAM_5.pth",
-                                  "layer1.1.conv2.weight", "../malware/malware46B_PCAM")
-
-
-
-    showDif("../malware/malware46B", "../malware/malware46B_PCAM")
+    # conv2dWeightExpLow3BitExtract_loop("./embeddedRetrainPCAM/resnet50Layer1_1_conv2_encoding1_cp11_re_0_PCAM_5.pth",
+    #                               "layer1.1.conv2.weight", "../malware/malware46B_PCAM")
+    '''在多个卷积层进行嵌入，嵌入相同的有害信息'''
+    # conv2dWeightExpLow3BitEmbed_loop("./init/resnet50-11ad3fa6.pth", "../malware/malware46B",
+    #                                  "./resnet50ConvEmbedding_loop/resnet50Layer1_0&1_conv2_encoding1_cp11.pth",
+    #                                  "layer1.0.conv2.weight", "layer1.1.conv2.weight")
+    # conv2dWeightExpLow3BitExtract_loop("./resnet50ConvEmbedding_loop/resnet50Layer1_0&1_conv2_encoding1_cp11.pth",
+    #                                    "layer1.0.conv2.weight", "../malware/malware46B_init_layer1_0")
+    # showDif("../malware/malware46B", "../malware/malware46B_init_layer1_0")
+    conv2dWeightExpLow3BitExtract_loop("./resnet50ConvEmbedding_loop/resnet50Layer1_0&1_conv2_encoding1_cp11.pth",
+                                       "layer1.1.conv2.weight", "../malware/malware46B_init_layer1_1")
+    showDif("../malware/malware46B", "../malware/malware46B_init_layer1_1")
 
 
 
