@@ -582,12 +582,12 @@ if __name__ == "__main__":
     # conv2dWeightExpLow3BitEmbed_loop("./init/resnet50-11ad3fa6.pth", "../malware/malware46B",
     #                                  "./resnet50ConvEmbedding_loop/resnet50Layer1_0&1_conv2_encoding1_cp11.pth",
     #                                  "layer1.0.conv2.weight", "layer1.1.conv2.weight")
-    # conv2dWeightExpLow3BitExtract_loop("./resnet50ConvEmbedding_loop/resnet50Layer1_0&1_conv2_encoding1_cp11.pth",
-    #                                    "layer1.0.conv2.weight", "../malware/malware46B_init_layer1_0")
-    # showDif("../malware/malware46B", "../malware/malware46B_init_layer1_0")
-    conv2dWeightExpLow3BitExtract_loop("./resnet50ConvEmbedding_loop/resnet50Layer1_0&1_conv2_encoding1_cp11.pth",
-                                       "layer1.1.conv2.weight", "../malware/malware46B_init_layer1_1")
-    showDif("../malware/malware46B", "../malware/malware46B_init_layer1_1")
+    conv2dWeightExpLow3BitExtract_loop("./embeddedRetrainPCAM/resnet50Layer1_0&1_conv2_encoding1_cp11_re_0_PCAM_5.pth",
+                                       "layer1.0.conv2.weight", "../malware/malware46B_init_layer1_0")
+    showDif("../malware/malware46B", "../malware/malware46B_init_layer1_0")
+    # conv2dWeightExpLow3BitExtract_loop("./embeddedRetrainPCAM/resnet50Layer1_0&1_conv2_encoding1_cp11_re_0_PCAM_5.pth",
+    #                                    "layer1.1.conv2.weight", "../malware/malware46B_init_layer1_1")
+    # showDif("../malware/malware46B", "../malware/malware46B_init_layer1_1")
 
 
 
