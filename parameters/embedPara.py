@@ -422,7 +422,7 @@ def conv2dWeightExpLow3BitExtract(paraPath, layer, extractPath):
 
 def conv2dWeightExpLow3BitEmbed_loop(paraPath, layer, malware, embeddedParaPath):
     """
-    使用循环冗余
+    使用循环冗余，在多个同样大小的卷积层嵌入相同的有害信息
     :param paraPath: 待嵌入的pth
     :param layer: 待嵌入的层
     :param malware: 恶意软件
@@ -474,7 +474,7 @@ def conv2dWeightExpLow3BitEmbed_loop(paraPath, layer, malware, embeddedParaPath)
 
 def conv2dWeightExpLow3BitExtract_loop(paraPath, layer, extractPath):
     """
-    对于循环冗余的情况，提取信息
+    对于循环冗余的情况，提取信息，只在一个卷积核的左下角做嵌入
     :param paraPath:
     :param layer:
     :param extractPath:
@@ -490,7 +490,7 @@ def conv2dWeightExpLow3BitExtract_loop(paraPath, layer, extractPath):
     para = torch.load(paraPath, map_location=torch.device("mps"))
     convParaTensor = para[layer].data
     dim0, dim1, dim2, dim3 = convParaTensor.shape
-    malwareBitLen = 368
+    malwareBitLen = ((dim0 * dim1) // (correctNum * 8)) * 8  # 嵌入多少个bit，计算嵌入满的情况
 
     while extractPos < malwareBitLen:
         while correctPos < correctNum:
@@ -523,13 +523,25 @@ def conv2dWeightExpLow3BitExtract_loop(paraPath, layer, extractPath):
     return
 
 
+
+
+
+
+
+
+
+
 '''测试更改指数部分的性能影响'''
 
-def function():
-    malwareStr1 = BitArray(filename="../malware/malware46B").bin
-    malwareStr2 = BitArray(filename="../malware/malware46B_extracted_PCAM_loop").bin
+def showDif(file1, file2):
+    """
+    对比提取的恶意软件和原始恶意软件的区别
+    :return:
+    """
+    malwareStr1 = BitArray(filename=file1).bin
+    malwareStr2 = BitArray(filename=file2).bin
     for i in range(len(malwareStr1)):
-        if malwareStr1[i] != malwareStr2[i]:
+        if malwareStr1[i] != malwareStr2[i]:  # 打印出所有不同的bit的位置
             print("pos:", i, "initBit:", malwareStr1[i], "extractedBit:", malwareStr2[i])
     print(malwareStr1)
     print(malwareStr2)
@@ -556,11 +568,16 @@ if __name__ == "__main__":
     # conv2dWeightExpLow3BitExtract_loop("./embeddedRetrainPCAM/resnet50Layer1_0_conv2_encoding1_cp11_re_1_PCAM_5.pth",
     #                               "layer1.0.conv2.weight", "../malware/malware46B_extracted_PCAM_loop")
 
-    ''''''
+    '''在第四个卷积层进行嵌入，使用交错投票机制'''
+    # conv2dWeightExpLow3BitEmbed_loop("./init/resnet50-11ad3fa6.pth", "layer1.1.conv2.weight",
+    #                             "../malware/malware46B","./resnet50ConvEmbedding_loop/resnet50Layer1_1_conv2_encoding1_cp11.pth")
+
+    conv2dWeightExpLow3BitExtract_loop("./embeddedRetrainPCAM/resnet50Layer1_1_conv2_encoding1_cp11_re_0_PCAM_5.pth",
+                                  "layer1.1.conv2.weight", "../malware/malware46B_PCAM")
 
 
 
-    function()
+    showDif("../malware/malware46B", "../malware/malware46B_PCAM")
 
 
 
