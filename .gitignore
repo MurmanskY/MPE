@@ -61,6 +61,12 @@ parameters/resnet50ConvEmbedding_loop/*
 parameters/init/*
 !parameters/init/.gitkeep
 
+parameters/bitFlip/2CIFAR100/*
+!parameters/bitFlip/2CIFAR100/.gitkeep
+
+parameters/bitFlip/resnet50/*
+!parameters/bitFlip/resnet50/.gitkeep
+
 malware/*
 !malware/.gitkeep
 
