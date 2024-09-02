@@ -49,6 +49,15 @@ bit_29 = torch.tensor(536870911, dtype=torch.int32)
 bit_30 = torch.tensor(1073741823, dtype=torch.int32)
 
 
+def getPthKeys(paraPath):
+    """
+    返回layers
+    :param paraPath: 待获得的参数pth
+    :return:
+    """
+    return torch.load(paraPath).keys()
+
+
 def getBitFlipNum(str1, str2):
     """
     对比两个字符串，返回两个字符串中不同的比特数
@@ -108,12 +117,33 @@ def showBitFlip(initParaPath, retrainParaPath, bitStartIdx, bitEndIdx, outputFil
     return
 
 
-def pthBitFLip(initParaPath, resnet50InitParaPath, )
+def layerBitFLip(initParaPath, flipParaPath, bit_n, *layers):
+    """
+    翻转pth的layers层的低n bit
+    :param initParaPath: 原始参数pth
+    :param flipParaPath: 翻转之后的参数pth
+    :param bit_n: 翻转低多少bit
+    :return: void
+    """
+    para = torch.load(initParaPath)
+
+    for layer in layers:  # layers数组中的所有layer
+        if len(para[layer].data.shape) <= 1:
+            continue  # 单值除去
+        layerTensor = para[layer].data
+        layerTensor_initView = layerTensor.view(torch.int32)
+        layerTensor_embedded_int = layerTensor_initView ^ bit_n
+        layerTensor_embedded = layerTensor_embedded_int.view(torch.float32)
+        para[layer].data = layerTensor_embedded
+
+    torch.save(para, flipParaPath)
+    return
 
 
 if __name__ == "__main__":
     '''resnet50 bit flip'''
-    pthBitFLip()
+    # layerBitFLip(resnet50InitParaPath, "./resnet50/bitFlip/frac_1.pth", bit_4, *getPthKeys(resnet50InitParaPath))
+    showBitFlip(resnet50InitParaPath, "./resnet50/bitFlip/frac_1.pth", 0, 4, "./result/temp.csv")
     '''resnet50_2_CFIAR100'''
 
 
