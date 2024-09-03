@@ -66,6 +66,15 @@ parameters/bitFlip/resnet50/bitFlip/*
 
 parameters/bitFlip/resnet50/2CIFAR100/*
 !parameters/bitFlip/resnet50/2CIFAR100/.gitkeep
+!parameters/bitFlip/resnet50/2CIFAR100/result/
+
+parameters/bitFlip/resnet50/2OxfordIIITPet/*
+!parameters/bitFlip/resnet50/2OxfordIIITPet/.gitkeep
+!parameters/bitFlip/resnet50/2OxfordIIITPet/result/
+
+parameters/bitFlip/resnet50/2GTSRB/*
+!parameters/bitFlip/resnet50/2GTSRB/.gitkeep
+!parameters/bitFlip/resnet50/2GTSRB/result/
 
 
 
