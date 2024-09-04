@@ -169,8 +169,8 @@ def layerExpBitFlip(initParaPath, flipParaPath, bit_n, *layers):
 
     para = torch.load(initParaPath)
     for layer in layers:  # 所有layer
-        if len(para[layer].data.shape) < 1:
-            continue  # 单值除去
+        if para[layer].data.dim() < 4:
+            continue  # 只在卷积层进行嵌入
         layerTensor = para[layer].data
         para[layer].data = flip_exponent_bits(layerTensor, bit_n)
 
@@ -187,6 +187,13 @@ def layerExpBitEmbedd(initParaPath, flipParaPath, bit_n, *layers):
     :param layers:
     :return:
     """
+    para = torch.load(initParaPath)
+
+
+    for layer in layers:
+        print(layer, para[layer].data.dim())
+
+
     return
 
 
@@ -206,6 +213,8 @@ def func(pth1, pth2, *layers):
 
 
 if __name__ == "__main__":
-    layerExpBitFlip(resnet50InitParaPath, "./resnet50/bitFlip/exp_3_flip.pth", 3, *getPthKeys(resnet50InitParaPath))
-    func(resnet50InitParaPath, "./resnet50/bitFlip/exp_3_flip.pth", *getPthKeys(resnet50InitParaPath))
+    layerExpBitFlip(resnet50InitParaPath, "./resnet50/bitFlip/exp_3_convFlip.pth", 3, *getPthKeys(resnet50InitParaPath))
+    # func(resnet50InitParaPath, "./resnet50/bitFlip/exp_3_flip.pth", *getPthKeys(resnet50InitParaPath))
+
+    # layerExpBitEmbedd(resnet50InitParaPath, "./resnet50/bitFlip/exp_3_flip.pth", 3, *getPthKeys(resnet50InitParaPath))
     print("Done")
