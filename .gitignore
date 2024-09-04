@@ -76,6 +76,10 @@ parameters/bitFlip/resnet50/2GTSRB/*
 !parameters/bitFlip/resnet50/2GTSRB/.gitkeep
 !parameters/bitFlip/resnet50/2GTSRB/result/
 
+parameters/bitFlip/resnet50/2PCAM/*
+!parameters/bitFlip/resnet50/2PCAM/.gitkeep
+!parameters/bitFlip/resnet50/2PCAM/result/
+
 
 
 malware/*
