@@ -76,6 +76,9 @@ def showBitFlip(initParaPath, retrainParaPath, bitStartIdx, bitEndIdx, outputFil
     """
     记录在[bitStartIdx,bitEndIdx)之间有多少比特发生了翻转
     记录所有层的信息在结果文件中
+
+    弃用，这个函数是单线程的函数，现在已经优化成了多线程的函数
+
     :param initPara:
     :param retrainPara:
     :param bitStartIdx:
@@ -86,40 +89,30 @@ def showBitFlip(initParaPath, retrainParaPath, bitStartIdx, bitEndIdx, outputFil
     data = {}  # 用于存储结果的字典
     initPara = torch.load(initParaPath, map_location=device)
     retrainPara = torch.load(retrainParaPath, map_location=device)
-
     for key in initPara.keys():  # 遍历所有键值
-
         if len(initPara[key].data.shape) < 1:
             continue  # 只比较参数二维及以上维度可能嵌入的层
-
         initLayerTensor = initPara[key].data.flatten()  # 将多维向量平铺
         retrainLayerTensor = retrainPara[key].data.flatten()
-
         if len(initLayerTensor) != len(retrainLayerTensor):
             continue  # 如果张量的形状不同，说明已经在最后一个全连接层，可以直接跳过
-
         paraNum = len(initLayerTensor)
         bitFlipNum = 0
-
         for idx in range(paraNum):
             initLayerEleStr = BitArray(int=initLayerTensor[idx].view(torch.int32), length=32).bin[bitStartIdx: bitEndIdx]
             retrainLayerEleStr = BitArray(int=retrainLayerTensor[idx].view(torch.int32), length=32).bin[bitStartIdx: bitEndIdx]
             # print(initLayerEleStr, retrainLayerEleStr)
             bitFlipNum += getBitFlipNum(initLayerEleStr, retrainLayerEleStr)
-
         data[key] = bitFlipNum / (paraNum * (bitEndIdx - bitStartIdx))
-
         print(key, paraNum, data[key])
-
     df = pd.DataFrame([data])
-
     df.to_csv(outputFile, index=False)
     return
 
 
-def layerBitFLip(initParaPath, flipParaPath, bit_n, *layers):
+def layerFracBitFLip(initParaPath, flipParaPath, bit_n, *layers):
     """
-    翻转pth的layers层的低n bit
+    翻转pth的layers层fa的低n bit
     :param initParaPath: 原始参数pth
     :param flipParaPath: 翻转之后的参数pth
     :param bit_n: 翻转低多少bit
@@ -145,6 +138,58 @@ def layerBitFLip(initParaPath, flipParaPath, bit_n, *layers):
     return
 
 
+def layerExpBitFlip(initParaPath, flipParaPath, bit_n, *layers):
+    """
+    翻转layers的指数部分的低N bit
+    :param initParaPath: 原始pth
+    :param flipParaPath: 处理后pth
+    :param bit_n: 指数的低 N bit
+    :param layers:  处理的层
+    :return:
+    """
+
+    def flip_exponent_bits(tensor, bit_n):
+        """
+        翻转float32的低nbit
+        :param tensor:
+        :param bit_n:
+        :return:
+        """
+        # View tensor as int32 to manipulate bits
+        int_view = tensor.view(torch.int32)
+        # Extract exponent: bits 23-30 (8 bits)
+        exponent_mask = 0x7F800000  # Exponent mask for 32-bit float
+        exponent_bits = (int_view & exponent_mask) >> 23
+        # Flip the lower `bit_n` bits of the exponent
+        exponent_bits ^= (1 << bit_n) - 1
+        # Put the flipped exponent back into the int representation
+        int_view = (int_view & ~exponent_mask) | (exponent_bits << 23)
+        # Convert back to float32
+        return int_view.view(torch.float32)
+
+    para = torch.load(initParaPath)
+    for layer in layers:  # 所有layer
+        if len(para[layer].data.shape) < 1:
+            continue  # 单值除去
+        layerTensor = para[layer].data
+        para[layer].data = flip_exponent_bits(layerTensor, bit_n)
+
+    torch.save(para, flipParaPath)
+    return
+
+
+def layerExpBitEmbedd(initParaPath, flipParaPath, bit_n, *layers):
+    """
+    使用编码规则100和011进行嵌入
+    :param initParaPath:
+    :param flipParaPath:
+    :param bit_n:
+    :param layers:
+    :return:
+    """
+    return
+
+
 def func(pth1, pth2, *layers):
     para1 = torch.load(pth1)
     para2 = torch.load(pth2)
@@ -154,67 +199,13 @@ def func(pth1, pth2, *layers):
         print(layer, para1[layer].data.shape)
         para1Tensor = para1[layer].data.flatten()
         para2Tensor = para2[layer].data.flatten()
-        print(format(para1Tensor[0].view(torch.int32), '032b')[9:32])
-        print(format(para2Tensor[0].view(torch.int32), '032b')[9:32], "\n")
+        print(format(para1Tensor[0].view(torch.int32), '032b')[1:9])
+        print(format(para2Tensor[0].view(torch.int32), '032b')[1:9], "\n")
 
     return
 
 
 if __name__ == "__main__":
-    '''resnet50 bit flip'''
-    # layerBitFLip(resnet50InitParaPath, "./resnet50/bitFlip/frac_1.pth", bit_1, *getPthKeys(resnet50InitParaPath))
-    # layerBitFLip(resnet50InitParaPath, "./resnet50/bitFlip/frac_4.pth", bit_4, *getPthKeys(resnet50InitParaPath))
-    # layerBitFLip(resnet50InitParaPath, "./resnet50/bitFlip/frac_8.pth", bit_8, *getPthKeys(resnet50InitParaPath))
-    # layerBitFLip(resnet50InitParaPath, "./resnet50/bitFlip/frac_12.pth", bit_12, *getPthKeys(resnet50InitParaPath))
-    # layerBitFLip(resnet50InitParaPath, "./resnet50/bitFlip/frac_16.pth", bit_16, *getPthKeys(resnet50InitParaPath))
-    # layerBitFLip(resnet50InitParaPath, "./resnet50/bitFlip/frac_20.pth", bit_20, *getPthKeys(resnet50InitParaPath))
-    # layerBitFLip(resnet50InitParaPath, "./resnet50/bitFlip/frac_23.pth", bit_23, *getPthKeys(resnet50InitParaPath))
-    '''resnet50_2_CFIAR100'''
-    # showBitFlip("./resnet50/bitFlip/frac_1.pth", "./resnet50/2CIFAR100/frac_1_ep_5.pth", 31, 32,
-    #             "./resnet50/2CIFAR100/result/frac_1_ep_5.csv")
-    # showBitFlip("./resnet50/bitFlip/frac_4.pth", "./resnet50/2CIFAR100/frac_4_ep_5.pth", 28, 32,
-    #             "./resnet50/2CIFAR100/result/frac_4_ep_5.csv")
-    # showBitFlip("./resnet50/bitFlip/frac_8.pth", "./resnet50/2CIFAR100/frac_8_ep_5.pth", 24, 32,
-    #             "./resnet50/2CIFAR100/result/frac_8_ep_5.csv")
-    # showBitFlip("./resnet50/bitFlip/frac_12.pth", "./resnet50/2CIFAR100/frac_12_ep_5.pth", 20, 32,
-    #             "./resnet50/2CIFAR100/result/frac_12_ep_5.csv")
-    # showBitFlip("./resnet50/bitFlip/frac_16.pth", "./resnet50/2CIFAR100/frac_16_ep_5.pth", 16, 32,
-    #             "./resnet50/2CIFAR100/result/frac_16_ep_5.csv")
-    # showBitFlip("./resnet50/bitFlip/frac_20.pth", "./resnet50/2CIFAR100/frac_20_ep_5.pth", 12, 32,
-    #             "./resnet50/2CIFAR100/result/frac_20_ep_5.csv")
-    # showBitFlip("./resnet50/bitFlip/frac_23.pth", "./resnet50/2CIFAR100/frac_23_ep_10.pth", 9, 32,
-    #             "./resnet50/2CIFAR100/result/frac_23_ep_10.csv")
-    '''resnet50_2_OxfordIIITPet'''
-    showBitFlip("./resnet50/bitFlip/frac_1.pth", "./resnet50/2OxfordIIITPet/frac_1_ep_10.pth", 31, 32,
-                "./resnet50/2OxfordIIITPet/result/frac_1_ep_10.csv")
-    showBitFlip("./resnet50/bitFlip/frac_4.pth", "./resnet50/2OxfordIIITPet/frac_4_ep_10.pth", 28, 32,
-                "./resnet50/2OxfordIIITPet/result/frac_4_ep_10.csv")
-    showBitFlip("./resnet50/bitFlip/frac_8.pth", "./resnet50/2OxfordIIITPet/frac_8_ep_10.pth", 24, 32,
-                "./resnet50/2OxfordIIITPet/result/frac_8_ep_10.csv")
-    showBitFlip("./resnet50/bitFlip/frac_12.pth", "./resnet50/2OxfordIIITPet/frac_12_ep_10.pth", 20, 32,
-                "./resnet50/2OxfordIIITPet/result/frac_12_ep_10.csv")
-    showBitFlip("./resnet50/bitFlip/frac_16.pth", "./resnet50/2OxfordIIITPet/frac_16_ep_10.pth", 16, 32,
-                "./resnet50/2OxfordIIITPet/result/frac_16_ep_10.csv")
-    showBitFlip("./resnet50/bitFlip/frac_20.pth", "./resnet50/2OxfordIIITPet/frac_20_ep_10.pth", 12, 32,
-                "./resnet50/2OxfordIIITPet/result/frac_20_ep_10.csv")
-    showBitFlip("./resnet50/bitFlip/frac_23.pth", "./resnet50/2OxfordIIITPet/frac_23_ep_10.pth", 9, 32,
-                "./resnet50/2OxfordIIITPet/result/frac_23_ep_10.csv")
-    '''resnet50_2_GTSRB'''
-    showBitFlip("./resnet50/bitFlip/frac_1.pth", "./resnet50/2GTSRB/frac_1_ep_10.pth", 31, 32,
-                "./resnet50/2GTSRB/result/frac_1_ep_10.csv")
-    showBitFlip("./resnet50/bitFlip/frac_4.pth", "./resnet50/2GTSRB/frac_4_ep_10.pth", 28, 32,
-                "./resnet50/2GTSRB/result/frac_4_ep_10.csv")
-    showBitFlip("./resnet50/bitFlip/frac_8.pth", "./resnet50/2GTSRB/frac_8_ep_10.pth", 24, 32,
-                "./resnet50/2GTSRB/result/frac_8_ep_10.csv")
-    showBitFlip("./resnet50/bitFlip/frac_12.pth", "./resnet50/2GTSRB/frac_12_ep_10.pth", 20, 32,
-                "./resnet50/2GTSRB/result/frac_12_ep_10.csv")
-    showBitFlip("./resnet50/bitFlip/frac_16.pth", "./resnet50/2GTSRB/frac_16_ep_10.pth", 16, 32,
-                "./resnet50/2GTSRB/result/frac_16_ep_10.csv")
-    showBitFlip("./resnet50/bitFlip/frac_20.pth", "./resnet50/2GTSRB/frac_20_ep_10.pth", 12, 32,
-                "./resnet50/2GTSRB/result/frac_20_ep_10.csv")
-    showBitFlip("./resnet50/bitFlip/frac_23.pth", "./resnet50/2GTSRB/frac_23_ep_10.pth", 9, 32,
-                "./resnet50/2GTSRB/result/frac_23_ep_10.csv")
-
-    # func(resnet50InitParaPath, "./resnet50/bitFlip/frac_23.pth", *getPthKeys(resnet50InitParaPath))
-
-
+    layerExpBitFlip(resnet50InitParaPath, "./resnet50/bitFlip/exp_3_flip.pth", 3, *getPthKeys(resnet50InitParaPath))
+    func(resnet50InitParaPath, "./resnet50/bitFlip/exp_3_flip.pth", *getPthKeys(resnet50InitParaPath))
+    print("Done")
