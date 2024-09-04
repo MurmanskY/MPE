@@ -102,19 +102,34 @@ if __name__ == '__main__':
     #             "./resnet50/2GTSRB/result/frac_20_ep_10.csv")
     # showBitFlip("./resnet50/bitFlip/frac_23.pth", "./resnet50/2GTSRB/frac_23_ep_10.pth", 9, 32,
     #             "./resnet50/2GTSRB/result/frac_23_ep_10.csv")
+    '''resnet50_2_FGCVAircraft'''
+    # showBitFlip("./resnet50/bitFlip/frac_1.pth", "./resnet50/2FGCVAircraft/frac_1_ep_20.pth", 31, 32,
+    #             "./resnet50/2FGCVAircraft/result/frac_1_ep_20.csv")
+    # showBitFlip("./resnet50/bitFlip/frac_4.pth", "./resnet50/2FGCVAircraft/frac_4_ep_20.pth", 28, 32,
+    #             "./resnet50/2FGCVAircraft/result/frac_4_ep_20.csv")
+    # showBitFlip("./resnet50/bitFlip/frac_8.pth", "./resnet50/2FGCVAircraft/frac_8_ep_20.pth", 24, 32,
+    #             "./resnet50/2FGCVAircraft/result/frac_8_ep_20.csv")
+    # showBitFlip("./resnet50/bitFlip/frac_12.pth", "./resnet50/2FGCVAircraft/frac_12_ep_20.pth", 20, 32,
+    #             "./resnet50/2FGCVAircraft/result/frac_12_ep_20.csv")
+    # showBitFlip("./resnet50/bitFlip/frac_16.pth", "./resnet50/2FGCVAircraft/frac_16_ep_20.pth", 16, 32,
+    #             "./resnet50/2FGCVAircraft/result/frac_16_ep_20.csv")
+    # showBitFlip("./resnet50/bitFlip/frac_20.pth", "./resnet50/2FGCVAircraft/frac_20_ep_20.pth", 12, 32,
+    #             "./resnet50/2FGCVAircraft/result/frac_20_ep_20.csv")
+    # showBitFlip("./resnet50/bitFlip/frac_23.pth", "./resnet50/2FGCVAircraft/frac_23_ep_20.pth", 9, 32,
+    #             "./resnet50/2FGCVAircraft/result/frac_23_ep_20.csv")
     '''resnet50_2_PCAM'''
-    showBitFlip("./resnet50/bitFlip/frac_1.pth", "./resnet50/2PCAM/frac_1_ep_5.pth", 31, 32,
-                "./resnet50/2PCAM/result/frac_1_ep_5.csv")
-    showBitFlip("./resnet50/bitFlip/frac_4.pth", "./resnet50/2PCAM/frac_4_ep_5.pth", 28, 32,
-                "./resnet50/2PCAM/result/frac_4_ep_5.csv")
-    showBitFlip("./resnet50/bitFlip/frac_8.pth", "./resnet50/2PCAM/frac_8_ep_5.pth", 24, 32,
-                "./resnet50/2PCAM/result/frac_8_ep_5.csv")
-    showBitFlip("./resnet50/bitFlip/frac_12.pth", "./resnet50/2PCAM/frac_12_ep_5.pth", 20, 32,
-                "./resnet50/2PCAM/result/frac_12_ep_5.csv")
-    showBitFlip("./resnet50/bitFlip/frac_16.pth", "./resnet50/2PCAM/frac_16_ep_5.pth", 16, 32,
-                "./resnet50/2PCAM/result/frac_16_ep_5.csv")
-    showBitFlip("./resnet50/bitFlip/frac_20.pth", "./resnet50/2PCAM/frac_20_ep_5.pth", 12, 32,
-                "./resnet50/2PCAM/result/frac_20_ep_5.csv")
-    showBitFlip("./resnet50/bitFlip/frac_23.pth", "./resnet50/2PCAM/frac_23_ep_5.pth", 9, 32,
-                "./resnet50/2PCAM/result/frac_23_ep_5.csv")
+    # showBitFlip("./resnet50/bitFlip/frac_1.pth", "./resnet50/2PCAM/frac_1_ep_5.pth", 31, 32,
+    #             "./resnet50/2PCAM/result/frac_1_ep_5.csv")
+    # showBitFlip("./resnet50/bitFlip/frac_4.pth", "./resnet50/2PCAM/frac_4_ep_5.pth", 28, 32,
+    #             "./resnet50/2PCAM/result/frac_4_ep_5.csv")
+    # showBitFlip("./resnet50/bitFlip/frac_8.pth", "./resnet50/2PCAM/frac_8_ep_5.pth", 24, 32,
+    #             "./resnet50/2PCAM/result/frac_8_ep_5.csv")
+    # showBitFlip("./resnet50/bitFlip/frac_12.pth", "./resnet50/2PCAM/frac_12_ep_5.pth", 20, 32,
+    #             "./resnet50/2PCAM/result/frac_12_ep_5.csv")
+    # showBitFlip("./resnet50/bitFlip/frac_16.pth", "./resnet50/2PCAM/frac_16_ep_5.pth", 16, 32,
+    #             "./resnet50/2PCAM/result/frac_16_ep_5.csv")
+    # showBitFlip("./resnet50/bitFlip/frac_20.pth", "./resnet50/2PCAM/frac_20_ep_5.pth", 12, 32,
+    #             "./resnet50/2PCAM/result/frac_20_ep_5.csv")
+    # showBitFlip("./resnet50/bitFlip/frac_23.pth", "./resnet50/2PCAM/frac_23_ep_5.pth", 9, 32,
+    #             "./resnet50/2PCAM/result/frac_23_ep_5.csv")
 

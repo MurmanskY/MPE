@@ -80,6 +80,11 @@ parameters/bitFlip/resnet50/2PCAM/*
 !parameters/bitFlip/resnet50/2PCAM/.gitkeep
 !parameters/bitFlip/resnet50/2PCAM/result/
 
+parameters/bitFlip/resnet50/2FGCVAircraft/*
+!parameters/bitFlip/resnet50/2FGCVAircraft/.gitkeep
+!parameters/bitFlip/resnet50/2FGCVAircraft/result/
+
+
 
 
 malware/*
