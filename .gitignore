@@ -64,6 +64,9 @@ parameters/init/*
 parameters/bitFlip/resnet50/bitFlip/*
 !parameters/bitFlip/resnet50/bitFlip/.gitkeep
 
+parameters/bitFlip/resnet50/bitEmbedd/*
+!parameters/bitFlip/resnet50/bitEmbedd/.gitkeep
+
 parameters/bitFlip/resnet50/2CIFAR100/*
 !parameters/bitFlip/resnet50/2CIFAR100/.gitkeep
 !parameters/bitFlip/resnet50/2CIFAR100/result/
@@ -83,6 +86,9 @@ parameters/bitFlip/resnet50/2PCAM/*
 parameters/bitFlip/resnet50/2FGCVAircraft/*
 !parameters/bitFlip/resnet50/2FGCVAircraft/.gitkeep
 !parameters/bitFlip/resnet50/2FGCVAircraft/result/
+
+parameters/bitFlip/malware/*
+!parameters/bitFlip/malware/.gitkeep
 
 
 

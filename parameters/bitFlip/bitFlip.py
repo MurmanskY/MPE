@@ -1,5 +1,6 @@
 import os
 import torch
+import random
 import pandas as pd
 from bitstring import BitArray
 
@@ -47,6 +48,55 @@ bit_27 = torch.tensor(134217727, dtype=torch.int32)
 bit_28 = torch.tensor(268435455, dtype=torch.int32)
 bit_29 = torch.tensor(536870911, dtype=torch.int32)
 bit_30 = torch.tensor(1073741823, dtype=torch.int32)
+
+
+
+
+def flipBit(ch):
+    """
+    翻转比特
+    :param ch:
+    :return: ch
+    """
+    if ch == "0":
+        return "1"
+    else:
+        return "0"
+
+
+def encode(ch):
+    """
+    返回编码结果
+    :param ch:
+    :return:
+    """
+    return ch + flipBit(ch) + flipBit(ch)
+
+
+def decode(str):
+    """
+    返回译码结果
+    :param str: 待判断的字符串
+    :return: 0/1字符串
+    """
+    bit0_num = 0
+    bit1_num = 0
+    if str[0] == "0":
+        bit0_num += 1
+    else:
+        bit1_num += 1
+    if flipBit(str[1]) == "0":
+        bit0_num += 1
+    else:
+        bit1_num += 1
+    if flipBit(str[2]) == "0":
+        bit0_num += 1
+    else:
+        bit1_num += 1
+    if bit0_num > bit1_num:
+        return "0"
+    else:
+        return "1"
 
 
 def getPthKeys(paraPath):
@@ -178,22 +228,116 @@ def layerExpBitFlip(initParaPath, flipParaPath, bit_n, *layers):
     return
 
 
-def layerExpBitEmbedd(initParaPath, flipParaPath, bit_n, *layers):
+def generate_file_with_bits(file_path, num_bits):
     """
-    使用编码规则100和011进行嵌入
+    根据需要多少bit，随机生成对应大小的恶意软件
+    :param file_path:
+    :param num_bits:
+    :return:
+    """
+    # 计算需要的字节数，每字节有8个bit
+    num_bytes = (num_bits + 7) // 8  # 向上取整，保证比特数足够
+    print("Byte Num:", num_bytes)
+
+    # 创建一个包含随机字节的字节数组
+    byte_array = bytearray(random.getrandbits(8) for _ in range(num_bytes))
+
+    # 如果不需要最后一个字节的全部位，将多余的位清零
+    if num_bits % 8 != 0:
+        last_byte_bits = num_bits % 8
+        # 保留最后字节所需的位数，其它位清零
+        mask = (1 << last_byte_bits) - 1
+        byte_array[-1] &= mask
+
+    # 将字节数组写入文件
+    with open(file_path, 'wb') as f:
+        f.write(byte_array)
+
+    print(f"File '{file_path}' generated with {num_bits} bits.")
+
+
+def getExpEmbeddSize(initParaPath, layers, interval, correct):
+    """
+    返回指数部分最大的嵌入容量，单位是字节
+    :param initParaPath:
+    :param layers: list
+    :param interval: 每interval个中嵌入一个
+    :return: list
+    """
+    para = torch.load(initParaPath)
+    ret = []
+    for layer in layers:
+        paraTensor = para[layer].data
+        paraTensor_flat = paraTensor.flatten()
+        layerSize = len(paraTensor_flat) // (interval * correct * 8)
+        # print(layer, len(paraTensor_flat), layerSize)
+        ret.append(layerSize)
+    return ret
+
+
+def layerExpBitEmbedd(initParaPath, flipParaPath, layers, malwares, interval, correct):
+    """
+    使用编码规则100和011进行嵌入低3bit,嵌入恶意软件，将卷积层展平，使用交错的方式编码
     :param initParaPath:
     :param flipParaPath:
-    :param bit_n:
-    :param layers:
+    :param layers: layer list
+    :param malwares: malware list
+    :param interval: 每interval个中嵌入一个
+    :param correct: 冗余多少
     :return:
     """
     para = torch.load(initParaPath)
 
+    for layer, malware in zip(layers, malwares):
+        # 对于每个层
 
-    for layer in layers:
-        print(layer, para[layer].data.dim())
+        malwareStr = BitArray(filename=malware).bin
+        malwareLen = len(malwareStr)
+        writePos = 0  # 恶意软件读写指针
+        correctionPos = 0  # 冗余指针，标识目前处于第几个冗余
+        currentWriteContent = malwareStr[writePos]  # 存储当前需要写入的内容
+
+        paraTensor_flat = para[layer].flatten()
+
+        while writePos < malwareLen:  # 写恶意软件中每一个bit
+            while correctionPos < correct:  # 交错位置冗余
+                index = writePos + correctionPos * interval * malwareLen
+                paraTensor_flat_str = BitArray(int = paraTensor_flat[index].view(torch.int32), length=32).bin
+                newParaTensor_flat_str = paraTensor_flat_str[:6] + encode(currentWriteContent) + paraTensor_flat_str[9:32]
+                # 判断是否存在溢出
+                if int(newParaTensor_flat_str, 2) >= 2 ** 31:
+                    newParaInt = torch.tensor(int(newParaTensor_flat_str, 2) - 2 ** 32, dtype=torch.int32)
+                    paraTensor_flat[index] = newParaInt.view(torch.float32)
+                else:
+                    newParaInt = torch.tensor(int(newParaTensor_flat_str, 2), dtype=torch.int32)
+                    paraTensor_flat[index] = newParaInt.view(torch.float32)
+
+                correctionPos += 1
+                if correctionPos == correct:
+                    correctionPos = 0
+                    break
+            writePos += 1
+            if writePos >= malwareLen:
+                break
+            else:
+                currentWriteContent = malwareStr[writePos]
+
+        para[layer] = paraTensor_flat.reshape(para[layer].data.shape)
+
+        torch.save(para ,flipParaPath)
+    return
 
 
+def layerExpBitExtrac(initParaPath, layers, malwares_Extract, interval, correct):
+    """
+    在原来参数中提取出恶意软件
+    :param initParaPath:
+    :param layers:
+    :param malwares_Extract:
+    :param interval:
+    :param correct:
+    :return:
+    """
     return
 
 
@@ -213,8 +357,31 @@ def func(pth1, pth2, *layers):
 
 
 if __name__ == "__main__":
-    layerExpBitFlip(resnet50InitParaPath, "./resnet50/bitFlip/exp_3_convFlip.pth", 3, *getPthKeys(resnet50InitParaPath))
+    # layerExpBitFlip(resnet50InitParaPath, "./resnet50/bitFlip/exp_3_convFlip.pth", 3, *getPthKeys(resnet50InitParaPath))
     # func(resnet50InitParaPath, "./resnet50/bitFlip/exp_3_flip.pth", *getPthKeys(resnet50InitParaPath))
 
     # layerExpBitEmbedd(resnet50InitParaPath, "./resnet50/bitFlip/exp_3_flip.pth", 3, *getPthKeys(resnet50InitParaPath))
+
+
+
+
+
+
+    """
+    完成一整个流程
+    1. 确定layers
+    2. 根据layers随机生成malware存储在文件夹中
+    3. 将malware嵌入到参数中
+    4. 从参数中提取malware
+    """
+    layers = ["layer1.0.conv2.weight"]
+    malwares = ["./malware/malware46B"]
+    interval = 9
+    correct = 11
+    savePath = "./resnet50/bitEmbedd/temp.pth"
+
+
+    layerExpBitEmbedd(resnet50InitParaPath, savePath, layers, malwares, interval, correct)
+
+
     print("Done")

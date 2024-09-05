@@ -585,10 +585,12 @@ if __name__ == "__main__":
     # conv2dWeightExpLow3BitExtract_loop("./embeddedRetrainOxfordIIITPet/resnet50Layer1_0_conv2_encoding1_cp11_re_0_OxfordIIITPet_10.pth",
     #                                    "layer1.0.conv2.weight", "../malware/malware46B_init_layer1_0")
     # showDif("../malware/malware46B", "../malware/malware46B_init_layer1_0")
-    conv2dWeightExpLow3BitExtract_loop("./embeddedRetrainOxfordIIITPet/resnet50Layer1_0_conv2_encoding1_cp11_re_0_OxfordIIITPet_10.pth",
-                                       "layer1.1.conv2.weight", "../malware/malware46B_init_layer1_1")
-    showDif("../malware/malware46B", "../malware/malware46B_init_layer1_1")
+    # conv2dWeightExpLow3BitExtract_loop("./embeddedRetrainOxfordIIITPet/resnet50Layer1_0_conv2_encoding1_cp11_re_0_OxfordIIITPet_10.pth",
+    #                                    "layer1.1.conv2.weight", "../malware/malware46B_init_layer1_1")
+    # showDif("../malware/malware46B", "../malware/malware46B_init_layer1_1")
 
+    conv2dWeightExpLow3BitExtract_loop("./bitFlip/resnet50/bitEmbedd/temp.pth", "layer1.0.conv2.weight",
+                                       "../malware/temp")
 
 
 
