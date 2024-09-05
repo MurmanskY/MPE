@@ -3,6 +3,7 @@ import torch
 import random
 import pandas as pd
 from bitstring import BitArray
+from fileProcess.fileProcess import split_file, merge_file
 
 device = torch.device("mps")
 
@@ -256,15 +257,40 @@ def generate_file_with_bits(file_path, num_bits):
     print(f"File '{file_path}' generated with {num_bits} bits.")
 
 
+def generateFiles(malwares_path, malwaresSize_byte):
+    """
+    生成多个恶意软件
+    :param malwares_path:
+    :param malwaresSize_byte:
+    :return:
+    """
+    for malware_path, malwareSize in zip(malwares_path, malwaresSize_byte):
+        generate_file_with_bits(malware_path, malwareSize * 8)
+
+
+def showDif(file1, file2):
+    """
+    对比提取的恶意软件和原始恶意软件的区别
+    :return:
+    """
+    malwareStr1 = BitArray(filename=file1).bin
+    malwareStr2 = BitArray(filename=file2).bin
+    for i in range(len(malwareStr1)):
+        if malwareStr1[i] != malwareStr2[i]:  # 打印出所有不同的bit的位置
+            print("pos:", i, "initBit:", malwareStr1[i], "extractedBit:", malwareStr2[i])
+    print(malwareStr1)
+    print(malwareStr2)
+
+
 def getExpEmbeddSize(initParaPath, layers, interval, correct):
     """
-    返回指数部分最大的嵌入容量，单位是字节
+    返回指数部分最大的嵌入容量，单位是字节Byte
     :param initParaPath:
     :param layers: list
     :param interval: 每interval个中嵌入一个
     :return: list
     """
-    para = torch.load(initParaPath)
+    para = torch.load(initParaPath, map_location=torch.device("mps"))
     ret = []
     for layer in layers:
         paraTensor = para[layer].data
@@ -286,7 +312,7 @@ def layerExpBitEmbedd(initParaPath, flipParaPath, layers, malwares, interval, co
     :param correct: 冗余多少
     :return:
     """
-    para = torch.load(initParaPath)
+    para = torch.load(initParaPath, map_location=torch.device("mps"))
 
     for layer, malware in zip(layers, malwares):
         # 对于每个层
@@ -324,7 +350,7 @@ def layerExpBitEmbedd(initParaPath, flipParaPath, layers, malwares, interval, co
 
         para[layer] = paraTensor_flat.reshape(para[layer].data.shape)
 
-        torch.save(para ,flipParaPath)
+        torch.save(para, flipParaPath)
     return
 
 
@@ -332,12 +358,52 @@ def layerExpBitExtrac(initParaPath, layers, malwares_Extract, interval, correct)
     """
     在原来参数中提取出恶意软件
     :param initParaPath:
-    :param layers:
-    :param malwares_Extract:
-    :param interval:
-    :param correct:
+    :param layers: 层 list
+    :param malwares_Extract: 恶意软件的保存路径，list
+    :param interval: 每interval个中嵌入一个
+    :param correct: 冗余个数
     :return:
     """
+    para = torch.load(initParaPath, map_location=torch.device("mps"))
+    layersEmbeddSize = getExpEmbeddSize(initParaPath, layers, interval, correct)  # 获取每一层最大的嵌入容量Byte，list
+
+    for layer, layerEmbeddSize, malware_Extract in zip(layers, layersEmbeddSize, malwares_Extract):
+        extractPos = 0  # 提取的字节数
+        correctPos = 0  # 判断的几个冗余位置
+        bit0_Num = 0  # 冗余位置有几个结果是0
+        bit1_Num = 0  # 冗余位置有几个结果是1
+        malware = []
+
+        paraTensor = para[layer].data
+        paraTensor_flat = paraTensor.flatten()
+        malwareBitLen = layerEmbeddSize * 8
+        while extractPos < malwareBitLen:
+            while correctPos < correct:
+                index = extractPos + malwareBitLen * interval * correctPos
+                paraTensor_flat_str = BitArray(int=paraTensor_flat[index].view(torch.int32), length=32).bin
+                bitData = decode(paraTensor_flat_str[6:9])
+                '''判断3位冗余'''
+                if bitData == '0':
+                    bit0_Num += 1
+                else:
+                    bit1_Num += 1
+                '''输出提取状态'''
+                print("extractPos:", extractPos, "index:", index, "embeddedData:", paraTensor_flat_str[6:9],
+                      "bitData:", bitData, "correctPos:", correctPos, "bit0_Num:", bit0_Num, "bit1_Num:", bit1_Num)
+                correctPos += 1
+                if correctPos == correct:
+                    if bit0_Num > bit1_Num:
+                        malware.append(BitArray(bin="0"))
+                    else:
+                        malware.append(BitArray(bin="1"))
+                    correctPos = 0
+                    bit0_Num = 0
+                    bit1_Num = 0
+                    break
+            extractPos += 1
+        merge_file(malware_Extract, malware)
+
+
     return
 
 
@@ -374,14 +440,17 @@ if __name__ == "__main__":
     3. 将malware嵌入到参数中
     4. 从参数中提取malware
     """
-    layers = ["layer1.0.conv2.weight"]
-    malwares = ["./malware/malware46B"]
+    layers = ["layer4.2.conv2.weight"]
+    malwares = ["./malware/l1"]
+    malwares_Extract = ["./malware/l1_extrac"]
     interval = 9
     correct = 11
     savePath = "./resnet50/bitEmbedd/temp.pth"
 
+    # sizeList = getExpEmbeddSize(resnet50InitParaPath, layers, interval, correct)
+    # generateFiles(malwares, sizeList)
+    # layerExpBitEmbedd(resnet50InitParaPath, savePath, layers, malwares, interval, correct)
+    # layerExpBitExtrac("./resnet50/2CIFAR100/temp_ep_5.pth", layers, ["./malware/l1_extrac_re"], interval, correct)
 
-    layerExpBitEmbedd(resnet50InitParaPath, savePath, layers, malwares, interval, correct)
-
-
+    showDif("./malware/l1", "./malware/l1_extrac_re")
     print("Done")
