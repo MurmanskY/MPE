@@ -1,6 +1,7 @@
 import os
 import torch
 import random
+import struct
 import pandas as pd
 from bitstring import BitArray
 from fileProcess.fileProcess import split_file, merge_file
@@ -99,6 +100,18 @@ def decode(str):
     else:
         return "1"
 
+
+def float32_to_bits(f):
+    """
+    将 float32 数字转换为二进制位字符串表示
+    :param f: 输入的 float32 数字
+    :return: 32 位的二进制字符串
+    """
+    # 使用 struct.pack 将 float32 转换为字节，再转换为整数
+    [int_repr] = struct.unpack('!I', struct.pack('!f', f))
+
+    # 将整数转换为二进制字符串并去掉 '0b' 前缀，填充为32位
+    return format(int_repr, '032b')
 
 def getPthKeys(paraPath):
     """
@@ -225,6 +238,40 @@ def layerExpBitFlip(initParaPath, flipParaPath, bit_n, *layers):
         layerTensor = para[layer].data
         para[layer].data = flip_exponent_bits(layerTensor, bit_n)
 
+    torch.save(para, flipParaPath)
+    return
+
+
+def layerSignBitFlip(initParaPath, flipParaPath, *layers):
+    """
+    将模型的某些层的参数的符号位做翻转
+    :param initParaPath: 原始pth
+    :param flipParaPath:
+    :param layers: 需要翻转的层
+    :return:
+    """
+    def flip_sign_bit(tensor):
+        """
+        翻转 IEEE 754 32 位浮点数的符号位
+        :param tensor: 输入 tensor
+        :return: 符号位被翻转的 tensor
+        """
+        # 将 tensor 视为 int32 进行操作
+        int_view = tensor.view(torch.int32)
+        # 符号位的掩码：符号位是第 31 位
+        sign_bit_mask = 0x80000000
+
+        # 通过异或操作翻转符号位
+        int_view ^= sign_bit_mask
+        # 将 int32 视为 float32 返回
+        return int_view.view(torch.float32)
+
+    para = torch.load(initParaPath, map_location=torch.device("cpu"))
+    for layer in layers:
+        if para[layer].data.dim() < 2:
+            continue # 只嵌入大于等于2维层的参数
+        layerTensor = para[layer].data
+        para[layer].data = flip_sign_bit(layerTensor)
     torch.save(para, flipParaPath)
     return
 
@@ -416,8 +463,8 @@ def func(pth1, pth2, *layers):
         print(layer, para1[layer].data.shape)
         para1Tensor = para1[layer].data.flatten()
         para2Tensor = para2[layer].data.flatten()
-        print(format(para1Tensor[0].view(torch.int32), '032b')[1:9])
-        print(format(para2Tensor[0].view(torch.int32), '032b')[1:9], "\n")
+        print(format(para1Tensor[0].view(torch.int32), '032b')[0:32])
+        print(format(para2Tensor[0].view(torch.int32), '032b')[0:32], "\n")
 
     return
 
@@ -428,6 +475,8 @@ if __name__ == "__main__":
 
     # layerExpBitEmbedd(resnet50InitParaPath, "./resnet50/bitFlip/exp_3_flip.pth", 3, *getPthKeys(resnet50InitParaPath))
 
+    layerSignBitFlip(resnet50InitParaPath, "./resnet50/bitFlip/sign_flip.pth", *getPthKeys(resnet50InitParaPath))
+    func(resnet50InitParaPath, "./resnet50/bitFlip/sign_flip.pth", *getPthKeys(resnet50InitParaPath))
 
 
 
@@ -450,7 +499,7 @@ if __name__ == "__main__":
     # sizeList = getExpEmbeddSize(resnet50InitParaPath, layers, interval, correct)
     # generateFiles(malwares, sizeList)
     # layerExpBitEmbedd(resnet50InitParaPath, savePath, layers, malwares, interval, correct)
-    # layerExpBitExtrac("./resnet50/2CIFAR100/temp_ep_5.pth", layers, ["./malware/l1_extrac_re"], interval, correct)
-
-    showDif("./malware/l1", "./malware/l1_extrac_re")
+    # layerExpBitExtrac("./resnet50/2OxfordIIITPet/temp_ep_10.pth", layers, ["./malware/l1_extrac_re_Pet"], interval, correct)
+    #
+    # showDif("./malware/l1", "./malware/l1_extrac_re_Pet")
     print("Done")
