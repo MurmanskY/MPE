@@ -271,7 +271,7 @@ def layerSignBitFlip(initParaPath, flipParaPath, *layers):
         if para[layer].data.dim() < 2:
             continue # 只嵌入大于等于2维层的参数
         layerTensor = para[layer].data
-        para[layer].data = flip_sign_bit(layerTensor)
+        para[layer].data = -layerTensor
     torch.save(para, flipParaPath)
     return
 
@@ -463,8 +463,8 @@ def func(pth1, pth2, *layers):
         print(layer, para1[layer].data.shape)
         para1Tensor = para1[layer].data.flatten()
         para2Tensor = para2[layer].data.flatten()
-        print(format(para1Tensor[0].view(torch.int32), '032b')[0:32])
-        print(format(para2Tensor[0].view(torch.int32), '032b')[0:32], "\n")
+        print(para1Tensor[0], format(para1Tensor[0].view(torch.int32), '032b')[0:32])
+        print(para2Tensor[0], format(para2Tensor[0].view(torch.int32), '032b')[0:32], "\n")
 
     return
 
