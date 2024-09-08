@@ -475,8 +475,8 @@ if __name__ == "__main__":
 
     # layerExpBitEmbedd(resnet50InitParaPath, "./resnet50/bitFlip/exp_3_flip.pth", 3, *getPthKeys(resnet50InitParaPath))
 
-    layerSignBitFlip(resnet50InitParaPath, "./resnet50/bitFlip/sign_flip.pth", *getPthKeys(resnet50InitParaPath))
-    func(resnet50InitParaPath, "./resnet50/bitFlip/sign_flip.pth", *getPthKeys(resnet50InitParaPath))
+    # layerSignBitFlip(resnet50InitParaPath, "./resnet50/bitFlip/sign_flip.pth", *getPthKeys(resnet50InitParaPath))
+    # func(resnet50InitParaPath, "./resnet50/bitFlip/sign_flip.pth", *getPthKeys(resnet50InitParaPath))
 
 
 
