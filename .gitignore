@@ -90,6 +90,11 @@ parameters/bitFlip/resnet50/2FGCVAircraft/*
 parameters/bitFlip/malware/*
 !parameters/bitFlip/malware/.gitkeep
 
+parameters/bitFlip/resnet101/bitFlip/*
+!parameters/bitFlip/resnet101/bitFlip/.gitkeep
+
+parameters/bitFlip/resnet101/2CIFAR100/*
+!parameters/bitFlip/resnet101/2CIFAR100/.gitkeep
 
 
 
