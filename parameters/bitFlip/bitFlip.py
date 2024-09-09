@@ -233,7 +233,7 @@ def layerExpBitFlip(initParaPath, flipParaPath, bit_n, *layers):
 
     para = torch.load(initParaPath)
     for layer in layers:  # 所有layer
-        if para[layer].data.dim() < 4:
+        if para[layer].data.dim() < 1:
             continue  # 只在卷积层进行嵌入
         layerTensor = para[layer].data
         para[layer].data = flip_exponent_bits(layerTensor, bit_n)
@@ -478,6 +478,17 @@ if __name__ == "__main__":
     # layerSignBitFlip(resnet50InitParaPath, "./resnet50/bitFlip/sign_flip.pth", *getPthKeys(resnet50InitParaPath))
     # func(resnet50InitParaPath, "./resnet50/bitFlip/sign_flip.pth", *getPthKeys(resnet50InitParaPath))
 
+    '''翻转resnet101'''
+    # layerFracBitFLip(resnet101InitParaPath, "./resnet101/bitFlip/frac_1.pth", 1, *getPthKeys(resnet101InitParaPath))
+    # layerFracBitFLip(resnet101InitParaPath, "./resnet101/bitFlip/frac_8.pth", 8, *getPthKeys(resnet101InitParaPath))
+    # layerFracBitFLip(resnet101InitParaPath, "./resnet101/bitFlip/frac_16.pth", 16, *getPthKeys(resnet101InitParaPath))
+    # layerFracBitFLip(resnet101InitParaPath, "./resnet101/bitFlip/frac_23.pth", 23, *getPthKeys(resnet101InitParaPath))
+    layerExpBitFlip(resnet101InitParaPath, "./resnet101/bitFlip/exp_3_allFlip.pth", 3, *getPthKeys(resnet101InitParaPath))
+    # layerExpBitFlip(resnet101InitParaPath, "./resnet101/bitFlip/exp_3_convFlip.pth", 3,*getPthKeys(resnet101InitParaPath))
+
+    '''翻转vgg16'''
+
+    '''翻转vgg19'''
 
 
 
