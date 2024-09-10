@@ -97,6 +97,20 @@ parameters/bitFlip/resnet101/2CIFAR100/*
 !parameters/bitFlip/resnet101/2CIFAR100/.gitkeep
 !parameters/bitFlip/resnet101/2CIFAR100/result/
 
+parameters/bitFlip/vgg16/bitFlip/*
+!parameters/bitFlip/vgg16/bitFlip/.gitkeep
+
+parameters/bitFlip/vgg16/2CIFAR100/*
+!parameters/bitFlip/vgg16/2CIFAR100/.gitkeep
+!parameters/bitFlip/vgg16/2CIFAR100/result/
+
+parameters/bitFlip/vgg19/bitFlip/*
+!parameters/bitFlip/vgg19/bitFlip/.gitkeep
+
+parameters/bitFlip/vgg19/2CIFAR100/*
+!parameters/bitFlip/vgg19/2CIFAR100/.gitkeep
+!parameters/bitFlip/vgg19/2CIFAR100/result/
+
 
 
 malware/*
