@@ -1,4 +1,5 @@
 import torch
+import torchvision.models as models
 
 
 resnet18InitParaPath = './init/resnet18-f37072fd.pth'
@@ -8,7 +9,7 @@ vgg11InitParaPath = './init/vgg11-8a719046.pth'
 vgg13InitParaPath = './init/vgg13-19584684.pth'
 vgg16InitParaPath = './init/vgg16-397923af.pth'
 vgg19InitParaPath = './init/vgg19-dcbb9e9d.pth'
-
+alexnetInitParaPath = './init/alexnet-owt-7be5be79.pth'
 
 def showParaStructure(paraPath):
     """
@@ -44,5 +45,8 @@ def showParaValue(paraPath):
 if __name__ == "__main__":
     '''for test'''
 
-    showParaStructure(resnet101InitParaPath)
+    model = models.alexnet()
+    model.load_state_dict(torch.load(alexnetInitParaPath))
+    print(model)
+    showParaStructure(alexnetInitParaPath)
     # showParaValue(paraPath)

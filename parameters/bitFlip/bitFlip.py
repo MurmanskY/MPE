@@ -495,12 +495,12 @@ if __name__ == "__main__":
     # layerExpBitFlip(vgg16InitParaPath, "./vgg16/bitFlip/exp_3_convFlip.pth", 3,*getPthKeys(vgg16InitParaPath))
 
     '''翻转vgg19'''
-    # layerFracBitFLip(vgg16InitParaPath, "./vgg16/bitFlip/frac_1.pth", 1, *getPthKeys(vgg16InitParaPath))
-    # layerFracBitFLip(vgg16InitParaPath, "./vgg16/bitFlip/frac_8.pth", 8, *getPthKeys(vgg16InitParaPath))
-    # layerFracBitFLip(vgg16InitParaPath, "./vgg16/bitFlip/frac_16.pth", 16, *getPthKeys(vgg16InitParaPath))
-    # layerFracBitFLip(vgg16InitParaPath, "./vgg16/bitFlip/frac_23.pth", 23, *getPthKeys(vgg16InitParaPath))
-    # layerExpBitFlip(vgg16InitParaPath, "./vgg16/bitFlip/exp_3_allFlip.pth", 3, *getPthKeys(vgg16InitParaPath))
-    # layerExpBitFlip(vgg16InitParaPath, "./vgg16/bitFlip/exp_3_convFlip.pth", 3,*getPthKeys(vgg16InitParaPath))
+    # layerFracBitFLip(vgg19InitParaPath, "./vgg19/bitFlip/frac_1.pth", 1, *getPthKeys(vgg19InitParaPath))
+    # layerFracBitFLip(vgg19InitParaPath, "./vgg19/bitFlip/frac_8.pth", 8, *getPthKeys(vgg19InitParaPath))
+    # layerFracBitFLip(vgg19InitParaPath, "./vgg19/bitFlip/frac_16.pth", 16, *getPthKeys(vgg19InitParaPath))
+    # layerFracBitFLip(vgg19InitParaPath, "./vgg19/bitFlip/frac_23.pth", 23, *getPthKeys(vgg19InitParaPath))
+    # layerExpBitFlip(vgg19InitParaPath, "./vgg19/bitFlip/exp_3_allFlip.pth", 3, *getPthKeys(vgg19InitParaPath))
+    # layerExpBitFlip(vgg19InitParaPath, "./vgg19/bitFlip/exp_3_convFlip.pth", 3,*getPthKeys(vgg19InitParaPath))
 
 
 
