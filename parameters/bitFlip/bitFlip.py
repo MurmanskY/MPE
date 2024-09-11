@@ -17,6 +17,9 @@ vgg13InitParaPath = '../init/vgg13-19584684.pth'
 vgg16InitParaPath = '../init/vgg16-397923af.pth'
 vgg16BNInitParaPath = '../init/vgg16_bn-6c64b313.pth'
 vgg19InitParaPath = '../init/vgg19-dcbb9e9d.pth'
+alexnetInitParaPath = '../init/alexnet-owt-7be5be79.pth'
+convnextInitParaPath = '../init/convnext_base-6075fbad.pth'
+
 '''用于存储bit翻转率的结果'''
 outputFileRoot = './result/'
 
@@ -510,6 +513,22 @@ if __name__ == "__main__":
     # layerFracBitFLip(vgg16BNInitParaPath, "./vgg16bn/bitFlip/frac_23.pth", 23, *getPthKeys(vgg16BNInitParaPath))
     # layerExpBitFlip(vgg16BNInitParaPath, "./vgg16bn/bitFlip/exp_3_allFlip.pth", 3, *getPthKeys(vgg16BNInitParaPath))
     # layerExpBitFlip(vgg16BNInitParaPath, "./vgg16bn/bitFlip/exp_3_convFlip.pth", 3,*getPthKeys(vgg16BNInitParaPath))
+
+    '''翻转alexnet'''
+    # layerFracBitFLip(alexnetInitParaPath, "./alexnet/bitFlip/frac_1.pth", 1, *getPthKeys(alexnetInitParaPath))
+    # layerFracBitFLip(alexnetInitParaPath, "./alexnet/bitFlip/frac_8.pth", 8, *getPthKeys(alexnetInitParaPath))
+    # layerFracBitFLip(alexnetInitParaPath, "./alexnet/bitFlip/frac_16.pth", 16, *getPthKeys(alexnetInitParaPath))
+    # layerFracBitFLip(alexnetInitParaPath, "./alexnet/bitFlip/frac_23.pth", 23, *getPthKeys(alexnetInitParaPath))
+    # layerExpBitFlip(alexnetInitParaPath, "./alexnet/bitFlip/exp_3_allFlip.pth", 3, *getPthKeys(alexnetInitParaPath))
+    # layerExpBitFlip(alexnetInitParaPath, "./alexnet/bitFlip/exp_3_convFlip.pth", 3,*getPthKeys(alexnetInitParaPath))
+
+    '''翻转convnext'''
+    # layerFracBitFLip(convnextInitParaPath, "./convnext/bitFlip/frac_1.pth", 1, *getPthKeys(convnextInitParaPath))
+    # layerFracBitFLip(convnextInitParaPath, "./convnext/bitFlip/frac_8.pth", 8, *getPthKeys(convnextInitParaPath))
+    # layerFracBitFLip(convnextInitParaPath, "./convnext/bitFlip/frac_16.pth", 16, *getPthKeys(convnextInitParaPath))
+    # layerFracBitFLip(convnextInitParaPath, "./convnext/bitFlip/frac_23.pth", 23, *getPthKeys(convnextInitParaPath))
+    # layerExpBitFlip(convnextInitParaPath, "./convnext/bitFlip/exp_3_allFlip.pth", 3, *getPthKeys(convnextInitParaPath))
+    # layerExpBitFlip(convnextInitParaPath, "./convnext/bitFlip/exp_3_convFlip.pth", 3,*getPthKeys(convnextInitParaPath))
 
 
 

@@ -183,17 +183,31 @@ if __name__ == '__main__':
 
 
     '''vgg16bn_2_CIFAR100'''
-    showBitFlip("./vgg16bn/bitFlip/frac_1.pth", "./vgg16bn/2CIFAR100/frac_1_ep_5.pth", 31, 32,
-                "./vgg16bn/2CIFAR100/result/frac_1_ep_5.csv")
-    showBitFlip("./vgg16bn/bitFlip/frac_8.pth", "./vgg16bn/2CIFAR100/frac_8_ep_5.pth", 24, 32,
-                "./vgg16bn/2CIFAR100/result/frac_8_ep_5.csv")
-    showBitFlip("./vgg16bn/bitFlip/frac_16.pth", "./vgg16bn/2CIFAR100/frac_16_ep_5.pth", 16, 32,
-                "./vgg16bn/2CIFAR100/result/frac_16_ep_5.csv")
-    showBitFlip("./vgg16bn/bitFlip/frac_23.pth", "./vgg16bn/2CIFAR100/frac_23_ep_5.pth", 9, 32,
-                "./vgg16bn/2CIFAR100/result/frac_23_ep_5.csv")
-    showBitFlip("./vgg16bn/bitFlip/exp_3_allFlip.pth", "./vgg16bn/2CIFAR100/exp_3_allFlip_ep_5.pth", 6, 9,
-                "./vgg16bn/2CIFAR100/result/exp_3_allFlip_ep_5.csv")
-    showBitFlip("./vgg16bn/bitFlip/exp_3_convFlip.pth", "./vgg16bn/2CIFAR100/exp_3_convFlip_ep_5.pth", 6, 9,
-                "./vgg16bn/2CIFAR100/result/exp_3_convFlip_ep_5.csv")
+    # showBitFlip("./vgg16bn/bitFlip/frac_1.pth", "./vgg16bn/2CIFAR100/frac_1_ep_5.pth", 31, 32,
+    #             "./vgg16bn/2CIFAR100/result/frac_1_ep_5.csv")
+    # showBitFlip("./vgg16bn/bitFlip/frac_8.pth", "./vgg16bn/2CIFAR100/frac_8_ep_5.pth", 24, 32,
+    #             "./vgg16bn/2CIFAR100/result/frac_8_ep_5.csv")
+    # showBitFlip("./vgg16bn/bitFlip/frac_16.pth", "./vgg16bn/2CIFAR100/frac_16_ep_5.pth", 16, 32,
+    #             "./vgg16bn/2CIFAR100/result/frac_16_ep_5.csv")
+    # showBitFlip("./vgg16bn/bitFlip/frac_23.pth", "./vgg16bn/2CIFAR100/frac_23_ep_5.pth", 9, 32,
+    #             "./vgg16bn/2CIFAR100/result/frac_23_ep_5.csv")
+    # showBitFlip("./vgg16bn/bitFlip/exp_3_allFlip.pth", "./vgg16bn/2CIFAR100/exp_3_allFlip_ep_5.pth", 6, 9,
+    #             "./vgg16bn/2CIFAR100/result/exp_3_allFlip_ep_5.csv")
+    # showBitFlip("./vgg16bn/bitFlip/exp_3_convFlip.pth", "./vgg16bn/2CIFAR100/exp_3_convFlip_ep_5.pth", 6, 9,
+    #             "./vgg16bn/2CIFAR100/result/exp_3_convFlip_ep_5.csv")
+
+    '''alexnet_2_CIFAR100'''
+    showBitFlip("./alexnet/bitFlip/frac_1.pth", "./alexnet/2CIFAR100/frac_1_ep_5.pth", 31, 32,
+                "./alexnet/2CIFAR100/result/frac_1_ep_5.csv")
+    showBitFlip("./alexnet/bitFlip/frac_8.pth", "./alexnet/2CIFAR100/frac_8_ep_5.pth", 24, 32,
+                "./alexnet/2CIFAR100/result/frac_8_ep_5.csv")
+    showBitFlip("./alexnet/bitFlip/frac_16.pth", "./alexnet/2CIFAR100/frac_16_ep_5.pth", 16, 32,
+                "./alexnet/2CIFAR100/result/frac_16_ep_5.csv")
+    showBitFlip("./alexnet/bitFlip/frac_23.pth", "./alexnet/2CIFAR100/frac_23_ep_5.pth", 9, 32,
+                "./alexnet/2CIFAR100/result/frac_23_ep_5.csv")
+    showBitFlip("./alexnet/bitFlip/exp_3_allFlip.pth", "./alexnet/2CIFAR100/exp_3_allFlip_ep_5.pth", 6, 9,
+                "./alexnet/2CIFAR100/result/exp_3_allFlip_ep_5.csv")
+    showBitFlip("./alexnet/bitFlip/exp_3_convFlip.pth", "./alexnet/2CIFAR100/exp_3_convFlip_ep_5.pth", 6, 9,
+                "./alexnet/2CIFAR100/result/exp_3_convFlip_ep_5.csv")
 
 
