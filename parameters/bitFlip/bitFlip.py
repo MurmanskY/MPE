@@ -15,6 +15,7 @@ resnet101InitParaPath = '../init/resnet101-cd907fc2.pth'
 vgg11InitParaPath = '../init/vgg11-8a719046.pth'
 vgg13InitParaPath = '../init/vgg13-19584684.pth'
 vgg16InitParaPath = '../init/vgg16-397923af.pth'
+vgg16BNInitParaPath = '../init/vgg16_bn-6c64b313.pth'
 vgg19InitParaPath = '../init/vgg19-dcbb9e9d.pth'
 '''用于存储bit翻转率的结果'''
 outputFileRoot = './result/'
@@ -501,6 +502,14 @@ if __name__ == "__main__":
     # layerFracBitFLip(vgg19InitParaPath, "./vgg19/bitFlip/frac_23.pth", 23, *getPthKeys(vgg19InitParaPath))
     # layerExpBitFlip(vgg19InitParaPath, "./vgg19/bitFlip/exp_3_allFlip.pth", 3, *getPthKeys(vgg19InitParaPath))
     # layerExpBitFlip(vgg19InitParaPath, "./vgg19/bitFlip/exp_3_convFlip.pth", 3,*getPthKeys(vgg19InitParaPath))
+
+    '''翻转vgg16bn'''
+    # layerFracBitFLip(vgg16BNInitParaPath, "./vgg16bn/bitFlip/frac_1.pth", 1, *getPthKeys(vgg16BNInitParaPath))
+    # layerFracBitFLip(vgg16BNInitParaPath, "./vgg16bn/bitFlip/frac_8.pth", 8, *getPthKeys(vgg16BNInitParaPath))
+    # layerFracBitFLip(vgg16BNInitParaPath, "./vgg16bn/bitFlip/frac_16.pth", 16, *getPthKeys(vgg16BNInitParaPath))
+    # layerFracBitFLip(vgg16BNInitParaPath, "./vgg16bn/bitFlip/frac_23.pth", 23, *getPthKeys(vgg16BNInitParaPath))
+    # layerExpBitFlip(vgg16BNInitParaPath, "./vgg16bn/bitFlip/exp_3_allFlip.pth", 3, *getPthKeys(vgg16BNInitParaPath))
+    # layerExpBitFlip(vgg16BNInitParaPath, "./vgg16bn/bitFlip/exp_3_convFlip.pth", 3,*getPthKeys(vgg16BNInitParaPath))
 
 
 
