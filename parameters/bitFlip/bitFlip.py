@@ -237,7 +237,7 @@ def layerExpBitFlip(initParaPath, flipParaPath, bit_n, *layers):
 
     para = torch.load(initParaPath)
     for layer in layers:  # 所有layer
-        if para[layer].data.dim() < 4:
+        if para[layer].data.dim() < 1:
             continue  # 只在卷积层进行嵌入
         layerTensor = para[layer].data
         para[layer].data = flip_exponent_bits(layerTensor, bit_n)

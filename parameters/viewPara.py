@@ -13,6 +13,7 @@ vgg19InitParaPath = './init/vgg19-dcbb9e9d.pth'
 alexnetInitParaPath = './init/alexnet-owt-7be5be79.pth'
 convnextInitParaPath = './init/convnext_base-6075fbad.pth'
 vitb16InitParaPath = './init/vit_b_16-c867db91.pth'
+swinbInitParaPath = './init/swin_b-68c6b09e.pth'
 
 def showParaStructure(paraPath):
     """
@@ -48,8 +49,8 @@ def showParaValue(paraPath):
 if __name__ == "__main__":
     '''for test'''
 
-    model = models.vit_b_16()
-    model.load_state_dict(torch.load(vitb16InitParaPath))
+    model = models.swin_b()
+    model.load_state_dict(torch.load(swinbInitParaPath))
     print(model)
-    showParaStructure(vitb16InitParaPath)
+    showParaStructure(swinbInitParaPath)
     # showParaValue(paraPath)

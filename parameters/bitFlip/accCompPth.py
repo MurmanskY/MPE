@@ -213,8 +213,8 @@ if __name__ == '__main__':
 
 
     '''convnext_2_CIFAR100'''
-    showBitFlip("./convnext/bitFlip/frac_1.pth", "./convnext/2CIFAR100/frac_1_ep_5.pth", 31, 32,
-                "./convnext/2CIFAR100/result/frac_1_ep_5.csv")
+    # showBitFlip("./convnext/bitFlip/frac_1.pth", "./convnext/2CIFAR100/frac_1_ep_5.pth", 31, 32,
+    #             "./convnext/2CIFAR100/result/frac_1_ep_5.csv")
     showBitFlip("./convnext/bitFlip/frac_8.pth", "./convnext/2CIFAR100/frac_8_ep_5.pth", 24, 32,
                 "./convnext/2CIFAR100/result/frac_8_ep_5.csv")
     showBitFlip("./convnext/bitFlip/frac_16.pth", "./convnext/2CIFAR100/frac_16_ep_5.pth", 16, 32,
@@ -223,7 +223,7 @@ if __name__ == '__main__':
                 "./convnext/2CIFAR100/result/frac_23_ep_5.csv")
     showBitFlip("./convnext/bitFlip/exp_3_allFlip.pth", "./convnext/2CIFAR100/exp_3_allFlip_ep_5.pth", 6, 9,
                 "./convnext/2CIFAR100/result/exp_3_allFlip_ep_5.csv")
-    showBitFlip("./convnext/bitFlip/exp_3_convFlip.pth", "./convnext/2CIFAR100/exp_3_convFlip_ep_5.pth", 6, 9,
-                "./convnext/2CIFAR100/result/exp_3_convFlip_ep_5.csv")
+    # showBitFlip("./convnext/bitFlip/exp_3_convFlip.pth", "./convnext/2CIFAR100/exp_3_convFlip_ep_5.pth", 6, 9,
+    #             "./convnext/2CIFAR100/result/exp_3_convFlip_ep_5.csv")
 
 
