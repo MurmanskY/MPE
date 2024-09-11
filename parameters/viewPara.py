@@ -8,6 +8,7 @@ resnet101InitParaPath = './init/resnet101-cd907fc2.pth'
 vgg11InitParaPath = './init/vgg11-8a719046.pth'
 vgg13InitParaPath = './init/vgg13-19584684.pth'
 vgg16InitParaPath = './init/vgg16-397923af.pth'
+vgg16BNInitParaPath = './init/vgg16_bn-6c64b313.pth'
 vgg19InitParaPath = './init/vgg19-dcbb9e9d.pth'
 alexnetInitParaPath = './init/alexnet-owt-7be5be79.pth'
 convnextInitParaPath = './init/convnext_base-6075fbad.pth'
@@ -46,8 +47,8 @@ def showParaValue(paraPath):
 if __name__ == "__main__":
     '''for test'''
 
-    model = models.convnext_base()
-    model.load_state_dict(torch.load(convnextInitParaPath))
+    model = models.vgg16_bn()
+    model.load_state_dict(torch.load(vgg16BNInitParaPath))
     print(model)
-    showParaStructure(convnextInitParaPath)
+    showParaStructure(vgg16BNInitParaPath)
     # showParaValue(paraPath)
