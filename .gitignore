@@ -139,6 +139,20 @@ parameters/bitFlip/convnext/2CIFAR100/*
 !parameters/bitFlip/convnext/2CIFAR100/.gitkeep
 !parameters/bitFlip/convnext/2CIFAR100/result/
 
+parameters/bitFlip/googlenet/bitFlip/*
+!parameters/bitFlip/googlenet/bitFlip/.gitkeep
+
+parameters/bitFlip/googlenet/2CIFAR100/*
+!parameters/bitFlip/googlenet/2CIFAR100/.gitkeep
+!parameters/bitFlip/googlenet/2CIFAR100/result/
+
+parameters/bitFlip/inceptionV3/bitFlip/*
+!parameters/bitFlip/inceptionV3/bitFlip/.gitkeep
+
+parameters/bitFlip/inceptionV3/2CIFAR100/*
+!parameters/bitFlip/inceptionV3/2CIFAR100/.gitkeep
+!parameters/bitFlip/inceptionV3/2CIFAR100/result/
+
 
 
 malware/*

@@ -20,6 +20,9 @@ vgg19InitParaPath = '../init/vgg19-dcbb9e9d.pth'
 vgg19BNInitParaPath = '../init/vgg19_bn-c79401a0.pth'
 alexnetInitParaPath = '../init/alexnet-owt-7be5be79.pth'
 convnextInitParaPath = '../init/convnext_base-6075fbad.pth'
+googlenetInitParaPath = '../init/googlenet-1378be20.pth'
+inceptionV3InitParaPath = '../init/inception_v3_google-0cc3c7bd.pth'
+
 
 '''用于存储bit翻转率的结果'''
 outputFileRoot = './result/'
@@ -538,6 +541,22 @@ if __name__ == "__main__":
     # layerFracBitFLip(convnextInitParaPath, "./convnext/bitFlip/frac_23.pth", 23, *getPthKeys(convnextInitParaPath))
     # layerExpBitFlip(convnextInitParaPath, "./convnext/bitFlip/exp_3_allFlip.pth", 3, *getPthKeys(convnextInitParaPath))
     # layerExpBitFlip(convnextInitParaPath, "./convnext/bitFlip/exp_3_convFlip.pth", 3,*getPthKeys(convnextInitParaPath))
+
+    '''翻转googlenet'''
+    # layerFracBitFLip(googlenetInitParaPath, "./googlenet/bitFlip/frac_1.pth", 1, *getPthKeys(googlenetInitParaPath))
+    # layerFracBitFLip(googlenetInitParaPath, "./googlenet/bitFlip/frac_8.pth", 8, *getPthKeys(googlenetInitParaPath))
+    # layerFracBitFLip(googlenetInitParaPath, "./googlenet/bitFlip/frac_16.pth", 16, *getPthKeys(googlenetInitParaPath))
+    # layerFracBitFLip(googlenetInitParaPath, "./googlenet/bitFlip/frac_23.pth", 23, *getPthKeys(googlenetInitParaPath))
+    # layerExpBitFlip(googlenetInitParaPath, "./googlenet/bitFlip/exp_3_allFlip.pth", 3, *getPthKeys(googlenetInitParaPath))
+    # layerExpBitFlip(googlenetInitParaPath, "./googlenet/bitFlip/exp_3_convFlip.pth", 3,*getPthKeys(googlenetInitParaPath))
+
+    '''翻转inceptionV3'''
+    # layerFracBitFLip(inceptionV3InitParaPath, "./inceptionV3/bitFlip/frac_1.pth", 1, *getPthKeys(inceptionV3InitParaPath))
+    # layerFracBitFLip(inceptionV3InitParaPath, "./inceptionV3/bitFlip/frac_8.pth", 8, *getPthKeys(inceptionV3InitParaPath))
+    # layerFracBitFLip(inceptionV3InitParaPath, "./inceptionV3/bitFlip/frac_16.pth", 16, *getPthKeys(inceptionV3InitParaPath))
+    # layerFracBitFLip(inceptionV3InitParaPath, "./inceptionV3/bitFlip/frac_23.pth", 23, *getPthKeys(inceptionV3InitParaPath))
+    # layerExpBitFlip(inceptionV3InitParaPath, "./inceptionV3/bitFlip/exp_3_allFlip.pth", 3, *getPthKeys(inceptionV3InitParaPath))
+    # layerExpBitFlip(inceptionV3InitParaPath, "./inceptionV3/bitFlip/exp_3_convFlip.pth", 3,*getPthKeys(inceptionV3InitParaPath))
 
 
 
