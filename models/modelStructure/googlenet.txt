@@ -1,0 +1,705 @@
+GoogLeNet(
+  (conv1): BasicConv2d(
+    (conv): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+    (bn): BatchNorm2d(64, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+  )
+  (maxpool1): MaxPool2d(kernel_size=3, stride=2, padding=0, dilation=1, ceil_mode=True)
+  (conv2): BasicConv2d(
+    (conv): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+    (bn): BatchNorm2d(64, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+  )
+  (conv3): BasicConv2d(
+    (conv): Conv2d(64, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+    (bn): BatchNorm2d(192, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+  )
+  (maxpool2): MaxPool2d(kernel_size=3, stride=2, padding=0, dilation=1, ceil_mode=True)
+  (inception3a): Inception(
+    (branch1): BasicConv2d(
+      (conv): Conv2d(192, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn): BatchNorm2d(64, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+    )
+    (branch2): Sequential(
+      (0): BasicConv2d(
+        (conv): Conv2d(192, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn): BatchNorm2d(96, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): BasicConv2d(
+        (conv): Conv2d(96, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(128, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (branch3): Sequential(
+      (0): BasicConv2d(
+        (conv): Conv2d(192, 16, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn): BatchNorm2d(16, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): BasicConv2d(
+        (conv): Conv2d(16, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(32, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (branch4): Sequential(
+      (0): MaxPool2d(kernel_size=3, stride=1, padding=1, dilation=1, ceil_mode=True)
+      (1): BasicConv2d(
+        (conv): Conv2d(192, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn): BatchNorm2d(32, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (inception3b): Inception(
+    (branch1): BasicConv2d(
+      (conv): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn): BatchNorm2d(128, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+    )
+    (branch2): Sequential(
+      (0): BasicConv2d(
+        (conv): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn): BatchNorm2d(128, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): BasicConv2d(
+        (conv): Conv2d(128, 192, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(192, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (branch3): Sequential(
+      (0): BasicConv2d(
+        (conv): Conv2d(256, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn): BatchNorm2d(32, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): BasicConv2d(
+        (conv): Conv2d(32, 96, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(96, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (branch4): Sequential(
+      (0): MaxPool2d(kernel_size=3, stride=1, padding=1, dilation=1, ceil_mode=True)
+      (1): BasicConv2d(
+        (conv): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn): BatchNorm2d(64, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (maxpool3): MaxPool2d(kernel_size=3, stride=2, padding=0, dilation=1, ceil_mode=True)
+  (inception4a): Inception(
+    (branch1): BasicConv2d(
+      (conv): Conv2d(480, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn): BatchNorm2d(192, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+    )
+    (branch2): Sequential(
+      (0): BasicConv2d(
+        (conv): Conv2d(480, 96, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn): BatchNorm2d(96, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): BasicConv2d(
+        (conv): Conv2d(96, 208, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(208, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (branch3): Sequential(
+      (0): BasicConv2d(
+        (conv): Conv2d(480, 16, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn): BatchNorm2d(16, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): BasicConv2d(
+        (conv): Conv2d(16, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(48, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (branch4): Sequential(
+      (0): MaxPool2d(kernel_size=3, stride=1, padding=1, dilation=1, ceil_mode=True)
+      (1): BasicConv2d(
+        (conv): Conv2d(480, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn): BatchNorm2d(64, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (inception4b): Inception(
+    (branch1): BasicConv2d(
+      (conv): Conv2d(512, 160, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn): BatchNorm2d(160, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+    )
+    (branch2): Sequential(
+      (0): BasicConv2d(
+        (conv): Conv2d(512, 112, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn): BatchNorm2d(112, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): BasicConv2d(
+        (conv): Conv2d(112, 224, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(224, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (branch3): Sequential(
+      (0): BasicConv2d(
+        (conv): Conv2d(512, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn): BatchNorm2d(24, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): BasicConv2d(
+        (conv): Conv2d(24, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(64, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (branch4): Sequential(
+      (0): MaxPool2d(kernel_size=3, stride=1, padding=1, dilation=1, ceil_mode=True)
+      (1): BasicConv2d(
+        (conv): Conv2d(512, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn): BatchNorm2d(64, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (inception4c): Inception(
+    (branch1): BasicConv2d(
+      (conv): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn): BatchNorm2d(128, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+    )
+    (branch2): Sequential(
+      (0): BasicConv2d(
+        (conv): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn): BatchNorm2d(128, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): BasicConv2d(
+        (conv): Conv2d(128, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(256, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (branch3): Sequential(
+      (0): BasicConv2d(
+        (conv): Conv2d(512, 24, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn): BatchNorm2d(24, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): BasicConv2d(
+        (conv): Conv2d(24, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(64, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (branch4): Sequential(
+      (0): MaxPool2d(kernel_size=3, stride=1, padding=1, dilation=1, ceil_mode=True)
+      (1): BasicConv2d(
+        (conv): Conv2d(512, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn): BatchNorm2d(64, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (inception4d): Inception(
+    (branch1): BasicConv2d(
+      (conv): Conv2d(512, 112, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn): BatchNorm2d(112, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+    )
+    (branch2): Sequential(
+      (0): BasicConv2d(
+        (conv): Conv2d(512, 144, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn): BatchNorm2d(144, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): BasicConv2d(
+        (conv): Conv2d(144, 288, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(288, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (branch3): Sequential(
+      (0): BasicConv2d(
+        (conv): Conv2d(512, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn): BatchNorm2d(32, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): BasicConv2d(
+        (conv): Conv2d(32, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(64, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (branch4): Sequential(
+      (0): MaxPool2d(kernel_size=3, stride=1, padding=1, dilation=1, ceil_mode=True)
+      (1): BasicConv2d(
+        (conv): Conv2d(512, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn): BatchNorm2d(64, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (inception4e): Inception(
+    (branch1): BasicConv2d(
+      (conv): Conv2d(528, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn): BatchNorm2d(256, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+    )
+    (branch2): Sequential(
+      (0): BasicConv2d(
+        (conv): Conv2d(528, 160, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn): BatchNorm2d(160, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): BasicConv2d(
+        (conv): Conv2d(160, 320, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(320, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (branch3): Sequential(
+      (0): BasicConv2d(
+        (conv): Conv2d(528, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn): BatchNorm2d(32, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): BasicConv2d(
+        (conv): Conv2d(32, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(128, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (branch4): Sequential(
+      (0): MaxPool2d(kernel_size=3, stride=1, padding=1, dilation=1, ceil_mode=True)
+      (1): BasicConv2d(
+        (conv): Conv2d(528, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn): BatchNorm2d(128, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (maxpool4): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=True)
+  (inception5a): Inception(
+    (branch1): BasicConv2d(
+      (conv): Conv2d(832, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn): BatchNorm2d(256, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+    )
+    (branch2): Sequential(
+      (0): BasicConv2d(
+        (conv): Conv2d(832, 160, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn): BatchNorm2d(160, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): BasicConv2d(
+        (conv): Conv2d(160, 320, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(320, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (branch3): Sequential(
+      (0): BasicConv2d(
+        (conv): Conv2d(832, 32, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn): BatchNorm2d(32, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): BasicConv2d(
+        (conv): Conv2d(32, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(128, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (branch4): Sequential(
+      (0): MaxPool2d(kernel_size=3, stride=1, padding=1, dilation=1, ceil_mode=True)
+      (1): BasicConv2d(
+        (conv): Conv2d(832, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn): BatchNorm2d(128, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (inception5b): Inception(
+    (branch1): BasicConv2d(
+      (conv): Conv2d(832, 384, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn): BatchNorm2d(384, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+    )
+    (branch2): Sequential(
+      (0): BasicConv2d(
+        (conv): Conv2d(832, 192, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn): BatchNorm2d(192, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): BasicConv2d(
+        (conv): Conv2d(192, 384, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(384, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (branch3): Sequential(
+      (0): BasicConv2d(
+        (conv): Conv2d(832, 48, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn): BatchNorm2d(48, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+      (1): BasicConv2d(
+        (conv): Conv2d(48, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+        (bn): BatchNorm2d(128, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+    (branch4): Sequential(
+      (0): MaxPool2d(kernel_size=3, stride=1, padding=1, dilation=1, ceil_mode=True)
+      (1): BasicConv2d(
+        (conv): Conv2d(832, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+        (bn): BatchNorm2d(128, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+      )
+    )
+  )
+  (aux1): InceptionAux(
+    (conv): BasicConv2d(
+      (conv): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn): BatchNorm2d(128, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+    )
+    (fc1): Linear(in_features=2048, out_features=1024, bias=True)
+    (fc2): Linear(in_features=1024, out_features=1000, bias=True)
+    (dropout): Dropout(p=0.7, inplace=False)
+  )
+  (aux2): InceptionAux(
+    (conv): BasicConv2d(
+      (conv): Conv2d(528, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+      (bn): BatchNorm2d(128, eps=0.001, momentum=0.1, affine=True, track_running_stats=True)
+    )
+    (fc1): Linear(in_features=2048, out_features=1024, bias=True)
+    (fc2): Linear(in_features=1024, out_features=1000, bias=True)
+    (dropout): Dropout(p=0.7, inplace=False)
+  )
+  (avgpool): AdaptiveAvgPool2d(output_size=(1, 1))
+  (dropout): Dropout(p=0.2, inplace=False)
+  (fc): Linear(in_features=1024, out_features=1000, bias=True)
+)
+pth文件的类型是：<class 'collections.OrderedDict'>
+pth文件的字典长度是：364
+------pth文件的字典key包含------
+key:
+conv1.conv.weight
+conv1.bn.weight
+conv1.bn.bias
+conv1.bn.running_mean
+conv1.bn.running_var
+conv1.bn.num_batches_tracked
+conv2.conv.weight
+conv2.bn.weight
+conv2.bn.bias
+conv2.bn.running_mean
+conv2.bn.running_var
+conv2.bn.num_batches_tracked
+conv3.conv.weight
+conv3.bn.weight
+conv3.bn.bias
+conv3.bn.running_mean
+conv3.bn.running_var
+conv3.bn.num_batches_tracked
+inception3a.branch1.conv.weight
+inception3a.branch1.bn.weight
+inception3a.branch1.bn.bias
+inception3a.branch1.bn.running_mean
+inception3a.branch1.bn.running_var
+inception3a.branch1.bn.num_batches_tracked
+inception3a.branch2.0.conv.weight
+inception3a.branch2.0.bn.weight
+inception3a.branch2.0.bn.bias
+inception3a.branch2.0.bn.running_mean
+inception3a.branch2.0.bn.running_var
+inception3a.branch2.0.bn.num_batches_tracked
+inception3a.branch2.1.conv.weight
+inception3a.branch2.1.bn.weight
+inception3a.branch2.1.bn.bias
+inception3a.branch2.1.bn.running_mean
+inception3a.branch2.1.bn.running_var
+inception3a.branch2.1.bn.num_batches_tracked
+inception3a.branch3.0.conv.weight
+inception3a.branch3.0.bn.weight
+inception3a.branch3.0.bn.bias
+inception3a.branch3.0.bn.running_mean
+inception3a.branch3.0.bn.running_var
+inception3a.branch3.0.bn.num_batches_tracked
+inception3a.branch3.1.conv.weight
+inception3a.branch3.1.bn.weight
+inception3a.branch3.1.bn.bias
+inception3a.branch3.1.bn.running_mean
+inception3a.branch3.1.bn.running_var
+inception3a.branch3.1.bn.num_batches_tracked
+inception3a.branch4.1.conv.weight
+inception3a.branch4.1.bn.weight
+inception3a.branch4.1.bn.bias
+inception3a.branch4.1.bn.running_mean
+inception3a.branch4.1.bn.running_var
+inception3a.branch4.1.bn.num_batches_tracked
+inception3b.branch1.conv.weight
+inception3b.branch1.bn.weight
+inception3b.branch1.bn.bias
+inception3b.branch1.bn.running_mean
+inception3b.branch1.bn.running_var
+inception3b.branch1.bn.num_batches_tracked
+inception3b.branch2.0.conv.weight
+inception3b.branch2.0.bn.weight
+inception3b.branch2.0.bn.bias
+inception3b.branch2.0.bn.running_mean
+inception3b.branch2.0.bn.running_var
+inception3b.branch2.0.bn.num_batches_tracked
+inception3b.branch2.1.conv.weight
+inception3b.branch2.1.bn.weight
+inception3b.branch2.1.bn.bias
+inception3b.branch2.1.bn.running_mean
+inception3b.branch2.1.bn.running_var
+inception3b.branch2.1.bn.num_batches_tracked
+inception3b.branch3.0.conv.weight
+inception3b.branch3.0.bn.weight
+inception3b.branch3.0.bn.bias
+inception3b.branch3.0.bn.running_mean
+inception3b.branch3.0.bn.running_var
+inception3b.branch3.0.bn.num_batches_tracked
+inception3b.branch3.1.conv.weight
+inception3b.branch3.1.bn.weight
+inception3b.branch3.1.bn.bias
+inception3b.branch3.1.bn.running_mean
+inception3b.branch3.1.bn.running_var
+inception3b.branch3.1.bn.num_batches_tracked
+inception3b.branch4.1.conv.weight
+inception3b.branch4.1.bn.weight
+inception3b.branch4.1.bn.bias
+inception3b.branch4.1.bn.running_mean
+inception3b.branch4.1.bn.running_var
+inception3b.branch4.1.bn.num_batches_tracked
+inception4a.branch1.conv.weight
+inception4a.branch1.bn.weight
+inception4a.branch1.bn.bias
+inception4a.branch1.bn.running_mean
+inception4a.branch1.bn.running_var
+inception4a.branch1.bn.num_batches_tracked
+inception4a.branch2.0.conv.weight
+inception4a.branch2.0.bn.weight
+inception4a.branch2.0.bn.bias
+inception4a.branch2.0.bn.running_mean
+inception4a.branch2.0.bn.running_var
+inception4a.branch2.0.bn.num_batches_tracked
+inception4a.branch2.1.conv.weight
+inception4a.branch2.1.bn.weight
+inception4a.branch2.1.bn.bias
+inception4a.branch2.1.bn.running_mean
+inception4a.branch2.1.bn.running_var
+inception4a.branch2.1.bn.num_batches_tracked
+inception4a.branch3.0.conv.weight
+inception4a.branch3.0.bn.weight
+inception4a.branch3.0.bn.bias
+inception4a.branch3.0.bn.running_mean
+inception4a.branch3.0.bn.running_var
+inception4a.branch3.0.bn.num_batches_tracked
+inception4a.branch3.1.conv.weight
+inception4a.branch3.1.bn.weight
+inception4a.branch3.1.bn.bias
+inception4a.branch3.1.bn.running_mean
+inception4a.branch3.1.bn.running_var
+inception4a.branch3.1.bn.num_batches_tracked
+inception4a.branch4.1.conv.weight
+inception4a.branch4.1.bn.weight
+inception4a.branch4.1.bn.bias
+inception4a.branch4.1.bn.running_mean
+inception4a.branch4.1.bn.running_var
+inception4a.branch4.1.bn.num_batches_tracked
+inception4b.branch1.conv.weight
+inception4b.branch1.bn.weight
+inception4b.branch1.bn.bias
+inception4b.branch1.bn.running_mean
+inception4b.branch1.bn.running_var
+inception4b.branch1.bn.num_batches_tracked
+inception4b.branch2.0.conv.weight
+inception4b.branch2.0.bn.weight
+inception4b.branch2.0.bn.bias
+inception4b.branch2.0.bn.running_mean
+inception4b.branch2.0.bn.running_var
+inception4b.branch2.0.bn.num_batches_tracked
+inception4b.branch2.1.conv.weight
+inception4b.branch2.1.bn.weight
+inception4b.branch2.1.bn.bias
+inception4b.branch2.1.bn.running_mean
+inception4b.branch2.1.bn.running_var
+inception4b.branch2.1.bn.num_batches_tracked
+inception4b.branch3.0.conv.weight
+inception4b.branch3.0.bn.weight
+inception4b.branch3.0.bn.bias
+inception4b.branch3.0.bn.running_mean
+inception4b.branch3.0.bn.running_var
+inception4b.branch3.0.bn.num_batches_tracked
+inception4b.branch3.1.conv.weight
+inception4b.branch3.1.bn.weight
+inception4b.branch3.1.bn.bias
+inception4b.branch3.1.bn.running_mean
+inception4b.branch3.1.bn.running_var
+inception4b.branch3.1.bn.num_batches_tracked
+inception4b.branch4.1.conv.weight
+inception4b.branch4.1.bn.weight
+inception4b.branch4.1.bn.bias
+inception4b.branch4.1.bn.running_mean
+inception4b.branch4.1.bn.running_var
+inception4b.branch4.1.bn.num_batches_tracked
+inception4c.branch1.conv.weight
+inception4c.branch1.bn.weight
+inception4c.branch1.bn.bias
+inception4c.branch1.bn.running_mean
+inception4c.branch1.bn.running_var
+inception4c.branch1.bn.num_batches_tracked
+inception4c.branch2.0.conv.weight
+inception4c.branch2.0.bn.weight
+inception4c.branch2.0.bn.bias
+inception4c.branch2.0.bn.running_mean
+inception4c.branch2.0.bn.running_var
+inception4c.branch2.0.bn.num_batches_tracked
+inception4c.branch2.1.conv.weight
+inception4c.branch2.1.bn.weight
+inception4c.branch2.1.bn.bias
+inception4c.branch2.1.bn.running_mean
+inception4c.branch2.1.bn.running_var
+inception4c.branch2.1.bn.num_batches_tracked
+inception4c.branch3.0.conv.weight
+inception4c.branch3.0.bn.weight
+inception4c.branch3.0.bn.bias
+inception4c.branch3.0.bn.running_mean
+inception4c.branch3.0.bn.running_var
+inception4c.branch3.0.bn.num_batches_tracked
+inception4c.branch3.1.conv.weight
+inception4c.branch3.1.bn.weight
+inception4c.branch3.1.bn.bias
+inception4c.branch3.1.bn.running_mean
+inception4c.branch3.1.bn.running_var
+inception4c.branch3.1.bn.num_batches_tracked
+inception4c.branch4.1.conv.weight
+inception4c.branch4.1.bn.weight
+inception4c.branch4.1.bn.bias
+inception4c.branch4.1.bn.running_mean
+inception4c.branch4.1.bn.running_var
+inception4c.branch4.1.bn.num_batches_tracked
+inception4d.branch1.conv.weight
+inception4d.branch1.bn.weight
+inception4d.branch1.bn.bias
+inception4d.branch1.bn.running_mean
+inception4d.branch1.bn.running_var
+inception4d.branch1.bn.num_batches_tracked
+inception4d.branch2.0.conv.weight
+inception4d.branch2.0.bn.weight
+inception4d.branch2.0.bn.bias
+inception4d.branch2.0.bn.running_mean
+inception4d.branch2.0.bn.running_var
+inception4d.branch2.0.bn.num_batches_tracked
+inception4d.branch2.1.conv.weight
+inception4d.branch2.1.bn.weight
+inception4d.branch2.1.bn.bias
+inception4d.branch2.1.bn.running_mean
+inception4d.branch2.1.bn.running_var
+inception4d.branch2.1.bn.num_batches_tracked
+inception4d.branch3.0.conv.weight
+inception4d.branch3.0.bn.weight
+inception4d.branch3.0.bn.bias
+inception4d.branch3.0.bn.running_mean
+inception4d.branch3.0.bn.running_var
+inception4d.branch3.0.bn.num_batches_tracked
+inception4d.branch3.1.conv.weight
+inception4d.branch3.1.bn.weight
+inception4d.branch3.1.bn.bias
+inception4d.branch3.1.bn.running_mean
+inception4d.branch3.1.bn.running_var
+inception4d.branch3.1.bn.num_batches_tracked
+inception4d.branch4.1.conv.weight
+inception4d.branch4.1.bn.weight
+inception4d.branch4.1.bn.bias
+inception4d.branch4.1.bn.running_mean
+inception4d.branch4.1.bn.running_var
+inception4d.branch4.1.bn.num_batches_tracked
+inception4e.branch1.conv.weight
+inception4e.branch1.bn.weight
+inception4e.branch1.bn.bias
+inception4e.branch1.bn.running_mean
+inception4e.branch1.bn.running_var
+inception4e.branch1.bn.num_batches_tracked
+inception4e.branch2.0.conv.weight
+inception4e.branch2.0.bn.weight
+inception4e.branch2.0.bn.bias
+inception4e.branch2.0.bn.running_mean
+inception4e.branch2.0.bn.running_var
+inception4e.branch2.0.bn.num_batches_tracked
+inception4e.branch2.1.conv.weight
+inception4e.branch2.1.bn.weight
+inception4e.branch2.1.bn.bias
+inception4e.branch2.1.bn.running_mean
+inception4e.branch2.1.bn.running_var
+inception4e.branch2.1.bn.num_batches_tracked
+inception4e.branch3.0.conv.weight
+inception4e.branch3.0.bn.weight
+inception4e.branch3.0.bn.bias
+inception4e.branch3.0.bn.running_mean
+inception4e.branch3.0.bn.running_var
+inception4e.branch3.0.bn.num_batches_tracked
+inception4e.branch3.1.conv.weight
+inception4e.branch3.1.bn.weight
+inception4e.branch3.1.bn.bias
+inception4e.branch3.1.bn.running_mean
+inception4e.branch3.1.bn.running_var
+inception4e.branch3.1.bn.num_batches_tracked
+inception4e.branch4.1.conv.weight
+inception4e.branch4.1.bn.weight
+inception4e.branch4.1.bn.bias
+inception4e.branch4.1.bn.running_mean
+inception4e.branch4.1.bn.running_var
+inception4e.branch4.1.bn.num_batches_tracked
+inception5a.branch1.conv.weight
+inception5a.branch1.bn.weight
+inception5a.branch1.bn.bias
+inception5a.branch1.bn.running_mean
+inception5a.branch1.bn.running_var
+inception5a.branch1.bn.num_batches_tracked
+inception5a.branch2.0.conv.weight
+inception5a.branch2.0.bn.weight
+inception5a.branch2.0.bn.bias
+inception5a.branch2.0.bn.running_mean
+inception5a.branch2.0.bn.running_var
+inception5a.branch2.0.bn.num_batches_tracked
+inception5a.branch2.1.conv.weight
+inception5a.branch2.1.bn.weight
+inception5a.branch2.1.bn.bias
+inception5a.branch2.1.bn.running_mean
+inception5a.branch2.1.bn.running_var
+inception5a.branch2.1.bn.num_batches_tracked
+inception5a.branch3.0.conv.weight
+inception5a.branch3.0.bn.weight
+inception5a.branch3.0.bn.bias
+inception5a.branch3.0.bn.running_mean
+inception5a.branch3.0.bn.running_var
+inception5a.branch3.0.bn.num_batches_tracked
+inception5a.branch3.1.conv.weight
+inception5a.branch3.1.bn.weight
+inception5a.branch3.1.bn.bias
+inception5a.branch3.1.bn.running_mean
+inception5a.branch3.1.bn.running_var
+inception5a.branch3.1.bn.num_batches_tracked
+inception5a.branch4.1.conv.weight
+inception5a.branch4.1.bn.weight
+inception5a.branch4.1.bn.bias
+inception5a.branch4.1.bn.running_mean
+inception5a.branch4.1.bn.running_var
+inception5a.branch4.1.bn.num_batches_tracked
+inception5b.branch1.conv.weight
+inception5b.branch1.bn.weight
+inception5b.branch1.bn.bias
+inception5b.branch1.bn.running_mean
+inception5b.branch1.bn.running_var
+inception5b.branch1.bn.num_batches_tracked
+inception5b.branch2.0.conv.weight
+inception5b.branch2.0.bn.weight
+inception5b.branch2.0.bn.bias
+inception5b.branch2.0.bn.running_mean
+inception5b.branch2.0.bn.running_var
+inception5b.branch2.0.bn.num_batches_tracked
+inception5b.branch2.1.conv.weight
+inception5b.branch2.1.bn.weight
+inception5b.branch2.1.bn.bias
+inception5b.branch2.1.bn.running_mean
+inception5b.branch2.1.bn.running_var
+inception5b.branch2.1.bn.num_batches_tracked
+inception5b.branch3.0.conv.weight
+inception5b.branch3.0.bn.weight
+inception5b.branch3.0.bn.bias
+inception5b.branch3.0.bn.running_mean
+inception5b.branch3.0.bn.running_var
+inception5b.branch3.0.bn.num_batches_tracked
+inception5b.branch3.1.conv.weight
+inception5b.branch3.1.bn.weight
+inception5b.branch3.1.bn.bias
+inception5b.branch3.1.bn.running_mean
+inception5b.branch3.1.bn.running_var
+inception5b.branch3.1.bn.num_batches_tracked
+inception5b.branch4.1.conv.weight
+inception5b.branch4.1.bn.weight
+inception5b.branch4.1.bn.bias
+inception5b.branch4.1.bn.running_mean
+inception5b.branch4.1.bn.running_var
+inception5b.branch4.1.bn.num_batches_tracked
+aux1.conv.conv.weight
+aux1.conv.bn.weight
+aux1.conv.bn.bias
+aux1.conv.bn.running_mean
+aux1.conv.bn.running_var
+aux1.conv.bn.num_batches_tracked
+aux1.fc1.weight
+aux1.fc1.bias
+aux1.fc2.weight
+aux1.fc2.bias
+aux2.conv.conv.weight
+aux2.conv.bn.weight
+aux2.conv.bn.bias
+aux2.conv.bn.running_mean
+aux2.conv.bn.running_var
+aux2.conv.bn.num_batches_tracked
+aux2.fc1.weight
+aux2.fc1.bias
+aux2.fc2.weight
+aux2.fc2.bias
+fc.weight
+fc.bias
+------------------------------

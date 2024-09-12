@@ -17,6 +17,7 @@ vgg13InitParaPath = '../init/vgg13-19584684.pth'
 vgg16InitParaPath = '../init/vgg16-397923af.pth'
 vgg16BNInitParaPath = '../init/vgg16_bn-6c64b313.pth'
 vgg19InitParaPath = '../init/vgg19-dcbb9e9d.pth'
+vgg19BNInitParaPath = '../init/vgg19_bn-c79401a0.pth'
 alexnetInitParaPath = '../init/alexnet-owt-7be5be79.pth'
 convnextInitParaPath = '../init/convnext_base-6075fbad.pth'
 
@@ -237,7 +238,7 @@ def layerExpBitFlip(initParaPath, flipParaPath, bit_n, *layers):
 
     para = torch.load(initParaPath)
     for layer in layers:  # 所有layer
-        if para[layer].data.dim() < 1:
+        if para[layer].data.dim() < 4:
             continue  # 只在卷积层进行嵌入
         layerTensor = para[layer].data
         para[layer].data = flip_exponent_bits(layerTensor, bit_n)
@@ -513,6 +514,14 @@ if __name__ == "__main__":
     # layerFracBitFLip(vgg16BNInitParaPath, "./vgg16bn/bitFlip/frac_23.pth", 23, *getPthKeys(vgg16BNInitParaPath))
     # layerExpBitFlip(vgg16BNInitParaPath, "./vgg16bn/bitFlip/exp_3_allFlip.pth", 3, *getPthKeys(vgg16BNInitParaPath))
     # layerExpBitFlip(vgg16BNInitParaPath, "./vgg16bn/bitFlip/exp_3_convFlip.pth", 3,*getPthKeys(vgg16BNInitParaPath))
+
+    '''翻转vgg19bn'''
+    # layerFracBitFLip(vgg19BNInitParaPath, "./vgg19bn/bitFlip/frac_1.pth", 1, *getPthKeys(vgg19BNInitParaPath))
+    # layerFracBitFLip(vgg19BNInitParaPath, "./vgg19bn/bitFlip/frac_8.pth", 8, *getPthKeys(vgg19BNInitParaPath))
+    # layerFracBitFLip(vgg19BNInitParaPath, "./vgg19bn/bitFlip/frac_16.pth", 16, *getPthKeys(vgg19BNInitParaPath))
+    # layerFracBitFLip(vgg19BNInitParaPath, "./vgg19bn/bitFlip/frac_23.pth", 23, *getPthKeys(vgg19BNInitParaPath))
+    # layerExpBitFlip(vgg19BNInitParaPath, "./vgg19bn/bitFlip/exp_3_allFlip.pth", 3, *getPthKeys(vgg19BNInitParaPath))
+    # layerExpBitFlip(vgg19BNInitParaPath, "./vgg19bn/bitFlip/exp_3_convFlip.pth", 3,*getPthKeys(vgg19BNInitParaPath))
 
     '''翻转alexnet'''
     # layerFracBitFLip(alexnetInitParaPath, "./alexnet/bitFlip/frac_1.pth", 1, *getPthKeys(alexnetInitParaPath))

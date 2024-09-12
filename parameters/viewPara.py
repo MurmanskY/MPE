@@ -14,6 +14,8 @@ alexnetInitParaPath = './init/alexnet-owt-7be5be79.pth'
 convnextInitParaPath = './init/convnext_base-6075fbad.pth'
 vitb16InitParaPath = './init/vit_b_16-c867db91.pth'
 swinbInitParaPath = './init/swin_b-68c6b09e.pth'
+inceptionV3InitParaPath = './init/inception_v3_google-0cc3c7bd.pth'
+googlenetInitParaPath = './init/googlenet-1378be20.pth'
 
 def showParaStructure(paraPath):
     """
@@ -49,8 +51,8 @@ def showParaValue(paraPath):
 if __name__ == "__main__":
     '''for test'''
 
-    model = models.swin_b()
-    model.load_state_dict(torch.load(swinbInitParaPath))
+    model = models.googlenet()
+    model.load_state_dict(torch.load(googlenetInitParaPath))
     print(model)
-    showParaStructure(swinbInitParaPath)
+    showParaStructure(googlenetInitParaPath)
     # showParaValue(paraPath)
