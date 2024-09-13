@@ -22,6 +22,7 @@ alexnetInitParaPath = '../init/alexnet-owt-7be5be79.pth'
 convnextInitParaPath = '../init/convnext_base-6075fbad.pth'
 googlenetInitParaPath = '../init/googlenet-1378be20.pth'
 inceptionV3InitParaPath = '../init/inception_v3_google-0cc3c7bd.pth'
+vitb16InitParaPath = '../init/vit_b_16-c867db91.pth'
 
 
 '''用于存储bit翻转率的结果'''
@@ -557,6 +558,14 @@ if __name__ == "__main__":
     # layerFracBitFLip(inceptionV3InitParaPath, "./inceptionV3/bitFlip/frac_23.pth", 23, *getPthKeys(inceptionV3InitParaPath))
     # layerExpBitFlip(inceptionV3InitParaPath, "./inceptionV3/bitFlip/exp_3_allFlip.pth", 3, *getPthKeys(inceptionV3InitParaPath))
     # layerExpBitFlip(inceptionV3InitParaPath, "./inceptionV3/bitFlip/exp_3_convFlip.pth", 3,*getPthKeys(inceptionV3InitParaPath))
+
+    '''翻转vitb16'''
+    # layerFracBitFLip(vitb16InitParaPath, "./vitb16/bitFlip/frac_1.pth", 1, *getPthKeys(vitb16InitParaPath))
+    # layerFracBitFLip(vitb16InitParaPath, "./vitb16/bitFlip/frac_8.pth", 8, *getPthKeys(vitb16InitParaPath))
+    # layerFracBitFLip(vitb16InitParaPath, "./vitb16/bitFlip/frac_16.pth", 16, *getPthKeys(vitb16InitParaPath))
+    # layerFracBitFLip(vitb16InitParaPath, "./vitb16/bitFlip/frac_23.pth", 23, *getPthKeys(vitb16InitParaPath))
+    # layerExpBitFlip(vitb16InitParaPath, "./vitb16/bitFlip/exp_3_allFlip.pth", 3, *getPthKeys(vitb16InitParaPath))
+    layerExpBitFlip(vitb16InitParaPath, "./vitb16/bitFlip/exp_3_convFlip.pth", 3,*getPthKeys(vitb16InitParaPath))
 
 
 

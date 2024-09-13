@@ -153,6 +153,13 @@ parameters/bitFlip/inceptionV3/2CIFAR100/*
 !parameters/bitFlip/inceptionV3/2CIFAR100/.gitkeep
 !parameters/bitFlip/inceptionV3/2CIFAR100/result/
 
+parameters/bitFlip/vitb16/bitFlip/*
+!parameters/bitFlip/vitb16/bitFlip/.gitkeep
+
+parameters/bitFlip/vitb16/2CIFAR100/*
+!parameters/bitFlip/vitb16/2CIFAR100/.gitkeep
+!parameters/bitFlip/vitb16/2CIFAR100/result/
+
 
 
 malware/*
