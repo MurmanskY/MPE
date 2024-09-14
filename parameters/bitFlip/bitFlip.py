@@ -565,7 +565,7 @@ if __name__ == "__main__":
     # layerFracBitFLip(vitb16InitParaPath, "./vitb16/bitFlip/frac_16.pth", 16, *getPthKeys(vitb16InitParaPath))
     # layerFracBitFLip(vitb16InitParaPath, "./vitb16/bitFlip/frac_23.pth", 23, *getPthKeys(vitb16InitParaPath))
     # layerExpBitFlip(vitb16InitParaPath, "./vitb16/bitFlip/exp_3_allFlip.pth", 3, *getPthKeys(vitb16InitParaPath))
-    layerExpBitFlip(vitb16InitParaPath, "./vitb16/bitFlip/exp_3_convFlip.pth", 3,*getPthKeys(vitb16InitParaPath))
+    # layerExpBitFlip(vitb16InitParaPath, "./vitb16/bitFlip/exp_3_convFlip.pth", 3, *getPthKeys(vitb16InitParaPath))
 
 
 
