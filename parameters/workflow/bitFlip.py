@@ -569,24 +569,53 @@ if __name__ == "__main__":
 
 
 
+    # """
+    # 完成一整个流程
+    # 1. 确定layers
+    # 2. 根据layers随机生成malware存储在文件夹中
+    # 3. 将malware嵌入到参数中
+    # 4. 从参数中提取malware
+    # """
+    # layers = ["layer4.2.conv2.weight"]
+    # malwares = ["./malware/l1"]
+    # malwares_Extract = ["./malware/l1_extrac"]
+    # interval = 9
+    # correct = 11
+    # savePath = "./resnet50/bitEmbedd/temp.pth"
+    #
+    # # sizeList = getExpEmbeddSize(resnet50InitParaPath, layers, interval, correct)
+    # # generateFiles(malwares, sizeList)
+    # # layerExpBitEmbedd(resnet50InitParaPath, savePath, layers, malwares, interval, correct)
+    # # layerExpBitExtrac("./resnet50/2OxfordIIITPet/temp_ep_10.pth", layers, ["./malware/l1_extrac_re_Pet"], interval, correct)
+    # #
+    # # showDif("./malware/l1", "./malware/l1_extrac_re_Pet")
+    # print("Done")
+
+
     """
-    完成一整个流程
-    1. 确定layers
-    2. 根据layers随机生成malware存储在文件夹中
-    3. 将malware嵌入到参数中
-    4. 从参数中提取malware
+    20240914 流程对比实验
+    resnet50
+    layer4.0.conv2.weight
+    layer4.1.conv2.weight
+    layer4.2.conv2.weight
     """
-    layers = ["layer4.2.conv2.weight"]
-    malwares = ["./malware/l1"]
-    malwares_Extract = ["./malware/l1_extrac"]
+    layers = ["layer4.0.conv2.weight",
+              "layer4.1.conv2.weight",
+              "layer4.2.conv2.weight"]
+    malwares = ["./malware/resnet50_l1",
+               "./malware/resnet50_l2",
+               "./malware/resnet50_l3"]
+    malwares_extract = ["./malware/resnet50_l1_extract",
+                       "./malware/resnet50_l2_extract",
+                       "./malware/resnet50_l3_extract"]
     interval = 9
     correct = 11
-    savePath = "./resnet50/bitEmbedd/temp.pth"
+    savePath = "./resnet50/bitEmbedd/resnet50_3layers_9inter_11corr.pth"
 
-    # sizeList = getExpEmbeddSize(resnet50InitParaPath, layers, interval, correct)
-    # generateFiles(malwares, sizeList)
-    # layerExpBitEmbedd(resnet50InitParaPath, savePath, layers, malwares, interval, correct)
-    # layerExpBitExtrac("./resnet50/2OxfordIIITPet/temp_ep_10.pth", layers, ["./malware/l1_extrac_re_Pet"], interval, correct)
-    #
-    # showDif("./malware/l1", "./malware/l1_extrac_re_Pet")
+    sizeList = getExpEmbeddSize(resnet50InitParaPath, layers, interval, correct)
+    generateFiles(malwares, sizeList)
+    layerExpBitEmbedd(resnet50InitParaPath, savePath, layers, malwares, interval, correct)
+    layerExpBitExtrac(savePath, layers, malwares_extract, interval, correct)
+
+
     print("Done")
