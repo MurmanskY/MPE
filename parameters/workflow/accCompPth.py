@@ -242,33 +242,44 @@ if __name__ == '__main__':
     #             "./convnext/2CIFAR100/result/exp_3_convFlip_ep_5.csv")
 
 
-    '''googlenet_2_CIFAR100'''
-    showBitFlip("./googlenet/bitFlip/frac_1.pth", "./googlenet/2CIFAR100/frac_1_ep_5.pth", 31, 32,
-                "./googlenet/2CIFAR100/result/frac_1_ep_5.csv")
-    showBitFlip("./googlenet/bitFlip/frac_8.pth", "./googlenet/2CIFAR100/frac_8_ep_5.pth", 24, 32,
-                "./googlenet/2CIFAR100/result/frac_8_ep_5.csv")
-    showBitFlip("./googlenet/bitFlip/frac_16.pth", "./googlenet/2CIFAR100/frac_16_ep_5.pth", 16, 32,
-                "./googlenet/2CIFAR100/result/frac_16_ep_5.csv")
-    showBitFlip("./googlenet/bitFlip/frac_23.pth", "./googlenet/2CIFAR100/frac_23_ep_5.pth", 9, 32,
-                "./googlenet/2CIFAR100/result/frac_23_ep_5.csv")
-    showBitFlip("./googlenet/bitFlip/exp_3_allFlip.pth", "./googlenet/2CIFAR100/exp_3_allFlip_ep_5.pth", 6, 9,
-                "./googlenet/2CIFAR100/result/exp_3_allFlip_ep_5.csv")
-    showBitFlip("./googlenet/bitFlip/exp_3_convFlip.pth", "./googlenet/2CIFAR100/exp_3_convFlip_ep_5.pth", 6, 9,
-                "./googlenet/2CIFAR100/result/exp_3_convFlip_ep_5.csv")
+    # '''googlenet_2_CIFAR100'''
+    # showBitFlip("./googlenet/bitFlip/frac_1.pth", "./googlenet/2CIFAR100/frac_1_ep_5.pth", 31, 32,
+    #             "./googlenet/2CIFAR100/result/frac_1_ep_5.csv")
+    # showBitFlip("./googlenet/bitFlip/frac_8.pth", "./googlenet/2CIFAR100/frac_8_ep_5.pth", 24, 32,
+    #             "./googlenet/2CIFAR100/result/frac_8_ep_5.csv")
+    # showBitFlip("./googlenet/bitFlip/frac_16.pth", "./googlenet/2CIFAR100/frac_16_ep_5.pth", 16, 32,
+    #             "./googlenet/2CIFAR100/result/frac_16_ep_5.csv")
+    # showBitFlip("./googlenet/bitFlip/frac_23.pth", "./googlenet/2CIFAR100/frac_23_ep_5.pth", 9, 32,
+    #             "./googlenet/2CIFAR100/result/frac_23_ep_5.csv")
+    # showBitFlip("./googlenet/bitFlip/exp_3_allFlip.pth", "./googlenet/2CIFAR100/exp_3_allFlip_ep_5.pth", 6, 9,
+    #             "./googlenet/2CIFAR100/result/exp_3_allFlip_ep_5.csv")
+    # showBitFlip("./googlenet/bitFlip/exp_3_convFlip.pth", "./googlenet/2CIFAR100/exp_3_convFlip_ep_5.pth", 6, 9,
+    #             "./googlenet/2CIFAR100/result/exp_3_convFlip_ep_5.csv")
 
 
-    '''inceptionV3_2_CIFAR100'''
-    showBitFlip("./inceptionV3/bitFlip/frac_1.pth", "./inceptionV3/2CIFAR100/frac_1_ep_5.pth", 31, 32,
-                "./inceptionV3/2CIFAR100/result/frac_1_ep_5.csv")
-    showBitFlip("./inceptionV3/bitFlip/frac_8.pth", "./inceptionV3/2CIFAR100/frac_8_ep_5.pth", 24, 32,
-                "./inceptionV3/2CIFAR100/result/frac_8_ep_5.csv")
-    showBitFlip("./inceptionV3/bitFlip/frac_16.pth", "./inceptionV3/2CIFAR100/frac_16_ep_5.pth", 16, 32,
-                "./inceptionV3/2CIFAR100/result/frac_16_ep_5.csv")
-    showBitFlip("./inceptionV3/bitFlip/frac_23.pth", "./inceptionV3/2CIFAR100/frac_23_ep_5.pth", 9, 32,
-                "./inceptionV3/2CIFAR100/result/frac_23_ep_5.csv")
-    showBitFlip("./inceptionV3/bitFlip/exp_3_allFlip.pth", "./inceptionV3/2CIFAR100/exp_3_allFlip_ep_5.pth", 6, 9,
-                "./inceptionV3/2CIFAR100/result/exp_3_allFlip_ep_5.csv")
-    showBitFlip("./inceptionV3/bitFlip/exp_3_convFlip.pth", "./inceptionV3/2CIFAR100/exp_3_convFlip_ep_5.pth", 6, 9,
-                "./inceptionV3/2CIFAR100/result/exp_3_convFlip_ep_5.csv")
+    # '''inceptionV3_2_CIFAR100'''
+    # showBitFlip("./inceptionV3/bitFlip/frac_1.pth", "./inceptionV3/2CIFAR100/frac_1_ep_5.pth", 31, 32,
+    #             "./inceptionV3/2CIFAR100/result/frac_1_ep_5.csv")
+    # showBitFlip("./inceptionV3/bitFlip/frac_8.pth", "./inceptionV3/2CIFAR100/frac_8_ep_5.pth", 24, 32,
+    #             "./inceptionV3/2CIFAR100/result/frac_8_ep_5.csv")
+    # showBitFlip("./inceptionV3/bitFlip/frac_16.pth", "./inceptionV3/2CIFAR100/frac_16_ep_5.pth", 16, 32,
+    #             "./inceptionV3/2CIFAR100/result/frac_16_ep_5.csv")
+    # showBitFlip("./inceptionV3/bitFlip/frac_23.pth", "./inceptionV3/2CIFAR100/frac_23_ep_5.pth", 9, 32,
+    #             "./inceptionV3/2CIFAR100/result/frac_23_ep_5.csv")
+    # showBitFlip("./inceptionV3/bitFlip/exp_3_allFlip.pth", "./inceptionV3/2CIFAR100/exp_3_allFlip_ep_5.pth", 6, 9,
+    #             "./inceptionV3/2CIFAR100/result/exp_3_allFlip_ep_5.csv")
+    # showBitFlip("./inceptionV3/bitFlip/exp_3_convFlip.pth", "./inceptionV3/2CIFAR100/exp_3_convFlip_ep_5.pth", 6, 9,
+    #             "./inceptionV3/2CIFAR100/result/exp_3_convFlip_ep_5.csv")
+
+
+    '''workflow resnet50_2CIFAR100'''
+    # showBitFlip('./resnet50/bitEmbedd/resnet50_3layers_9inter_11corr.pth',
+    #             './resnet50/2CIFAR100/resnet50_3layers_9inter_11corr_ep5.pth',
+    #             6, 9, './resnet50/2CIFAR100/result/resnet50_3layers_9inter_11corr_ep5.csv')
+
+    showBitFlip('./resnet50/bitEmbedd/resnet50_3layers_9inter_11corr.pth',
+                './resnet50/2PCAM/resnet50_3layers_9inter_11corr_ep5.pth',
+                6, 9, './resnet50/2PCAM/result/resnet50_3layers_9inter_11corr_ep5.csv')
+
 
 

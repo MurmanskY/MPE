@@ -331,11 +331,14 @@ def showDif(file1, file2):
     """
     malwareStr1 = BitArray(filename=file1).bin
     malwareStr2 = BitArray(filename=file2).bin
+    diffNum = 0
     for i in range(len(malwareStr1)):
         if malwareStr1[i] != malwareStr2[i]:  # 打印出所有不同的bit的位置
             print("pos:", i, "initBit:", malwareStr1[i], "extractedBit:", malwareStr2[i])
+            diffNum += 1
     print(malwareStr1)
     print(malwareStr2)
+    print("different bit Num between the two files: ", diffNum)
 
 
 def getExpEmbeddSize(initParaPath, layers, interval, correct):
@@ -612,10 +615,11 @@ if __name__ == "__main__":
     correct = 11
     savePath = "./resnet50/bitEmbedd/resnet50_3layers_9inter_11corr.pth"
 
-    sizeList = getExpEmbeddSize(resnet50InitParaPath, layers, interval, correct)
-    generateFiles(malwares, sizeList)
-    layerExpBitEmbedd(resnet50InitParaPath, savePath, layers, malwares, interval, correct)
-    layerExpBitExtrac(savePath, layers, malwares_extract, interval, correct)
-
+    # sizeList = getExpEmbeddSize(resnet50InitParaPath, layers, interval, correct)
+    # generateFiles(malwares, sizeList)
+    # layerExpBitEmbedd(resnet50InitParaPath, savePath, layers, malwares, interval, correct)
+    layerExpBitExtrac("./resnet50/2PCAM/resnet50_3layers_9inter_11corr_ep5.pth", layers, malwares_extract, interval, correct)
+    for mal1, mal2 in zip(malwares, malwares_extract):
+        showDif(mal1, mal2)
 
     print("Done")

@@ -164,9 +164,6 @@ parameters/bitFlip/vitb16/2CIFAR100/*
 parameters/workflow/malware/*
 !parameters/workflow/malware/.gitkeep
 
-parameters/workflow/resnet50/2CIFAR100/*
-!parameters/workflow/resnet50/2CIFAR100/.gitkeep
-
 parameters/workflow/resnet50/bitFlip/*
 !parameters/workflow/resnet50/bitFlip/.gitkeep
 
@@ -176,6 +173,13 @@ parameters/workflow/resnet50/bitEmbedd/*
 parameters/workflow/resnet50/ImageNetRe/*
 !parameters/workflow/resnet50/ImageNetRe/.gitkeep
 
+parameters/workflow/resnet50/2CIFAR100/*
+!parameters/workflow/resnet50/2CIFAR100/result/
+!parameters/workflow/resnet50/2CIFAR100/.gitkeep
+
+parameters/workflow/resnet50/2PCAM/*
+!parameters/workflow/resnet50/2PCAM/result/
+!parameters/workflow/resnet50/2PCAM/.gitkeep
 
 
 
