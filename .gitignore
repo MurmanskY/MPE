@@ -185,7 +185,7 @@ parameters/workflow/resnet50/2PCAM/*
 parameters/paraDistrb/malware/
 
 parameters/paraDistrb/resnet50/*
-!parameters/paraDistrb/resnet50/pics/*
+!parameters/paraDistrb/resnet50/pics/
 
 
 
