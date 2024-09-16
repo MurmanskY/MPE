@@ -207,6 +207,9 @@ parameters/paraDistrb/resnet50/*
 parameters/paraDistrb/densenet121/*
 !parameters/paraDistrb/densenet121/pics/
 
+parameters/paraDistrb/convnext/*
+!parameters/paraDistrb/convnext/pics/
+
 
 
 

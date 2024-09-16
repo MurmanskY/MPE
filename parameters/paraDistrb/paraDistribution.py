@@ -33,13 +33,17 @@ densenet121_100 = './densenet121/encode_100.pth'
 densenet121_010 = './densenet121/encode_010.pth'
 densenet121_001 = './densenet121/encode_001.pth'
 densenet121_111 = './densenet121/encode_111.pth'
-paraPath = [densenet121_100, densenet121_010, densenet121_001, densenet121_111]
+convnext_100 = './convnext/encode_100.pth'
+convnext_010 = './convnext/encode_010.pth'
+convnext_001 = './convnext/encode_001.pth'
+convnext_111 = './convnext/encode_111.pth'
+paraPath = [convnext_100, convnext_010, convnext_001, convnext_111]
 
 
 
 
-paramsInit = torch.load(densenet121InitParaPath)
-weightsInit = paramsInit["features.denseblock4.denselayer14.conv2.weight"].cpu().numpy()
+paramsInit = torch.load(convnextInitParaPath)
+weightsInit = paramsInit["features.7.0.block.3.weight"].cpu().numpy()
 
 
 # 定义计算MSE的函数
@@ -97,12 +101,20 @@ for para in paraPath:
         figName = 'densenet121 with encode_010'
     elif para == densenet121_001:
         figName = 'densenet121 with encode_001'
-    else:
+    elif para == densenet121_111:
         figName = 'densenet121 with encode_111'
+    elif para == convnext_100:
+        figName = 'convnext with encode_100'
+    elif para == convnext_010:
+        figName = 'convnext with encode_010'
+    elif para == convnext_001:
+        figName = 'convnext with encode_001'
+    elif para == convnext_111:
+        figName = 'convnext with encode_111'
 
 
     params = torch.load(para)
-    weightsPara = params["features.denseblock4.denselayer14.conv2.weight"].cpu().numpy()
+    weightsPara = params["features.7.0.block.3.weight"].cpu().numpy()
 
     mse = calculate_mse(weightsInit, weightsPara)
     kl_div = calculate_kl_divergence(weightsInit, weightsPara)
@@ -123,7 +135,7 @@ for para in paraPath:
     plt.rcParams.update({'font.size': 14})  # 将所有字体放大为16
     plt.bar(intervals_init_mid, probs_init, width=0.01, alpha=0.7, color='#ff4da6',
             label='Initial Weights Probabilities')
-    plt.bar(intervals_para_mid, probs_para, width=0.01, alpha=0.08, color='#66b2ff',
+    plt.bar(intervals_para_mid, probs_para, width=0.01, alpha=0.2, color='#66b2ff',
             label='Encoded Weights Probabilities')
 
     plt.xlim([-0.75, 0.75])  # 根据实际参数的范围调整
@@ -134,5 +146,5 @@ for para in paraPath:
     plt.title(figName + " Weight Interval Probabilities")
     plt.legend()
     plt.grid()
-    plt.savefig('./densenet121/pics/' + figName + '.png', bbox_inches='tight')
+    plt.savefig('./convnext/pics/' + figName + '.png', bbox_inches='tight')
     plt.show()

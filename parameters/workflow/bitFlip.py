@@ -772,18 +772,27 @@ if __name__ == "__main__":
     features.7.1.block.0.weight
     features.7.2.block.0.weight
     """
-    layers = ["features.7.0.block.0.weight",
-              "features.7.1.block.0.weight",
-              "features.7.2.block.0.weight"]
+    layers = ["features.7.0.block.3.weight",
+              "features.7.0.block.5.weight",
+              "features.7.1.block.3.weight",
+              "features.7.1.block.5.weight",
+              "features.7.2.block.3.weight",
+              "features.7.2.block.5.weight"]
     malwares = ["./malware/convnext_base_l1",
                 "./malware/convnext_base_l2",
-                "./malware/convnext_base_l3"]
+                "./malware/convnext_base_l3",
+                "./malware/convnext_base_l4",
+                "./malware/convnext_base_l5",
+                "./malware/convnext_base_l6"]
     malwares_extract = ["./malware/convnext_base_l1_extract",
                         "./malware/convnext_base_l2_extract",
-                        "./malware/convnext_base_l3_extract"]
-    interval = 9
+                        "./malware/convnext_base_l3_extract",
+                        "./malware/convnext_base_l4_extract",
+                        "./malware/convnext_base_l5_extract",
+                        "./malware/convnext_base_l6_extract"]
+    interval = 8
     correct = 11
-    savePath = "./convnext_base/bitEmbedd/convnext_base_3layers_9inter_11corr.pth"
+    savePath = "./convnext_base/bitEmbedd/convnext_base_3layers_8inter_11corr.pth"
 
     sizeList = getExpEmbeddSize(convnextInitParaPath, layers, interval, correct)
     generateFiles(malwares, sizeList)

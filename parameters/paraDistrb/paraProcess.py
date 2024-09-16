@@ -4,6 +4,7 @@ import random
 import struct
 import pandas as pd
 from bitstring import BitArray
+from concurrent.futures import ThreadPoolExecutor
 from fileProcess.fileProcess import split_file, merge_file
 
 device = torch.device("mps")
@@ -169,213 +170,283 @@ def getExpEmbeddSize(initParaPath, layers, interval, correct):
     return ret
 
 
-def layerExpBitEmbedd(initParaPath, flipParaPath, layers, malwares, interval, correct):
-    """
-    使用编码规则100和011进行嵌入低3bit,嵌入恶意软件，将卷积层展平，使用交错的方式编码
-    :param initParaPath:
-    :param flipParaPath:
-    :param layers: layer list
-    :param malwares: malware list
-    :param interval: 每interval个中嵌入一个
-    :param correct: 冗余多少
-    :return:
-    """
-    para = torch.load(initParaPath, map_location=torch.device("mps"))
+def layerExpBitEmbedd(initParaPath, flipParaPath, layers, malwares, interval, correct, num_threads=8):
+    para = torch.load(initParaPath, map_location=torch.device("cpu"))
 
     for layer, malware in zip(layers, malwares):
-        # 对于每个层
-
         malwareStr = BitArray(filename=malware).bin
-        malwareLen = len(malwareStr)
-        writePos = 0  # 恶意软件读写指针
-        correctionPos = 0  # 冗余指针，标识目前处于第几个冗余
-        currentWriteContent = malwareStr[writePos]  # 存储当前需要写入的内容
-
         paraTensor_flat = para[layer].flatten()
+        layer_size = paraTensor_flat.size(0)
 
-        while writePos < malwareLen:  # 写恶意软件中每一个bit
-            while correctionPos < correct:  # 交错位置冗余
-                index = writePos + correctionPos * interval * malwareLen
-                paraTensor_flat_str = BitArray(int = paraTensor_flat[index].view(torch.int32), length=32).bin
-                newParaTensor_flat_str = paraTensor_flat_str[:6] + encode(currentWriteContent) + paraTensor_flat_str[9:32]
-                # 判断是否存在溢出
-                if int(newParaTensor_flat_str, 2) >= 2 ** 31:
-                    newParaInt = torch.tensor(int(newParaTensor_flat_str, 2) - 2 ** 32, dtype=torch.int32)
-                    paraTensor_flat[index] = newParaInt.view(torch.float32)
-                else:
-                    newParaInt = torch.tensor(int(newParaTensor_flat_str, 2), dtype=torch.int32)
-                    paraTensor_flat[index] = newParaInt.view(torch.float32)
+        # 生成嵌入的索引
+        indices = list(range(0, layer_size, interval))
+        num_positions_total = len(indices)
+        num_bits_total = num_positions_total // correct
 
-                correctionPos += 1
-                if correctionPos == correct:
-                    correctionPos = 0
-                    break
-            writePos += 1
-            if writePos >= malwareLen:
-                break
-            else:
-                currentWriteContent = malwareStr[writePos]
+        if len(malwareStr) > num_bits_total:
+            raise ValueError("恶意数据太大，无法嵌入此层。")
+
+        # 计算每个线程应处理的总位数
+        total_bits = len(malwareStr)
+        base_bits_per_thread = total_bits // num_threads
+        extra_bits = total_bits % num_threads
+
+        bits_per_thread = [base_bits_per_thread] * num_threads
+        for i in range(extra_bits):
+            bits_per_thread[i] += 1  # 将剩余的位分配给前面的线程
+
+        # 为每个线程分配位置和恶意数据的切片
+        malware_start = 0
+        position_start = 0
+        futures = {}
+
+        with ThreadPoolExecutor(max_workers=num_threads) as executor:
+            for i in range(num_threads):
+                bits_this_thread = bits_per_thread[i]
+                malware_end = malware_start + bits_this_thread
+                malware_slice = malwareStr[malware_start:malware_end]
+
+                positions_needed = bits_this_thread * correct
+                positions = indices[position_start:position_start + positions_needed]
+
+                futures[i] = executor.submit(process_block_embedding_thread, paraTensor_flat, malware_slice, correct, positions)
+
+                malware_start = malware_end
+                position_start += positions_needed
+
+            for i in futures:
+                futures[i].result()
 
         para[layer] = paraTensor_flat.reshape(para[layer].data.shape)
+    torch.save(para, flipParaPath)
 
-        torch.save(para, flipParaPath)
+def process_block_embedding_thread(paraTensor_flat, malwareStr, correct, positions):
+    malwareLen = len(malwareStr)
+    pos_idx = 0
+    for malware_idx in range(malwareLen):
+        current_bit = malwareStr[malware_idx]
+        for _ in range(correct):
+            idx = positions[pos_idx]
+            paraTensor_flat_str = BitArray(int=paraTensor_flat[idx].view(torch.int32), length=32).bin
+            newParaTensor_flat_str = paraTensor_flat_str[:6] + encode(current_bit) + paraTensor_flat_str[9:]
+            if int(newParaTensor_flat_str, 2) >= 2 ** 31:
+                newParaInt = torch.tensor(int(newParaTensor_flat_str, 2) - 2 ** 32, dtype=torch.int32)
+                paraTensor_flat[idx] = newParaInt.view(torch.float32)
+            else:
+                newParaInt = torch.tensor(int(newParaTensor_flat_str, 2), dtype=torch.int32)
+                paraTensor_flat[idx] = newParaInt.view(torch.float32)
+            pos_idx += 1
     return
 
-def layerExpBitEmbedd_010(initParaPath, flipParaPath, layers, malwares, interval, correct):
-    """
-    使用编码规则100和011进行嵌入低3bit,嵌入恶意软件，将卷积层展平，使用交错的方式编码
-    :param initParaPath:
-    :param flipParaPath:
-    :param layers: layer list
-    :param malwares: malware list
-    :param interval: 每interval个中嵌入一个
-    :param correct: 冗余多少
-    :return:
-    """
-    para = torch.load(initParaPath, map_location=torch.device("mps"))
+
+def layerExpBitEmbedd_010(initParaPath, flipParaPath, layers, malwares, interval, correct, num_threads=8):
+    para = torch.load(initParaPath, map_location=torch.device("cpu"))
 
     for layer, malware in zip(layers, malwares):
-        # 对于每个层
-
         malwareStr = BitArray(filename=malware).bin
-        malwareLen = len(malwareStr)
-        writePos = 0  # 恶意软件读写指针
-        correctionPos = 0  # 冗余指针，标识目前处于第几个冗余
-        currentWriteContent = malwareStr[writePos]  # 存储当前需要写入的内容
-
         paraTensor_flat = para[layer].flatten()
+        layer_size = paraTensor_flat.size(0)
 
-        while writePos < malwareLen:  # 写恶意软件中每一个bit
-            while correctionPos < correct:  # 交错位置冗余
-                index = writePos + correctionPos * interval * malwareLen
-                paraTensor_flat_str = BitArray(int = paraTensor_flat[index].view(torch.int32), length=32).bin
-                newParaTensor_flat_str = paraTensor_flat_str[:6] + encode_010(currentWriteContent) + paraTensor_flat_str[9:32]
-                # 判断是否存在溢出
-                if int(newParaTensor_flat_str, 2) >= 2 ** 31:
-                    newParaInt = torch.tensor(int(newParaTensor_flat_str, 2) - 2 ** 32, dtype=torch.int32)
-                    paraTensor_flat[index] = newParaInt.view(torch.float32)
-                else:
-                    newParaInt = torch.tensor(int(newParaTensor_flat_str, 2), dtype=torch.int32)
-                    paraTensor_flat[index] = newParaInt.view(torch.float32)
+        # 生成嵌入的索引
+        indices = list(range(0, layer_size, interval))
+        num_positions_total = len(indices)
+        num_bits_total = num_positions_total // correct
 
-                correctionPos += 1
-                if correctionPos == correct:
-                    correctionPos = 0
-                    break
-            writePos += 1
-            if writePos >= malwareLen:
-                break
-            else:
-                currentWriteContent = malwareStr[writePos]
+        if len(malwareStr) > num_bits_total:
+            raise ValueError("恶意数据太大，无法嵌入此层。")
+
+        # 计算每个线程应处理的总位数
+        total_bits = len(malwareStr)
+        base_bits_per_thread = total_bits // num_threads
+        extra_bits = total_bits % num_threads
+
+        bits_per_thread = [base_bits_per_thread] * num_threads
+        for i in range(extra_bits):
+            bits_per_thread[i] += 1  # 将剩余的位分配给前面的线程
+
+        # 为每个线程分配位置和恶意数据的切片
+        malware_start = 0
+        position_start = 0
+        futures = {}
+
+        with ThreadPoolExecutor(max_workers=num_threads) as executor:
+            for i in range(num_threads):
+                bits_this_thread = bits_per_thread[i]
+                malware_end = malware_start + bits_this_thread
+                malware_slice = malwareStr[malware_start:malware_end]
+
+                positions_needed = bits_this_thread * correct
+                positions = indices[position_start:position_start + positions_needed]
+
+                futures[i] = executor.submit(process_block_embedding_thread_010, paraTensor_flat, malware_slice, correct, positions)
+
+                malware_start = malware_end
+                position_start += positions_needed
+
+            for i in futures:
+                futures[i].result()
 
         para[layer] = paraTensor_flat.reshape(para[layer].data.shape)
+    torch.save(para, flipParaPath)
 
-        torch.save(para, flipParaPath)
+def process_block_embedding_thread_010(paraTensor_flat, malwareStr, correct, positions):
+    malwareLen = len(malwareStr)
+    pos_idx = 0
+    for malware_idx in range(malwareLen):
+        current_bit = malwareStr[malware_idx]
+        for _ in range(correct):
+            idx = positions[pos_idx]
+            paraTensor_flat_str = BitArray(int=paraTensor_flat[idx].view(torch.int32), length=32).bin
+            newParaTensor_flat_str = paraTensor_flat_str[:6] + encode_010(current_bit) + paraTensor_flat_str[9:]
+            if int(newParaTensor_flat_str, 2) >= 2 ** 31:
+                newParaInt = torch.tensor(int(newParaTensor_flat_str, 2) - 2 ** 32, dtype=torch.int32)
+                paraTensor_flat[idx] = newParaInt.view(torch.float32)
+            else:
+                newParaInt = torch.tensor(int(newParaTensor_flat_str, 2), dtype=torch.int32)
+                paraTensor_flat[idx] = newParaInt.view(torch.float32)
+            pos_idx += 1
     return
 
-def layerExpBitEmbedd_001(initParaPath, flipParaPath, layers, malwares, interval, correct):
-    """
-    使用编码规则100和011进行嵌入低3bit,嵌入恶意软件，将卷积层展平，使用交错的方式编码
-    :param initParaPath:
-    :param flipParaPath:
-    :param layers: layer list
-    :param malwares: malware list
-    :param interval: 每interval个中嵌入一个
-    :param correct: 冗余多少
-    :return:
-    """
-    para = torch.load(initParaPath, map_location=torch.device("mps"))
+
+def layerExpBitEmbedd_001(initParaPath, flipParaPath, layers, malwares, interval, correct, num_threads=8):
+    para = torch.load(initParaPath, map_location=torch.device("cpu"))
 
     for layer, malware in zip(layers, malwares):
-        # 对于每个层
-
         malwareStr = BitArray(filename=malware).bin
-        malwareLen = len(malwareStr)
-        writePos = 0  # 恶意软件读写指针
-        correctionPos = 0  # 冗余指针，标识目前处于第几个冗余
-        currentWriteContent = malwareStr[writePos]  # 存储当前需要写入的内容
-
         paraTensor_flat = para[layer].flatten()
+        layer_size = paraTensor_flat.size(0)
 
-        while writePos < malwareLen:  # 写恶意软件中每一个bit
-            while correctionPos < correct:  # 交错位置冗余
-                index = writePos + correctionPos * interval * malwareLen
-                paraTensor_flat_str = BitArray(int = paraTensor_flat[index].view(torch.int32), length=32).bin
-                newParaTensor_flat_str = paraTensor_flat_str[:6] + encode_001(currentWriteContent) + paraTensor_flat_str[9:32]
-                # 判断是否存在溢出
-                if int(newParaTensor_flat_str, 2) >= 2 ** 31:
-                    newParaInt = torch.tensor(int(newParaTensor_flat_str, 2) - 2 ** 32, dtype=torch.int32)
-                    paraTensor_flat[index] = newParaInt.view(torch.float32)
-                else:
-                    newParaInt = torch.tensor(int(newParaTensor_flat_str, 2), dtype=torch.int32)
-                    paraTensor_flat[index] = newParaInt.view(torch.float32)
+        # 生成嵌入的索引
+        indices = list(range(0, layer_size, interval))
+        num_positions_total = len(indices)
+        num_bits_total = num_positions_total // correct
 
-                correctionPos += 1
-                if correctionPos == correct:
-                    correctionPos = 0
-                    break
-            writePos += 1
-            if writePos >= malwareLen:
-                break
-            else:
-                currentWriteContent = malwareStr[writePos]
+        if len(malwareStr) > num_bits_total:
+            raise ValueError("恶意数据太大，无法嵌入此层。")
+
+        # 计算每个线程应处理的总位数
+        total_bits = len(malwareStr)
+        base_bits_per_thread = total_bits // num_threads
+        extra_bits = total_bits % num_threads
+
+        bits_per_thread = [base_bits_per_thread] * num_threads
+        for i in range(extra_bits):
+            bits_per_thread[i] += 1  # 将剩余的位分配给前面的线程
+
+        # 为每个线程分配位置和恶意数据的切片
+        malware_start = 0
+        position_start = 0
+        futures = {}
+
+        with ThreadPoolExecutor(max_workers=num_threads) as executor:
+            for i in range(num_threads):
+                bits_this_thread = bits_per_thread[i]
+                malware_end = malware_start + bits_this_thread
+                malware_slice = malwareStr[malware_start:malware_end]
+
+                positions_needed = bits_this_thread * correct
+                positions = indices[position_start:position_start + positions_needed]
+
+                futures[i] = executor.submit(process_block_embedding_thread_001, paraTensor_flat, malware_slice, correct, positions)
+
+                malware_start = malware_end
+                position_start += positions_needed
+
+            for i in futures:
+                futures[i].result()
 
         para[layer] = paraTensor_flat.reshape(para[layer].data.shape)
+    torch.save(para, flipParaPath)
 
-        torch.save(para, flipParaPath)
+def process_block_embedding_thread_001(paraTensor_flat, malwareStr, correct, positions):
+    malwareLen = len(malwareStr)
+    pos_idx = 0
+    for malware_idx in range(malwareLen):
+        current_bit = malwareStr[malware_idx]
+        for _ in range(correct):
+            idx = positions[pos_idx]
+            paraTensor_flat_str = BitArray(int=paraTensor_flat[idx].view(torch.int32), length=32).bin
+            newParaTensor_flat_str = paraTensor_flat_str[:6] + encode_001(current_bit) + paraTensor_flat_str[9:]
+            if int(newParaTensor_flat_str, 2) >= 2 ** 31:
+                newParaInt = torch.tensor(int(newParaTensor_flat_str, 2) - 2 ** 32, dtype=torch.int32)
+                paraTensor_flat[idx] = newParaInt.view(torch.float32)
+            else:
+                newParaInt = torch.tensor(int(newParaTensor_flat_str, 2), dtype=torch.int32)
+                paraTensor_flat[idx] = newParaInt.view(torch.float32)
+            pos_idx += 1
     return
 
-def layerExpBitEmbedd_111(initParaPath, flipParaPath, layers, malwares, interval, correct):
-    """
-    使用编码规则100和011进行嵌入低3bit,嵌入恶意软件，将卷积层展平，使用交错的方式编码
-    :param initParaPath:
-    :param flipParaPath:
-    :param layers: layer list
-    :param malwares: malware list
-    :param interval: 每interval个中嵌入一个
-    :param correct: 冗余多少
-    :return:
-    """
-    para = torch.load(initParaPath, map_location=torch.device("mps"))
+
+def layerExpBitEmbedd_111(initParaPath, flipParaPath, layers, malwares, interval, correct, num_threads=8):
+    para = torch.load(initParaPath, map_location=torch.device("cpu"))
 
     for layer, malware in zip(layers, malwares):
-        # 对于每个层
-
         malwareStr = BitArray(filename=malware).bin
-        malwareLen = len(malwareStr)
-        writePos = 0  # 恶意软件读写指针
-        correctionPos = 0  # 冗余指针，标识目前处于第几个冗余
-        currentWriteContent = malwareStr[writePos]  # 存储当前需要写入的内容
-
         paraTensor_flat = para[layer].flatten()
+        layer_size = paraTensor_flat.size(0)
 
-        while writePos < malwareLen:  # 写恶意软件中每一个bit
-            while correctionPos < correct:  # 交错位置冗余
-                index = writePos + correctionPos * interval * malwareLen
-                paraTensor_flat_str = BitArray(int = paraTensor_flat[index].view(torch.int32), length=32).bin
-                newParaTensor_flat_str = paraTensor_flat_str[:6] + encode_111(currentWriteContent) + paraTensor_flat_str[9:32]
-                # 判断是否存在溢出
-                if int(newParaTensor_flat_str, 2) >= 2 ** 31:
-                    newParaInt = torch.tensor(int(newParaTensor_flat_str, 2) - 2 ** 32, dtype=torch.int32)
-                    paraTensor_flat[index] = newParaInt.view(torch.float32)
-                else:
-                    newParaInt = torch.tensor(int(newParaTensor_flat_str, 2), dtype=torch.int32)
-                    paraTensor_flat[index] = newParaInt.view(torch.float32)
+        # 生成嵌入的索引
+        indices = list(range(0, layer_size, interval))
+        num_positions_total = len(indices)
+        num_bits_total = num_positions_total // correct
 
-                correctionPos += 1
-                if correctionPos == correct:
-                    correctionPos = 0
-                    break
-            writePos += 1
-            if writePos >= malwareLen:
-                break
-            else:
-                currentWriteContent = malwareStr[writePos]
+        if len(malwareStr) > num_bits_total:
+            raise ValueError("恶意数据太大，无法嵌入此层。")
+
+        # 计算每个线程应处理的总位数
+        total_bits = len(malwareStr)
+        base_bits_per_thread = total_bits // num_threads
+        extra_bits = total_bits % num_threads
+
+        bits_per_thread = [base_bits_per_thread] * num_threads
+        for i in range(extra_bits):
+            bits_per_thread[i] += 1  # 将剩余的位分配给前面的线程
+
+        # 为每个线程分配位置和恶意数据的切片
+        malware_start = 0
+        position_start = 0
+        futures = {}
+
+        with ThreadPoolExecutor(max_workers=num_threads) as executor:
+            for i in range(num_threads):
+                bits_this_thread = bits_per_thread[i]
+                malware_end = malware_start + bits_this_thread
+                malware_slice = malwareStr[malware_start:malware_end]
+
+                positions_needed = bits_this_thread * correct
+                positions = indices[position_start:position_start + positions_needed]
+
+                futures[i] = executor.submit(process_block_embedding_thread_111, paraTensor_flat, malware_slice, correct, positions)
+
+                malware_start = malware_end
+                position_start += positions_needed
+
+            for i in futures:
+                futures[i].result()
 
         para[layer] = paraTensor_flat.reshape(para[layer].data.shape)
+    torch.save(para, flipParaPath)
 
-        torch.save(para, flipParaPath)
+def process_block_embedding_thread_111(paraTensor_flat, malwareStr, correct, positions):
+    malwareLen = len(malwareStr)
+    pos_idx = 0
+    for malware_idx in range(malwareLen):
+        current_bit = malwareStr[malware_idx]
+        for _ in range(correct):
+            idx = positions[pos_idx]
+            paraTensor_flat_str = BitArray(int=paraTensor_flat[idx].view(torch.int32), length=32).bin
+            newParaTensor_flat_str = paraTensor_flat_str[:6] + encode_111(current_bit) + paraTensor_flat_str[9:]
+            if int(newParaTensor_flat_str, 2) >= 2 ** 31:
+                newParaInt = torch.tensor(int(newParaTensor_flat_str, 2) - 2 ** 32, dtype=torch.int32)
+                paraTensor_flat[idx] = newParaInt.view(torch.float32)
+            else:
+                newParaInt = torch.tensor(int(newParaTensor_flat_str, 2), dtype=torch.int32)
+                paraTensor_flat[idx] = newParaInt.view(torch.float32)
+            pos_idx += 1
     return
+
+
+
 
 
 
@@ -423,7 +494,7 @@ if __name__ == "__main__":
     20240914 流程对比实验
     densenet121
     """
-    layers = []
+    layers = ["features.7.0.block.3.weight"]
     malwares = ["./malware/convnext"]
     malwares_extract = ["./malware/convnext"]
     interval = 1
@@ -432,9 +503,9 @@ if __name__ == "__main__":
 
     sizeList = getExpEmbeddSize(convnextInitParaPath, layers, interval, correct)
     generateFiles(malwares, sizeList)
-    layerExpBitEmbedd(densenet121InitParaPath, './densenet121/encode_100.pth', layers, malwares, interval, correct)
-    layerExpBitEmbedd_010(densenet121InitParaPath, './densenet121/encode_010.pth', layers, malwares, interval, correct)
-    layerExpBitEmbedd_001(densenet121InitParaPath, './densenet121/encode_001.pth', layers, malwares, interval, correct)
-    layerExpBitEmbedd_111(densenet121InitParaPath, './densenet121/encode_111.pth', layers, malwares, interval, correct)
+    layerExpBitEmbedd(convnextInitParaPath, './convnext/encode_100.pth', layers, malwares, interval, correct)
+    layerExpBitEmbedd_010(convnextInitParaPath, './convnext/encode_010.pth', layers, malwares, interval, correct)
+    layerExpBitEmbedd_001(convnextInitParaPath, './convnext/encode_001.pth', layers, malwares, interval, correct)
+    layerExpBitEmbedd_111(convnextInitParaPath, './convnext/encode_111.pth', layers, malwares, interval, correct)
 
     print("Done")
