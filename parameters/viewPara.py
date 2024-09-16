@@ -10,6 +10,7 @@ vgg13InitParaPath = './init/vgg13-19584684.pth'
 vgg16InitParaPath = './init/vgg16-397923af.pth'
 vgg16BNInitParaPath = './init/vgg16_bn-6c64b313.pth'
 vgg19InitParaPath = './init/vgg19-dcbb9e9d.pth'
+vgg19BNInitParaPath = './init/vgg19_bn-c79401a0.pth'
 alexnetInitParaPath = './init/alexnet-owt-7be5be79.pth'
 convnextInitParaPath = './init/convnext_base-6075fbad.pth'
 vitb16InitParaPath = './init/vit_b_16-c867db91.pth'
@@ -51,8 +52,8 @@ def showParaValue(paraPath):
 if __name__ == "__main__":
     '''for test'''
 
-    model = models.googlenet()
-    model.load_state_dict(torch.load(googlenetInitParaPath))
+    model = models.vgg19_bn()
+    model.load_state_dict(torch.load(vgg19BNInitParaPath))
     print(model)
-    showParaStructure(googlenetInitParaPath)
+    showParaStructure(vgg19BNInitParaPath)
     # showParaValue(paraPath)

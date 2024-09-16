@@ -182,6 +182,12 @@ parameters/workflow/resnet50/2PCAM/*
 !parameters/workflow/resnet50/2PCAM/.gitkeep
 
 
+parameters/paraDistrb/malware/
+
+parameters/paraDistrb/resnet50/*
+!parameters/paraDistrb/resnet50/pics/*
+
+
 
 
 malware/*
