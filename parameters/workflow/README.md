@@ -132,7 +132,26 @@ Test correct: 39420
 
 
 
-### DenseNet
+## ConvNeXt
+
+使用的是convnext_base
+
+`features.6.0.weight`
+Conv2d(1024, 1024, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3), groups=1024)
+
+`features.7.1.block.0.weight`
+Conv2d(1024, 1024, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3), groups=1024)
+
+`features.7.2.block.0.weight`
+Conv2d(1024, 1024, kernel_size=(7, 7), stride=(1, 1), padding=(3, 3), groups=1024)
+
+
+
+### 嵌入后性能：
+
+原始性能：83.72%
+
+嵌入后性能：
 
 
 

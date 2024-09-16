@@ -354,6 +354,7 @@ def getExpEmbeddSize(initParaPath, layers, interval, correct):
     for layer in layers:
         paraTensor = para[layer].data
         paraTensor_flat = paraTensor.flatten()
+        print(initParaPath, layers, paraTensor_flat.size())
         layerSize = len(paraTensor_flat) // (interval * correct * 8)
         # print(layer, len(paraTensor_flat), layerSize)
         ret.append(layerSize)
@@ -595,30 +596,59 @@ if __name__ == "__main__":
     # print("Done")
 
 
+    # """
+    # 20240914 流程对比实验
+    # resnet50
+    # layer4.0.conv2.weight
+    # layer4.1.conv2.weight
+    # layer4.2.conv2.weight
+    # """
+    # layers = ["layer4.0.conv2.weight",
+    #           "layer4.1.conv2.weight",
+    #           "layer4.2.conv2.weight"]
+    # malwares = ["./malware/resnet50_l1",
+    #            "./malware/resnet50_l2",
+    #            "./malware/resnet50_l3"]
+    # malwares_extract = ["./malware/resnet50_l1_extract",
+    #                    "./malware/resnet50_l2_extract",
+    #                    "./malware/resnet50_l3_extract"]
+    # interval = 9
+    # correct = 11
+    # savePath = "./resnet50/bitEmbedd/resnet50_3layers_9inter_11corr.pth"
+    #
+    # # sizeList = getExpEmbeddSize(resnet50InitParaPath, layers, interval, correct)
+    # # generateFiles(malwares, sizeList)
+    # # layerExpBitEmbedd(resnet50InitParaPath, savePath, layers, malwares, interval, correct)
+    # layerExpBitExtrac("./resnet50/2PCAM/resnet50_3layers_9inter_11corr_ep5.pth", layers, malwares_extract, interval, correct)
+    # for mal1, mal2 in zip(malwares, malwares_extract):
+    #     showDif(mal1, mal2)
+
+
     """
-    20240914 流程对比实验
-    resnet50
-    layer4.0.conv2.weight
-    layer4.1.conv2.weight
-    layer4.2.conv2.weight
+    20240916 流程对比实验
+    convnext_base
+    features.7.0.block.0.weight
+    features.7.1.block.0.weight
+    features.7.2.block.0.weight
     """
-    layers = ["layer4.0.conv2.weight",
-              "layer4.1.conv2.weight",
-              "layer4.2.conv2.weight"]
-    malwares = ["./malware/resnet50_l1",
-               "./malware/resnet50_l2",
-               "./malware/resnet50_l3"]
-    malwares_extract = ["./malware/resnet50_l1_extract",
-                       "./malware/resnet50_l2_extract",
-                       "./malware/resnet50_l3_extract"]
+    layers = ["features.7.0.block.0.weight",
+              "features.7.1.block.0.weight",
+              "features.7.2.block.0.weight"]
+    malwares = ["./malware/convnext_base_l1",
+                "./malware/convnext_base_l2",
+                "./malware/convnext_base_l3"]
+    malwares_extract = ["./malware/convnext_base_l1_extract",
+                        "./malware/convnext_base_l2_extract",
+                        "./malware/convnext_base_l3_extract"]
     interval = 9
     correct = 11
-    savePath = "./resnet50/bitEmbedd/resnet50_3layers_9inter_11corr.pth"
+    savePath = "./convnext_base/bitEmbedd/convnext_base_3layers_9inter_11corr.pth"
 
-    # sizeList = getExpEmbeddSize(resnet50InitParaPath, layers, interval, correct)
-    # generateFiles(malwares, sizeList)
-    # layerExpBitEmbedd(resnet50InitParaPath, savePath, layers, malwares, interval, correct)
-    layerExpBitExtrac("./resnet50/2PCAM/resnet50_3layers_9inter_11corr_ep5.pth", layers, malwares_extract, interval, correct)
+    sizeList = getExpEmbeddSize(convnextInitParaPath, layers, interval, correct)
+    generateFiles(malwares, sizeList)
+    layerExpBitEmbedd(convnextInitParaPath, savePath, layers, malwares, interval, correct)
+    layerExpBitExtrac(savePath, layers, malwares_extract, interval,
+                      correct)
     for mal1, mal2 in zip(malwares, malwares_extract):
         showDif(mal1, mal2)
 

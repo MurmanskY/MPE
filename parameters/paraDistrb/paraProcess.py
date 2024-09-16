@@ -401,18 +401,36 @@ if __name__ == "__main__":
     # layerExpBitEmbedd_001(resnet50InitParaPath, './resnet50/encode_001.pth', layers, malwares, interval, correct)
     # layerExpBitEmbedd_111(resnet50InitParaPath, './resnet50/encode_111.pth', layers, malwares, interval, correct)
 
+    # """
+    # 20240914 流程对比实验
+    # densenet121
+    # """
+    # layers = ["features.denseblock4.denselayer14.conv2.weight"]
+    # malwares = ["./malware/densenet121"]
+    # malwares_extract = ["./malware/densenet121_extract"]
+    # interval = 1
+    # correct = 1
+    # # savePath = "./resnet50/resnet50_3layers_9inter_11corr.pth"
+    #
+    # sizeList = getExpEmbeddSize(densenet121InitParaPath, layers, interval, correct)
+    # generateFiles(malwares, sizeList)
+    # layerExpBitEmbedd(densenet121InitParaPath, './densenet121/encode_100.pth', layers, malwares, interval, correct)
+    # layerExpBitEmbedd_010(densenet121InitParaPath, './densenet121/encode_010.pth', layers, malwares, interval, correct)
+    # layerExpBitEmbedd_001(densenet121InitParaPath, './densenet121/encode_001.pth', layers, malwares, interval, correct)
+    # layerExpBitEmbedd_111(densenet121InitParaPath, './densenet121/encode_111.pth', layers, malwares, interval, correct)
+
     """
-        20240914 流程对比实验
-        densenet121
-        """
-    layers = ["features.denseblock4.denselayer14.conv2.weight"]
-    malwares = ["./malware/densenet121"]
-    malwares_extract = ["./malware/densenet121_extract"]
+    20240914 流程对比实验
+    densenet121
+    """
+    layers = []
+    malwares = ["./malware/convnext"]
+    malwares_extract = ["./malware/convnext"]
     interval = 1
     correct = 1
     # savePath = "./resnet50/resnet50_3layers_9inter_11corr.pth"
 
-    sizeList = getExpEmbeddSize(densenet121InitParaPath, layers, interval, correct)
+    sizeList = getExpEmbeddSize(convnextInitParaPath, layers, interval, correct)
     generateFiles(malwares, sizeList)
     layerExpBitEmbedd(densenet121InitParaPath, './densenet121/encode_100.pth', layers, malwares, interval, correct)
     layerExpBitEmbedd_010(densenet121InitParaPath, './densenet121/encode_010.pth', layers, malwares, interval, correct)
