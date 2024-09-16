@@ -29,6 +29,9 @@ resnet50_001 = './resnet50/encode_001.pth'
 resnet50_111 = './resnet50/encode_111.pth'
 paraPath = [resnet50_100, resnet50_010, resnet50_001, resnet50_111]
 
+
+
+
 paramsInit = torch.load(resnet50InitParaPath)
 weightsInit = paramsInit["layer4.0.conv2.weight"].cpu().numpy()
 
@@ -69,7 +72,7 @@ bins = 500
 # 首先计算初始权重的直方图和区间
 intervals_init, probs_init, bin_edges = calculate_interval_probabilities(weightsInit, bins=bins)
 # 定义统一的y轴范围
-y_max = max(probs_init) * 1.5  # 统一y轴最大值
+y_max = max(probs_init) * 100  # 统一y轴最大值
 
 for para in paraPath:
     print(para)
@@ -100,7 +103,10 @@ for para in paraPath:
     intervals_init_mid = [(i[0] + i[1]) / 2 for i in intervals_init]
     intervals_para_mid = [(i[0] + i[1]) / 2 for i in intervals_para]
 
+
     plt.figure(figsize=(8, 5))
+    # 设置全局字体大小
+    plt.rcParams.update({'font.size': 14})  # 将所有字体放大为16
     plt.bar(intervals_init_mid, probs_init, width=0.01, alpha=0.5, color='#ff4da6',
             label='Initial Weights Probabilities')
     plt.bar(intervals_para_mid, probs_para, width=0.01, alpha=0.35, color='#66b2ff',
@@ -114,5 +120,5 @@ for para in paraPath:
     plt.title(figName + " Weight Interval Probabilities")
     plt.legend()
     plt.grid()
-    plt.savefig('./resnet50/pics/' + figName + '.png')
+    plt.savefig('./resnet50/pics/' + figName + '.png', bbox_inches='tight')
     plt.show()

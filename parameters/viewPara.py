@@ -17,6 +17,10 @@ vitb16InitParaPath = './init/vit_b_16-c867db91.pth'
 swinbInitParaPath = './init/swin_b-68c6b09e.pth'
 inceptionV3InitParaPath = './init/inception_v3_google-0cc3c7bd.pth'
 googlenetInitParaPath = './init/googlenet-1378be20.pth'
+densenet121InitParaPath = './init/densenet121-a639ec97.pth'
+densenet201InitParaPath = './init/densenet201-c1103571.pth'
+
+device = torch.device("mps")
 
 def showParaStructure(paraPath):
     """
@@ -24,7 +28,7 @@ def showParaStructure(paraPath):
     :param paraPath: pth文件路径
     :return: 打印pth文件类型，长度，key
     """
-    model_pth = torch.load(paraPath)
+    model_pth = torch.load(paraPath, map_location=device)
     print("pth文件的类型是："+str(type(model_pth)))
     print("pth文件的字典长度是："+str(len(model_pth)))
     print("------pth文件的字典key包含------")
@@ -49,11 +53,30 @@ def showParaValue(paraPath):
 #     print(k,model_pth[k])
 
 
+'''处理densenee预训练参数中的key'''
+# 加载原始 state_dict
+state_dict = torch.load(densenet201InitParaPath)
+
+# 创建一个新的 state_dict，修复不匹配的键
+new_state_dict = {}
+for key in state_dict.keys():
+    # 修复键名，将 'norm.1' 改为 'norm1'，类似地处理其他键名
+    new_key = key.replace('norm.1', 'norm1').replace('conv.1', 'conv1') \
+                 .replace('norm.2', 'norm2').replace('conv.2', 'conv2')
+    new_state_dict[new_key] = state_dict[key]
+
+# 保存修正后的 state_dict 为新的 pth 文件
+torch.save(new_state_dict, densenet201InitParaPath)
+
+
 if __name__ == "__main__":
     '''for test'''
 
-    model = models.vgg19_bn()
-    model.load_state_dict(torch.load(vgg19BNInitParaPath))
+
+
+
+    model = models.densenet201()
+    model.load_state_dict(torch.load(densenet201InitParaPath))
     print(model)
-    showParaStructure(vgg19BNInitParaPath)
+    showParaStructure(densenet201InitParaPath)
     # showParaValue(paraPath)
