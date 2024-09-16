@@ -187,6 +187,9 @@ parameters/paraDistrb/malware/
 parameters/paraDistrb/resnet50/*
 !parameters/paraDistrb/resnet50/pics/
 
+parameters/paraDistrb/densenet121/*
+!parameters/paraDistrb/densenet121/pics/
+
 
 
 

@@ -19,6 +19,8 @@ convnextInitParaPath = '../init/convnext_base-6075fbad.pth'
 googlenetInitParaPath = '../init/googlenet-1378be20.pth'
 inceptionV3InitParaPath = '../init/inception_v3_google-0cc3c7bd.pth'
 vitb16InitParaPath = '../init/vit_b_16-c867db91.pth'
+densenet121InitParaPath = '../init/densenet121-a639ec97.pth'
+densenet201InitParaPath = '../init/densenet201-c1103571.pth'
 
 
 
@@ -27,13 +29,17 @@ resnet50_100 = './resnet50/encode_100.pth'
 resnet50_010 = './resnet50/encode_010.pth'
 resnet50_001 = './resnet50/encode_001.pth'
 resnet50_111 = './resnet50/encode_111.pth'
-paraPath = [resnet50_100, resnet50_010, resnet50_001, resnet50_111]
+densenet121_100 = './densenet121/encode_100.pth'
+densenet121_010 = './densenet121/encode_010.pth'
+densenet121_001 = './densenet121/encode_001.pth'
+densenet121_111 = './densenet121/encode_111.pth'
+paraPath = [densenet121_100, densenet121_010, densenet121_001, densenet121_111]
 
 
 
 
-paramsInit = torch.load(resnet50InitParaPath)
-weightsInit = paramsInit["layer4.0.conv2.weight"].cpu().numpy()
+paramsInit = torch.load(densenet121InitParaPath)
+weightsInit = paramsInit["features.denseblock4.denselayer14.conv2.weight"].cpu().numpy()
 
 
 # 定义计算MSE的函数
@@ -83,12 +89,20 @@ for para in paraPath:
         figName = 'resnet50 with encode_010'
     elif para == resnet50_001:
         figName = 'resnet50 with encode_001'
-    else:
+    elif para == resnet50_111:
         figName = 'resnet50 with encode_111'
+    elif para == densenet121_100:
+        figName = 'densenet121 with encode_100'
+    elif para == densenet121_010:
+        figName = 'densenet121 with encode_010'
+    elif para == densenet121_001:
+        figName = 'densenet121 with encode_001'
+    else:
+        figName = 'densenet121 with encode_111'
 
 
     params = torch.load(para)
-    weightsPara = params["layer4.0.conv2.weight"].cpu().numpy()
+    weightsPara = params["features.denseblock4.denselayer14.conv2.weight"].cpu().numpy()
 
     mse = calculate_mse(weightsInit, weightsPara)
     kl_div = calculate_kl_divergence(weightsInit, weightsPara)
@@ -107,9 +121,9 @@ for para in paraPath:
     plt.figure(figsize=(8, 5))
     # 设置全局字体大小
     plt.rcParams.update({'font.size': 14})  # 将所有字体放大为16
-    plt.bar(intervals_init_mid, probs_init, width=0.01, alpha=0.5, color='#ff4da6',
+    plt.bar(intervals_init_mid, probs_init, width=0.01, alpha=0.7, color='#ff4da6',
             label='Initial Weights Probabilities')
-    plt.bar(intervals_para_mid, probs_para, width=0.01, alpha=0.35, color='#66b2ff',
+    plt.bar(intervals_para_mid, probs_para, width=0.01, alpha=0.08, color='#66b2ff',
             label='Encoded Weights Probabilities')
 
     plt.xlim([-0.75, 0.75])  # 根据实际参数的范围调整
@@ -120,5 +134,5 @@ for para in paraPath:
     plt.title(figName + " Weight Interval Probabilities")
     plt.legend()
     plt.grid()
-    plt.savefig('./resnet50/pics/' + figName + '.png', bbox_inches='tight')
+    plt.savefig('./densenet121/pics/' + figName + '.png', bbox_inches='tight')
     plt.show()

@@ -23,6 +23,9 @@ convnextInitParaPath = '../init/convnext_base-6075fbad.pth'
 googlenetInitParaPath = '../init/googlenet-1378be20.pth'
 inceptionV3InitParaPath = '../init/inception_v3_google-0cc3c7bd.pth'
 vitb16InitParaPath = '../init/vit_b_16-c867db91.pth'
+densenet121InitParaPath = '../init/densenet121-a639ec97.pth'
+densenet201InitParaPath = '../init/densenet201-c1103571.pth'
+
 
 
 '''用于存储bit翻转率的结果'''
@@ -379,25 +382,41 @@ def layerExpBitEmbedd_111(initParaPath, flipParaPath, layers, malwares, interval
 if __name__ == "__main__":
 
 
-    """
-    20240914 流程对比实验
-    resnet50
-    layer4.0.conv2.weight
-    layer4.1.conv2.weight
-    layer4.2.conv2.weight
-    """
-    layers = ["layer4.0.conv2.weight"]
-    malwares = ["./malware/resnet50_l1"]
-    malwares_extract = ["./malware/resnet50_l1_extract"]
-    interval = 1
-    correct = 1
-    # savePath = "./resnet50/resnet50_3layers_9inter_11corr.pth"
-
-    sizeList = getExpEmbeddSize(resnet50InitParaPath, layers, interval, correct)
+    # """
+    # 20240914 流程对比实验
+    # resnet50
+    # layer4.0.conv2.weight
+    # """
+    # layers = ["layer4.0.conv2.weight"]
+    # malwares = ["./malware/resnet50_l1"]
+    # malwares_extract = ["./malware/resnet50_l1_extract"]
+    # interval = 1
+    # correct = 1
+    # # savePath = "./resnet50/resnet50_3layers_9inter_11corr.pth"
+    #
+    # sizeList = getExpEmbeddSize(resnet50InitParaPath, layers, interval, correct)
     # generateFiles(malwares, sizeList)
     # layerExpBitEmbedd(resnet50InitParaPath, './resnet50/encode_100.pth', layers, malwares, interval, correct)
     # layerExpBitEmbedd_010(resnet50InitParaPath, './resnet50/encode_010.pth', layers, malwares, interval, correct)
     # layerExpBitEmbedd_001(resnet50InitParaPath, './resnet50/encode_001.pth', layers, malwares, interval, correct)
     # layerExpBitEmbedd_111(resnet50InitParaPath, './resnet50/encode_111.pth', layers, malwares, interval, correct)
+
+    """
+        20240914 流程对比实验
+        densenet121
+        """
+    layers = ["features.denseblock4.denselayer14.conv2.weight"]
+    malwares = ["./malware/densenet121"]
+    malwares_extract = ["./malware/densenet121_extract"]
+    interval = 1
+    correct = 1
+    # savePath = "./resnet50/resnet50_3layers_9inter_11corr.pth"
+
+    sizeList = getExpEmbeddSize(densenet121InitParaPath, layers, interval, correct)
+    generateFiles(malwares, sizeList)
+    layerExpBitEmbedd(densenet121InitParaPath, './densenet121/encode_100.pth', layers, malwares, interval, correct)
+    layerExpBitEmbedd_010(densenet121InitParaPath, './densenet121/encode_010.pth', layers, malwares, interval, correct)
+    layerExpBitEmbedd_001(densenet121InitParaPath, './densenet121/encode_001.pth', layers, malwares, interval, correct)
+    layerExpBitEmbedd_111(densenet121InitParaPath, './densenet121/encode_111.pth', layers, malwares, interval, correct)
 
     print("Done")
