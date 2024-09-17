@@ -497,8 +497,8 @@ if __name__ == "__main__":
     layers = ["features.7.0.block.3.weight"]
     malwares = ["./malware/convnext"]
     malwares_extract = ["./malware/convnext"]
-    interval = 1
-    correct = 1
+    interval = 8
+    correct = 11
     # savePath = "./resnet50/resnet50_3layers_9inter_11corr.pth"
 
     sizeList = getExpEmbeddSize(convnextInitParaPath, layers, interval, correct)

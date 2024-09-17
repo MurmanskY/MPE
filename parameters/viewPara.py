@@ -19,6 +19,8 @@ inceptionV3InitParaPath = './init/inception_v3_google-0cc3c7bd.pth'
 googlenetInitParaPath = './init/googlenet-1378be20.pth'
 densenet121InitParaPath = './init/densenet121-a639ec97.pth'
 densenet201InitParaPath = './init/densenet201-c1103571.pth'
+vith14_lcswagInitParaPath = './init/vit_h_14_lc_swag-c1eb923e.pth'
+vith14_swagInitParaPath = './init/vit_h_14_swag-80465313.pth'
 
 device = torch.device("mps")
 
@@ -75,8 +77,8 @@ if __name__ == "__main__":
 
 
 
-    model = models.densenet201()
-    model.load_state_dict(torch.load(densenet201InitParaPath))
+    model = models.vit_h_14(weights='IMAGENET1K_SWAG_E2E_V1')
+    model.load_state_dict(torch.load(vith14_swagInitParaPath))
     print(model)
-    showParaStructure(densenet201InitParaPath)
+    showParaStructure(vith14_swagInitParaPath)
     # showParaValue(paraPath)

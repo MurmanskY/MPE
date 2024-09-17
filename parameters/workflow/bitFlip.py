@@ -25,6 +25,7 @@ convnextInitParaPath = '../init/convnext_base-6075fbad.pth'
 googlenetInitParaPath = '../init/googlenet-1378be20.pth'
 inceptionV3InitParaPath = '../init/inception_v3_google-0cc3c7bd.pth'
 vitb16InitParaPath = '../init/vit_b_16-c867db91.pth'
+vith14_lcswagInitParaPath = '../vit_h_14_lc_swag-c1eb923e.pth'
 
 
 '''用于存储bit翻转率的结果'''
@@ -338,8 +339,8 @@ def showDif(file1, file2):
         if malwareStr1[i] != malwareStr2[i]:  # 打印出所有不同的bit的位置
             print("pos:", i, "initBit:", malwareStr1[i], "extractedBit:", malwareStr2[i])
             diffNum += 1
-    print(malwareStr1)
-    print(malwareStr2)
+    # print(malwareStr1)
+    # print(malwareStr2)
     print("different bit Num between the two files: ", diffNum)
 
 
@@ -765,14 +766,130 @@ if __name__ == "__main__":
     #     showDif(mal1, mal2)
 
 
+    # """
+    # 20240916 流程对比实验
+    # convnext_base
+    # features.7.0.block.0.weight
+    # features.7.1.block.0.weight
+    # features.7.2.block.0.weight
+    # """
+    # layers = ["features.5.18.block.3.weight",
+    #           "features.5.18.block.5.weight",
+    #           "features.5.19.block.3.weight",
+    #           "features.5.19.block.5.weight",
+    #           "features.5.20.block.3.weight",
+    #           "features.5.20.block.5.weight",
+    #           "features.5.21.block.3.weight",
+    #           "features.5.21.block.5.weight",
+    #           "features.5.22.block.3.weight",
+    #           "features.5.22.block.5.weight",
+    #           "features.5.23.block.3.weight",
+    #           "features.5.23.block.5.weight",
+    #           "features.5.24.block.3.weight",
+    #           "features.5.24.block.5.weight",
+    #           "features.5.25.block.3.weight",
+    #           "features.5.25.block.5.weight",
+    #           "features.5.26.block.3.weight",
+    #           "features.5.26.block.5.weight",
+    #           "features.7.0.block.3.weight",
+    #           "features.7.0.block.5.weight",
+    #           "features.7.1.block.3.weight",
+    #           "features.7.1.block.5.weight",
+    #           "features.7.2.block.3.weight",
+    #           "features.7.2.block.5.weight"]
+    # malwares = ["./malware/convnext_base_l1",
+    #             "./malware/convnext_base_l2",
+    #             "./malware/convnext_base_l3",
+    #             "./malware/convnext_base_l4",
+    #             "./malware/convnext_base_l5",
+    #             "./malware/convnext_base_l6",
+    #             "./malware/convnext_base_l7",
+    #             "./malware/convnext_base_l8",
+    #             "./malware/convnext_base_l9",
+    #             "./malware/convnext_base_l10",
+    #             "./malware/convnext_base_l11",
+    #             "./malware/convnext_base_l12",
+    #             "./malware/convnext_base_l13",
+    #             "./malware/convnext_base_l14",
+    #             "./malware/convnext_base_l15",
+    #             "./malware/convnext_base_l16",
+    #             "./malware/convnext_base_l17",
+    #             "./malware/convnext_base_l18",
+    #             "./malware/convnext_base_l19",
+    #             "./malware/convnext_base_l20",
+    #             "./malware/convnext_base_l21",
+    #             "./malware/convnext_base_l22",
+    #             "./malware/convnext_base_l23",
+    #             "./malware/convnext_base_l24"]
+    # malwares_extract = ["./malware/convnext_base_l1_extract",
+    #                     "./malware/convnext_base_l2_extract",
+    #                     "./malware/convnext_base_l3_extract",
+    #                     "./malware/convnext_base_l4_extract",
+    #                     "./malware/convnext_base_l5_extract",
+    #                     "./malware/convnext_base_l6_extract",
+    #                     "./malware/convnext_base_l7_extract",
+    #                     "./malware/convnext_base_l8_extract",
+    #                     "./malware/convnext_base_l9_extract",
+    #                     "./malware/convnext_base_l10_extract",
+    #                     "./malware/convnext_base_l11_extract",
+    #                     "./malware/convnext_base_l12_extract",
+    #                     "./malware/convnext_base_l13_extract",
+    #                     "./malware/convnext_base_l14_extract",
+    #                     "./malware/convnext_base_l15_extract",
+    #                     "./malware/convnext_base_l16_extract",
+    #                     "./malware/convnext_base_l17_extract",
+    #                     "./malware/convnext_base_l18_extract",
+    #                     "./malware/convnext_base_l19_extract",
+    #                     "./malware/convnext_base_l20_extract",
+    #                     "./malware/convnext_base_l21_extract",
+    #                     "./malware/convnext_base_l22_extract",
+    #                     "./malware/convnext_base_l23_extract",
+    #                     "./malware/convnext_base_l24_extract"]
+    #
+    # interval = 8
+    # correct = 7
+    # # savePath = "./convnext_base/bitEmbedd/convnext_base_3layers_8inter_7corr.pth"
+    #
+    # # sizeList = getExpEmbeddSize(convnextInitParaPath, layers, interval, correct)
+    # # generateFiles(malwares, sizeList)
+    # # layerExpBitEmbedd(convnextInitParaPath, savePath, layers, malwares, interval, correct)
+    # layerExpBitExtrac("./convnext_base/2PCAM/convnext_base_3layers_8inter_7corr.pth", layers, malwares_extract, interval, correct)
+    # for mal1, mal2 in zip(malwares, malwares_extract):
+    #     showDif(mal1, mal2)
+    #
+    # print("Done")
+
+
+
+
+
+
+
+
     """
-    20240916 流程对比实验
-    convnext_base
-    features.7.0.block.0.weight
-    features.7.1.block.0.weight
-    features.7.2.block.0.weight
+        20240917 流程对比实验
+        vit_h_14
+        
     """
-    layers = ["features.7.0.block.3.weight",
+    layers = ["features.5.18.block.3.weight",
+              "features.5.18.block.5.weight",
+              "features.5.19.block.3.weight",
+              "features.5.19.block.5.weight",
+              "features.5.20.block.3.weight",
+              "features.5.20.block.5.weight",
+              "features.5.21.block.3.weight",
+              "features.5.21.block.5.weight",
+              "features.5.22.block.3.weight",
+              "features.5.22.block.5.weight",
+              "features.5.23.block.3.weight",
+              "features.5.23.block.5.weight",
+              "features.5.24.block.3.weight",
+              "features.5.24.block.5.weight",
+              "features.5.25.block.3.weight",
+              "features.5.25.block.5.weight",
+              "features.5.26.block.3.weight",
+              "features.5.26.block.5.weight",
+              "features.7.0.block.3.weight",
               "features.7.0.block.5.weight",
               "features.7.1.block.3.weight",
               "features.7.1.block.5.weight",
@@ -783,16 +900,53 @@ if __name__ == "__main__":
                 "./malware/convnext_base_l3",
                 "./malware/convnext_base_l4",
                 "./malware/convnext_base_l5",
-                "./malware/convnext_base_l6"]
+                "./malware/convnext_base_l6",
+                "./malware/convnext_base_l7",
+                "./malware/convnext_base_l8",
+                "./malware/convnext_base_l9",
+                "./malware/convnext_base_l10",
+                "./malware/convnext_base_l11",
+                "./malware/convnext_base_l12",
+                "./malware/convnext_base_l13",
+                "./malware/convnext_base_l14",
+                "./malware/convnext_base_l15",
+                "./malware/convnext_base_l16",
+                "./malware/convnext_base_l17",
+                "./malware/convnext_base_l18",
+                "./malware/convnext_base_l19",
+                "./malware/convnext_base_l20",
+                "./malware/convnext_base_l21",
+                "./malware/convnext_base_l22",
+                "./malware/convnext_base_l23",
+                "./malware/convnext_base_l24"]
     malwares_extract = ["./malware/convnext_base_l1_extract",
                         "./malware/convnext_base_l2_extract",
                         "./malware/convnext_base_l3_extract",
                         "./malware/convnext_base_l4_extract",
                         "./malware/convnext_base_l5_extract",
-                        "./malware/convnext_base_l6_extract"]
+                        "./malware/convnext_base_l6_extract",
+                        "./malware/convnext_base_l7_extract",
+                        "./malware/convnext_base_l8_extract",
+                        "./malware/convnext_base_l9_extract",
+                        "./malware/convnext_base_l10_extract",
+                        "./malware/convnext_base_l11_extract",
+                        "./malware/convnext_base_l12_extract",
+                        "./malware/convnext_base_l13_extract",
+                        "./malware/convnext_base_l14_extract",
+                        "./malware/convnext_base_l15_extract",
+                        "./malware/convnext_base_l16_extract",
+                        "./malware/convnext_base_l17_extract",
+                        "./malware/convnext_base_l18_extract",
+                        "./malware/convnext_base_l19_extract",
+                        "./malware/convnext_base_l20_extract",
+                        "./malware/convnext_base_l21_extract",
+                        "./malware/convnext_base_l22_extract",
+                        "./malware/convnext_base_l23_extract",
+                        "./malware/convnext_base_l24_extract"]
+
     interval = 8
-    correct = 11
-    savePath = "./convnext_base/bitEmbedd/convnext_base_3layers_8inter_11corr.pth"
+    correct = 7
+    savePath = "./vit_h_14/bitEmbedd/vit_h_14_3layers_8inter_7corr.pth"
 
     sizeList = getExpEmbeddSize(convnextInitParaPath, layers, interval, correct)
     generateFiles(malwares, sizeList)

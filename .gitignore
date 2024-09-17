@@ -198,6 +198,23 @@ parameters/workflow/convnext_base/2PCAM/*
 !parameters/workflow/convnext_base/2PCAM/result/
 !parameters/workflow/convnext_base/2PCAM/.gitkeep
 
+parameters/workflow/vit_h_14/bitFlip/*
+!parameters/workflow/vit_h_14/bitFlip/.gitkeep
+
+parameters/workflow/vit_h_14/bitEmbedd/*
+!parameters/workflow/vit_h_14/bitEmbedd/.gitkeep
+
+parameters/workflow/vit_h_14/ImageNetRe/*
+!parameters/workflow/vit_h_14/ImageNetRe/.gitkeep
+
+parameters/workflow/vit_h_14/2CIFAR100/*
+!parameters/workflow/vit_h_14/2CIFAR100/result/
+!parameters/workflow/vit_h_14/2CIFAR100/.gitkeep
+
+parameters/workflow/vit_h_14/2PCAM/*
+!parameters/workflow/vit_h_14/2PCAM/result/
+!parameters/workflow/vit_h_14/2PCAM/.gitkeep
+
 
 parameters/paraDistrb/malware/
 

@@ -22,12 +22,9 @@ val_dataset = datasets.ImageNet(root='../../dataset', split='val', transform=tra
 val_loader = DataLoader(val_dataset, batch_size=64, shuffle=True)
 
 '''加载模型'''
-test_pth3 = ("../../parameters/workflow/convnext_base/bitEmbedd/convnext_base_3layers_8inter_7corr.pth")
-model = models.convnext_base()
-# torch.serialization.add_safe_globals(pth_path)
+test_pth3 = ("../../parameters/init/vit_b_16-c867db91.pth")
+model = models.vit_b_16()
 model.load_state_dict(torch.load(test_pth3, map_location=torch.device("mps")))
-# model.fc = nn.Linear(model.fc.in_features, 10)
-# print(model)
 device = torch.device("mps")
 model.to(device)
 print(model)
