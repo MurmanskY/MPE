@@ -23,6 +23,9 @@ convnextInitParaPath = '../init/convnext_base-6075fbad.pth'
 googlenetInitParaPath = '../init/googlenet-1378be20.pth'
 inceptionV3InitParaPath = '../init/inception_v3_google-0cc3c7bd.pth'
 vitb16InitParaPath = '../init/vit_b_16-c867db91.pth'
+convnext_largeInitParaPath = '../init/convnext_large-ea097f82.pth'
+vith14InitParaPath = '../init/vit_h_14_lc_swag-c1eb923e.pth'
+
 
 
 '''用于存储bit翻转率的结果'''
@@ -128,7 +131,7 @@ def getPthKeys(paraPath):
     :param paraPath: 待获得的参数pth
     :return:
     """
-    return torch.load(paraPath).keys()
+    return torch.load(paraPath, map_location=torch.device("mps")).keys()
 
 
 def getBitFlipNum(str1, str2):
@@ -242,7 +245,7 @@ def layerExpBitFlip(initParaPath, flipParaPath, bit_n, *layers):
 
     para = torch.load(initParaPath)
     for layer in layers:  # 所有layer
-        if para[layer].data.dim() < 4:
+        if para[layer].data.dim() < 1:
             continue  # 只在卷积层进行嵌入
         layerTensor = para[layer].data
         para[layer].data = flip_exponent_bits(layerTensor, bit_n)
@@ -543,6 +546,14 @@ if __name__ == "__main__":
     # layerExpBitFlip(convnextInitParaPath, "./convnext/bitFlip/exp_3_allFlip.pth", 3, *getPthKeys(convnextInitParaPath))
     # layerExpBitFlip(convnextInitParaPath, "./convnext/bitFlip/exp_3_convFlip.pth", 3,*getPthKeys(convnextInitParaPath))
 
+    '''翻转convnext_large'''
+    # layerFracBitFLip(convnext_largeInitParaPath, "./convnext_large/bitFlip/frac_1.pth", 1, *getPthKeys(convnext_largeInitParaPath))
+    # # layerFracBitFLip(convnext_largeInitParaPath, "./convnext_large/bitFlip/frac_8.pth", 8, *getPthKeys(convnext_largeInitParaPath))
+    # layerFracBitFLip(convnext_largeInitParaPath, "./convnext_large/bitFlip/frac_16.pth", 16, *getPthKeys(convnext_largeInitParaPath))
+    # layerFracBitFLip(convnext_largeInitParaPath, "./convnext_large/bitFlip/frac_23.pth", 23, *getPthKeys(convnext_largeInitParaPath))
+    # layerExpBitFlip(convnext_largeInitParaPath, "./convnext_large/bitFlip/exp_3_allFlip.pth", 3, *getPthKeys(convnext_largeInitParaPath))
+    # # layerExpBitFlip(convnext_largeInitParaPath, "./convnext_large/bitFlip/exp_3_convFlip.pth", 3,*getPthKeys(convnext_largeInitParaPath))
+
     '''翻转googlenet'''
     # layerFracBitFLip(googlenetInitParaPath, "./googlenet/bitFlip/frac_1.pth", 1, *getPthKeys(googlenetInitParaPath))
     # layerFracBitFLip(googlenetInitParaPath, "./googlenet/bitFlip/frac_8.pth", 8, *getPthKeys(googlenetInitParaPath))
@@ -567,6 +578,21 @@ if __name__ == "__main__":
     # layerExpBitFlip(vitb16InitParaPath, "./vitb16/bitFlip/exp_3_allFlip.pth", 3, *getPthKeys(vitb16InitParaPath))
     # layerExpBitFlip(vitb16InitParaPath, "./vitb16/bitFlip/exp_3_convFlip.pth", 3, *getPthKeys(vitb16InitParaPath))
 
+    '''翻转convnext_large'''
+    # layerFracBitFLip(convnext_largeInitParaPath, "./convnext_large/bitFlip/frac_1.pth", 1, *getPthKeys(convnext_largeInitParaPath))
+    # # layerFracBitFLip(convnext_largeInitParaPath, "./convnext_large/bitFlip/frac_8.pth", 8, *getPthKeys(convnext_largeInitParaPath))
+    # layerFracBitFLip(convnext_largeInitParaPath, "./convnext_large/bitFlip/frac_16.pth", 16, *getPthKeys(convnext_largeInitParaPath))
+    # layerFracBitFLip(convnext_largeInitParaPath, "./convnext_large/bitFlip/frac_23.pth", 23, *getPthKeys(convnext_largeInitParaPath))
+    # layerExpBitFlip(convnext_largeInitParaPath, "./convnext_large/bitFlip/exp_3_allFlip.pth", 3, *getPthKeys(convnext_largeInitParaPath))
+    # # layerExpBitFlip(convnext_largeInitParaPath, "./convnext_large/bitFlip/exp_3_convFlip.pth", 3,*getPthKeys(convnext_largeInitParaPath))
+
+
+    '''翻转vit_h1_4'''
+    # layerFracBitFLip(vith14InitParaPath, "./vith14/bitFlip/frac_1.pth", 1, *getPthKeys(vith14InitParaPath))
+    # layerFracBitFLip(vith14InitParaPath, "./vith14/bitFlip/frac_16.pth", 16, *getPthKeys(vith14InitParaPath))
+    # layerFracBitFLip(vith14InitParaPath, "./vith14/bitFlip/frac_23.pth", 23, *getPthKeys(vith14InitParaPath))
+    # layerExpBitFlip(vith14InitParaPath, "./vith14/bitFlip/exp_3_allFlip.pth", 3, *getPthKeys(vith14InitParaPath))
+
 
 
     """
@@ -590,3 +616,8 @@ if __name__ == "__main__":
     #
     # showDif("./malware/l1", "./malware/l1_extrac_re_Pet")
     print("Done")
+
+
+
+
+
