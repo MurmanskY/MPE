@@ -21,6 +21,7 @@ inceptionV3InitParaPath = '../init/inception_v3_google-0cc3c7bd.pth'
 vitb16InitParaPath = '../init/vit_b_16-c867db91.pth'
 densenet121InitParaPath = '../init/densenet121-a639ec97.pth'
 densenet201InitParaPath = '../init/densenet201-c1103571.pth'
+vith14InitParaPath = '../init/vit_h_14_lc_swag-c1eb923e.pth'
 
 
 
@@ -37,13 +38,17 @@ convnext_100 = './convnext/encode_100.pth'
 convnext_010 = './convnext/encode_010.pth'
 convnext_001 = './convnext/encode_001.pth'
 convnext_111 = './convnext/encode_111.pth'
-paraPath = [convnext_100, convnext_010, convnext_001, convnext_111]
+vit_100 = './vith14/encode_100.pth'
+vit_010 = './vith14/encode_010.pth'
+vit_001 = './vith14/encode_001.pth'
+vit_111 = './vith14/encode_111.pth'
+paraPath = [vit_100, vit_010, vit_001, vit_111]
 
 
 
 
-paramsInit = torch.load(convnextInitParaPath)
-weightsInit = paramsInit["features.7.0.block.3.weight"].cpu().numpy()
+paramsInit = torch.load(vith14InitParaPath)
+weightsInit = paramsInit["encoder.layers.encoder_layer_10.mlp.linear_1.weight"].cpu().numpy()
 
 
 # 定义计算MSE的函数
@@ -111,10 +116,18 @@ for para in paraPath:
         figName = 'convnext with encode_001'
     elif para == convnext_111:
         figName = 'convnext with encode_111'
+    elif para == vit_100:
+        figName = 'vit with encode_100'
+    elif para == vit_010:
+        figName = 'vit with encode_010'
+    elif para == vit_001:
+        figName = 'vit with encode_001'
+    elif para == vit_111:
+        figName = 'vit with encode_111'
 
 
     params = torch.load(para)
-    weightsPara = params["features.7.0.block.3.weight"].cpu().numpy()
+    weightsPara = params["encoder.layers.encoder_layer_10.mlp.linear_1.weight"].cpu().numpy()
 
     mse = calculate_mse(weightsInit, weightsPara)
     kl_div = calculate_kl_divergence(weightsInit, weightsPara)
@@ -146,5 +159,5 @@ for para in paraPath:
     plt.title(figName + " Weight Interval Probabilities")
     plt.legend()
     plt.grid()
-    plt.savefig('./convnext/pics/' + figName + '.png', bbox_inches='tight')
+    plt.savefig('./vith14/pics/' + figName + '.png', bbox_inches='tight')
     plt.show()

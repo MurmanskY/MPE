@@ -6,6 +6,7 @@ import pandas as pd
 from bitstring import BitArray
 from concurrent.futures import ThreadPoolExecutor
 from fileProcess.fileProcess import split_file, merge_file
+import numpy as np
 
 device = torch.device("mps")
 
@@ -26,6 +27,8 @@ inceptionV3InitParaPath = '../init/inception_v3_google-0cc3c7bd.pth'
 vitb16InitParaPath = '../init/vit_b_16-c867db91.pth'
 densenet121InitParaPath = '../init/densenet121-a639ec97.pth'
 densenet201InitParaPath = '../init/densenet201-c1103571.pth'
+convnext_largeInitParaPath = '../init/convnext_large-ea097f82.pth'
+vith14InitParaPath = '../init/vit_h_14_lc_swag-c1eb923e.pth'
 
 
 
@@ -110,6 +113,31 @@ def encode_111(ch):
     :return:
     """
     return ch + ch + ch
+
+def decode(str):
+    """
+    返回译码结果
+    :param str: 待判断的字符串
+    :return: 0/1字符串
+    """
+    bit0_num = 0
+    bit1_num = 0
+    if str[0] == "0":
+        bit0_num += 1
+    else:
+        bit1_num += 1
+    if flipBit(str[1]) == "0":
+        bit0_num += 1
+    else:
+        bit1_num += 1
+    if flipBit(str[2]) == "0":
+        bit0_num += 1
+    else:
+        bit1_num += 1
+    if bit0_num > bit1_num:
+        return "0"
+    else:
+        return "1"
 
 
 def generate_file_with_bits(file_path, num_bits):
@@ -446,6 +474,99 @@ def process_block_embedding_thread_111(paraTensor_flat, malwareStr, correct, pos
     return
 
 
+def layerExpBitExtrac(initParaPath, layers, malwares_Extract, interval, correct, num_threads=8):
+    """
+    多线程用于从函数嵌入有害心的层中提取有害信息
+    :param initParaPath:
+    :param layers:
+    :param malwares_Extract:
+    :param interval:
+    :param correct:
+    :param num_threads:
+    :return:
+    """
+    para = torch.load(initParaPath, map_location=torch.device("cpu"))
+    layersEmbeddSize = getExpEmbeddSize(initParaPath, layers, interval, correct)
+
+    for layer, layerEmbeddSize, malware_Extract in zip(layers, layersEmbeddSize, malwares_Extract):
+        paraTensor = para[layer].data
+        paraTensor_flat = paraTensor.flatten()
+        layer_size = paraTensor_flat.size(0)
+
+        indices = list(range(0, layer_size, interval))
+        num_positions_total = len(indices)
+        malwareBitLen = layerEmbeddSize * 8
+
+        # 确保我们只处理嵌入了数据的位置
+        indices = indices[:malwareBitLen * correct]
+
+        # 在线程间划分位置
+        positions_per_thread = np.array_split(indices, num_threads)
+
+        all_bits_parts = [None] * num_threads
+
+        with ThreadPoolExecutor(max_workers=num_threads) as executor:
+            futures = {}
+            for i in range(num_threads):
+                positions = positions_per_thread[i].tolist()
+                futures[i] = executor.submit(process_block_extraction_thread, paraTensor_flat, positions, correct)
+
+            for i in sorted(futures.keys()):
+                all_bits_parts[i] = futures[i].result()
+
+        # 按顺序组合位
+        all_bits = []
+        for bits in all_bits_parts:
+            all_bits.extend(bits)
+
+        # 将提取的二进制数据合并到文件中
+        merge_file(malware_Extract, [BitArray(bin="".join(all_bits))])
+
+def process_block_extraction_thread(paraTensor_flat, positions, correct):
+    """
+    一个线程运行的函数
+    :param paraTensor_flat:
+    :param positions:
+    :param correct:
+    :return:
+    """
+    malware_bits = []
+    num_positions = len(positions)
+    pos_idx = 0
+
+    while pos_idx + correct <= num_positions:
+        bit0_Num = 0
+        bit1_Num = 0
+        for _ in range(correct):
+            idx = positions[pos_idx]
+            paraTensor_flat_str = BitArray(int=paraTensor_flat[idx].view(torch.int32), length=32).bin
+            bitData = decode(paraTensor_flat_str[6:9])
+            if bitData == '0':
+                bit0_Num += 1
+            else:
+                bit1_Num += 1
+            pos_idx += 1
+        if bit0_Num > bit1_Num:
+            malware_bits.append('0')
+        else:
+            malware_bits.append('1')
+    return malware_bits
+
+def showDif(file1, file2):
+    """
+    对比提取的恶意软件和原始恶意软件的区别
+    :return:
+    """
+    malwareStr1 = BitArray(filename=file1).bin
+    malwareStr2 = BitArray(filename=file2).bin
+    diffNum = 0
+    for i in range(len(malwareStr1)):
+        if malwareStr1[i] != malwareStr2[i]:  # 打印出所有不同的bit的位置
+            print("pos:", i, "initBit:", malwareStr1[i], "extractedBit:", malwareStr2[i])
+            diffNum += 1
+    # print(malwareStr1)
+    # print(malwareStr2)
+    print("different bit Num between the two files: ", diffNum)
 
 
 
@@ -490,22 +611,50 @@ if __name__ == "__main__":
     # layerExpBitEmbedd_001(densenet121InitParaPath, './densenet121/encode_001.pth', layers, malwares, interval, correct)
     # layerExpBitEmbedd_111(densenet121InitParaPath, './densenet121/encode_111.pth', layers, malwares, interval, correct)
 
+    # """
+    # 20240914 流程对比实验
+    # densenet121
+    # """
+    # layers = ["features.7.0.block.3.weight"]
+    # malwares = ["./malware/convnext_large"]
+    # malwares_extract = ["./malware/convnext_large_extract"]
+    # interval = 8
+    # correct = 7
+    # # savePath = "./resnet50/resnet50_3layers_9inter_11corr.pth"
+    #
+    # # sizeList = getExpEmbeddSize(convnext_largeInitParaPath, layers, interval, correct)
+    # # generateFiles(malwares, sizeList)
+    # # layerExpBitEmbedd(convnext_largeInitParaPath, './convnext_large/encode_100.pth', layers, malwares, interval, correct)
+    # # layerExpBitEmbedd_010(convnext_largeInitParaPath, './convnext_large/encode_010.pth', layers, malwares, interval, correct)
+    # # layerExpBitEmbedd_001(convnext_largeInitParaPath, './convnext_large/encode_001.pth', layers, malwares, interval, correct)
+    # # layerExpBitEmbedd_111(convnext_largeInitParaPath, './convnext_large/encode_111.pth', layers, malwares, interval, correct)
+    # layerExpBitExtrac('./convnext_large/encode_100.pth', layers, malwares_extract, interval, correct)
+    #
+    # for mal1, mal2 in zip(malwares, malwares_extract):
+    #     showDif(mal1, mal2)
+    #
+    # print("Done")
+
     """
-    20240914 流程对比实验
+    20240919 流程对比实验
     densenet121
     """
-    layers = ["features.7.0.block.3.weight"]
-    malwares = ["./malware/convnext"]
-    malwares_extract = ["./malware/convnext"]
-    interval = 8
-    correct = 11
+    layers = ["encoder.layers.encoder_layer_10.mlp.linear_1.weight"]
+    malwares = ["./malware/vith14"]
+    malwares_extract = ["./malware/vith14_extract"]
+    interval = 1
+    correct = 1
     # savePath = "./resnet50/resnet50_3layers_9inter_11corr.pth"
 
-    sizeList = getExpEmbeddSize(convnextInitParaPath, layers, interval, correct)
+    sizeList = getExpEmbeddSize(vith14InitParaPath, layers, interval, correct)
     generateFiles(malwares, sizeList)
-    layerExpBitEmbedd(convnextInitParaPath, './convnext/encode_100.pth', layers, malwares, interval, correct)
-    layerExpBitEmbedd_010(convnextInitParaPath, './convnext/encode_010.pth', layers, malwares, interval, correct)
-    layerExpBitEmbedd_001(convnextInitParaPath, './convnext/encode_001.pth', layers, malwares, interval, correct)
-    layerExpBitEmbedd_111(convnextInitParaPath, './convnext/encode_111.pth', layers, malwares, interval, correct)
+    layerExpBitEmbedd(vith14InitParaPath, './vith14/encode_100.pth', layers, malwares, interval, correct)
+    layerExpBitEmbedd_010(vith14InitParaPath, './vith14/encode_010.pth', layers, malwares, interval, correct)
+    layerExpBitEmbedd_001(vith14InitParaPath, './vith14/encode_001.pth', layers, malwares, interval, correct)
+    layerExpBitEmbedd_111(vith14InitParaPath, './vith14/encode_111.pth', layers, malwares, interval, correct)
+    layerExpBitExtrac('./vith14/encode_100.pth', layers, malwares_extract, interval, correct)
+
+    for mal1, mal2 in zip(malwares, malwares_extract):
+        showDif(mal1, mal2)
 
     print("Done")

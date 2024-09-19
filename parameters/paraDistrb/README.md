@@ -45,3 +45,21 @@ KL:  23.29661494482655
 ./convnext/encode_111.pth
 MSE:  0.8724117
 KL:  23.04215090011165
+
+
+
+vith14
+```
+"encoder.layers.encoder_layer_10.mlp.linear_1.weight"
+```
+MSE:  0.010673094
+KL:  19.116521278182553
+./vith14/encode_010.pth
+MSE:  0.041156724
+KL:  11.17793362754616
+./vith14/encode_001.pth
+MSE:  0.17448479
+KL:  12.287893103284707
+./vith14/encode_111.pth
+MSE:  0.720103
+KL:  17.373831607671992
