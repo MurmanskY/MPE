@@ -282,12 +282,12 @@ if __name__ == '__main__':
     #             "./convnext_large/2CIFAR100/result/exp_3_allFlip_ep_5.csv")
 
     # '''vith14_2_CIFAR100'''
-    showBitFlip("./vith14/bitFlip/frac_1.pth", "./vith14/2CIFAR100_right_key/frac_1_ep_5.pth", 31, 32,
-                "./vith14/2CIFAR100/result/frac_1_ep_5.csv")
+    # showBitFlip("./vith14/bitFlip/frac_1.pth", "./vith14/2CIFAR100_right_key/frac_1_ep_5.pth", 31, 32,
+    #             "./vith14/2CIFAR100/result/frac_1_ep_5.csv")
     # showBitFlip("./vith14/bitFlip/frac_16.pth", "./vith14/2CIFAR100_right_key/frac_16_ep_5.pth", 16, 32,
     #             "./vith14/2CIFAR100/result/frac_16_ep_5.csv")
-    # showBitFlip("./vith14/bitFlip/frac_23.pth", "./vith14/2CIFAR100_right_key/frac_23_ep_5.pth", 9, 32,
-    #             "./vith14/2CIFAR100/result/frac_23_ep_5.csv")
+    showBitFlip("./vith14/bitFlip/frac_23.pth", "./vith14/2CIFAR100_right_key/frac_23_ep_5.pth", 9, 32,
+                "./vith14/2CIFAR100/result/frac_23_ep_5.csv")
     # showBitFlip("./vith14/bitFlip/exp_3_allFlip.pth", "./vith14/2CIFAR100_right_key/exp_3_allFlip_ep_5.pth", 6, 9,
     #             "./vith14/2CIFAR100/result/exp_3_allFlip_ep_5.csv")
 
