@@ -281,15 +281,26 @@ if __name__ == '__main__':
     # showBitFlip("./convnext_large/bitFlip/exp_3_allFlip.pth", "./convnext_large/2CIFAR100/exp_3_allFlip_ep_5.pth",6, 9,
     #             "./convnext_large/2CIFAR100/result/exp_3_allFlip_ep_5.csv")
 
+    # '''convnext_large_2_FGCVAircraft'''
+    showBitFlip("./convnext_large/bitFlip/frac_1.pth", "./convnext_large/2FGCVAircraft/frac_1_ep_20.pth", 31, 32,
+                "./convnext_large/2FGCVAircraft/result/frac_1_ep_20.csv")
+    showBitFlip("./convnext_large/bitFlip/frac_16.pth", "./convnext_large/2FGCVAircraft/frac_16_ep_20.pth", 16, 32,
+                "./convnext_large/2FGCVAircraft/result/frac_16_ep_20.csv")
+    showBitFlip("./convnext_large/bitFlip/frac_23.pth", "./convnext_large/2FGCVAircraft/frac_23_ep_20.pth", 9, 32,
+                "./convnext_large/2FGCVAircraft/result/frac_23_ep_20.csv")
+    showBitFlip("./convnext_large/bitFlip/exp_3_allFlip.pth", "./convnext_large/2FGCVAircraft/exp_3_allFlip_ep_20.pth",
+                6, 9,
+                "./convnext_large/2FGCVAircraft/result/exp_3_allFlip_ep_20.csv")
+
     # '''convnext_large_2_PCAM'''
-    showBitFlip("./convnext_large/bitFlip/frac_1.pth", "./convnext_large/2PCAM/frac_1_ep_5.pth", 31, 32,
-                "./convnext_large/2PCAM/result/frac_1_ep_5.csv")
-    showBitFlip("./convnext_large/bitFlip/frac_16.pth", "./convnext_large/2PCAM/frac_16_ep_5.pth", 16, 32,
-                "./convnext_large/2PCAM/result/frac_16_ep_5.csv")
-    showBitFlip("./convnext_large/bitFlip/frac_23.pth", "./convnext_large/2PCAM/frac_23_ep_5.pth", 9, 32,
-                "./convnext_large/2PCAM/result/frac_23_ep_5.csv")
-    showBitFlip("./convnext_large/bitFlip/exp_3_allFlip.pth", "./convnext_large/2PCAM/exp_3_allFlip_ep_5.pth",6, 9,
-                "./convnext_large/2PCAM/result/exp_3_allFlip_ep_5.csv")
+    # showBitFlip("./convnext_large/bitFlip/frac_1.pth", "./convnext_large/2PCAM/frac_1_ep_5.pth", 31, 32,
+    #             "./convnext_large/2PCAM/result/frac_1_ep_5.csv")
+    # showBitFlip("./convnext_large/bitFlip/frac_16.pth", "./convnext_large/2PCAM/frac_16_ep_5.pth", 16, 32,
+    #             "./convnext_large/2PCAM/result/frac_16_ep_5.csv")
+    # showBitFlip("./convnext_large/bitFlip/frac_23.pth", "./convnext_large/2PCAM/frac_23_ep_5.pth", 9, 32,
+    #             "./convnext_large/2PCAM/result/frac_23_ep_5.csv")
+    # showBitFlip("./convnext_large/bitFlip/exp_3_allFlip.pth", "./convnext_large/2PCAM/exp_3_allFlip_ep_5.pth",6, 9,
+    #             "./convnext_large/2PCAM/result/exp_3_allFlip_ep_5.csv")
 
     # '''vith14_2_CIFAR100'''
     # showBitFlip("./vith14/bitFlip/frac_1.pth", "./vith14/2CIFAR100_right_key/frac_1_ep_5.pth", 31, 32,
