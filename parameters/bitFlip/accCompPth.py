@@ -282,15 +282,26 @@ if __name__ == '__main__':
     #             "./convnext_large/2CIFAR100/result/exp_3_allFlip_ep_5.csv")
 
     # '''convnext_large_2_FGCVAircraft'''
-    showBitFlip("./convnext_large/bitFlip/frac_1.pth", "./convnext_large/2FGCVAircraft/frac_1_ep_20.pth", 31, 32,
-                "./convnext_large/2FGCVAircraft/result/frac_1_ep_20.csv")
-    showBitFlip("./convnext_large/bitFlip/frac_16.pth", "./convnext_large/2FGCVAircraft/frac_16_ep_20.pth", 16, 32,
-                "./convnext_large/2FGCVAircraft/result/frac_16_ep_20.csv")
-    showBitFlip("./convnext_large/bitFlip/frac_23.pth", "./convnext_large/2FGCVAircraft/frac_23_ep_20.pth", 9, 32,
-                "./convnext_large/2FGCVAircraft/result/frac_23_ep_20.csv")
-    showBitFlip("./convnext_large/bitFlip/exp_3_allFlip.pth", "./convnext_large/2FGCVAircraft/exp_3_allFlip_ep_20.pth",
+    # showBitFlip("./convnext_large/bitFlip/frac_1.pth", "./convnext_large/2FGCVAircraft/frac_1_ep_20.pth", 31, 32,
+    #             "./convnext_large/2FGCVAircraft/result/frac_1_ep_20.csv")
+    # showBitFlip("./convnext_large/bitFlip/frac_16.pth", "./convnext_large/2FGCVAircraft/frac_16_ep_20.pth", 16, 32,
+    #             "./convnext_large/2FGCVAircraft/result/frac_16_ep_20.csv")
+    # showBitFlip("./convnext_large/bitFlip/frac_23.pth", "./convnext_large/2FGCVAircraft/frac_23_ep_20.pth", 9, 32,
+    #             "./convnext_large/2FGCVAircraft/result/frac_23_ep_20.csv")
+    # showBitFlip("./convnext_large/bitFlip/exp_3_allFlip.pth", "./convnext_large/2FGCVAircraft/exp_3_allFlip_ep_20.pth",
+    #             6, 9,
+    #             "./convnext_large/2FGCVAircraft/result/exp_3_allFlip_ep_20.csv")
+
+    # '''convnext_large_2_GTSRB'''
+    showBitFlip("./convnext_large/bitFlip/frac_1.pth", "./convnext_large/2GTSRB/frac_1_ep_10.pth", 31, 32,
+                "./convnext_large/2GTSRB/result/frac_1_ep_10.csv")
+    showBitFlip("./convnext_large/bitFlip/frac_16.pth", "./convnext_large/2GTSRB/frac_16_ep_10.pth", 16, 32,
+                "./convnext_large/2GTSRB/result/frac_16_ep_10.csv")
+    showBitFlip("./convnext_large/bitFlip/frac_23.pth", "./convnext_large/2GTSRB/frac_23_ep_10.pth", 9, 32,
+                "./convnext_large/2GTSRB/result/frac_23_ep_10.csv")
+    showBitFlip("./convnext_large/bitFlip/exp_3_allFlip.pth", "./convnext_large/2GTSRB/exp_3_allFlip_ep_10.pth",
                 6, 9,
-                "./convnext_large/2FGCVAircraft/result/exp_3_allFlip_ep_20.csv")
+                "./convnext_large/2GTSRB/result/exp_3_allFlip_ep_10.csv")
 
     # '''convnext_large_2_PCAM'''
     # showBitFlip("./convnext_large/bitFlip/frac_1.pth", "./convnext_large/2PCAM/frac_1_ep_5.pth", 31, 32,
