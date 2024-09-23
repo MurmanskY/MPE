@@ -158,6 +158,8 @@ Linear(in_features=1024, out_features=4096, bias=True)
 
 
 
+### 不需要进行重训练
+
 
 
 ### 翻转结果：
@@ -344,6 +346,10 @@ File './malware/convnext_base_l24' generated with 74896 bits.
 
 
 
+### 不需要重训练：
+
+
+
 ### 翻转结果：
 
 - CIFAR100
@@ -513,6 +519,235 @@ File './malware/convnext_base_l24' generated with 74896 bits.
 
 
 
+## ConvNeXt_large 嵌入36层
+
+使用convnext_large
+
+嵌入总容量为：284370B，
+
+```
+layers = ["features.5.12.block.3.weight",
+              "features.5.12.block.5.weight",
+              "features.5.13.block.3.weight",
+              "features.5.13.block.5.weight",
+              "features.5.14.block.3.weight",
+              "features.5.14.block.5.weight",
+              "features.5.15.block.3.weight",
+              "features.5.15.block.5.weight",
+              "features.5.16.block.3.weight",
+              "features.5.16.block.5.weight",
+              "features.5.17.block.3.weight",
+              "features.5.17.block.5.weight",
+              "features.5.18.block.3.weight",
+              "features.5.18.block.5.weight",
+              "features.5.19.block.3.weight",
+              "features.5.19.block.5.weight",
+              "features.5.20.block.3.weight",
+              "features.5.20.block.5.weight",
+              "features.5.21.block.3.weight",
+              "features.5.21.block.5.weight",
+              "features.5.22.block.3.weight",
+              "features.5.22.block.5.weight",
+              "features.5.23.block.3.weight",
+              "features.5.23.block.5.weight",
+              "features.5.24.block.3.weight",
+              "features.5.24.block.5.weight",
+              "features.5.25.block.3.weight",
+              "features.5.25.block.5.weight",
+              "features.5.26.block.3.weight",
+              "features.5.26.block.5.weight",
+              "features.7.0.block.3.weight",
+              "features.7.0.block.5.weight",
+              "features.7.1.block.3.weight",
+              "features.7.1.block.5.weight",
+              "features.7.2.block.3.weight",
+              "features.7.2.block.5.weight"]
+```
+
+```
+Byte Num: 5266
+File './malware/convnext_large_l1' generated with 42128 bits.
+Byte Num: 5266
+File './malware/convnext_large_l2' generated with 42128 bits.
+Byte Num: 5266
+File './malware/convnext_large_l3' generated with 42128 bits.
+Byte Num: 5266
+File './malware/convnext_large_l4' generated with 42128 bits.
+Byte Num: 5266
+File './malware/convnext_large_l5' generated with 42128 bits.
+Byte Num: 5266
+File './malware/convnext_large_l6' generated with 42128 bits.
+Byte Num: 5266
+File './malware/convnext_large_l7' generated with 42128 bits.
+Byte Num: 5266
+File './malware/convnext_large_l8' generated with 42128 bits.
+Byte Num: 5266
+File './malware/convnext_large_l9' generated with 42128 bits.
+Byte Num: 5266
+File './malware/convnext_large_l10' generated with 42128 bits.
+Byte Num: 5266
+File './malware/convnext_large_l11' generated with 42128 bits.
+Byte Num: 5266
+File './malware/convnext_large_l12' generated with 42128 bits.
+Byte Num: 5266
+File './malware/convnext_large_l13' generated with 42128 bits.
+Byte Num: 5266
+File './malware/convnext_large_l14' generated with 42128 bits.
+Byte Num: 5266
+File './malware/convnext_large_l15' generated with 42128 bits.
+Byte Num: 5266
+File './malware/convnext_large_l16' generated with 42128 bits.
+Byte Num: 5266
+File './malware/convnext_large_l17' generated with 42128 bits.
+Byte Num: 5266
+File './malware/convnext_large_l18' generated with 42128 bits.
+Byte Num: 5266
+File './malware/convnext_large_l19' generated with 42128 bits.
+Byte Num: 5266
+File './malware/convnext_large_l20' generated with 42128 bits.
+Byte Num: 5266
+File './malware/convnext_large_l21' generated with 42128 bits.
+Byte Num: 5266
+File './malware/convnext_large_l22' generated with 42128 bits.
+Byte Num: 5266
+File './malware/convnext_large_l23' generated with 42128 bits.
+Byte Num: 5266
+File './malware/convnext_large_l24' generated with 42128 bits.
+Byte Num: 5266
+File './malware/convnext_large_l25' generated with 42128 bits.
+Byte Num: 5266
+File './malware/convnext_large_l26' generated with 42128 bits.
+Byte Num: 5266
+File './malware/convnext_large_l27' generated with 42128 bits.
+Byte Num: 5266
+File './malware/convnext_large_l28' generated with 42128 bits.
+Byte Num: 5266
+File './malware/convnext_large_l29' generated with 42128 bits.
+Byte Num: 5266
+File './malware/convnext_large_l30' generated with 42128 bits.
+Byte Num: 21065
+File './malware/convnext_large_l31' generated with 168520 bits.
+Byte Num: 21065
+File './malware/convnext_large_l32' generated with 168520 bits.
+Byte Num: 21065
+File './malware/convnext_large_l33' generated with 168520 bits.
+Byte Num: 21065
+File './malware/convnext_large_l34' generated with 168520 bits.
+Byte Num: 21065
+File './malware/convnext_large_l35' generated with 168520 bits.
+Byte Num: 21065
+File './malware/convnext_large_l36' generated with 168520 bits.
+```
+
+### 嵌入后的性能：
+
+原始性能：84.17%
+
+嵌入后性能：82.29%
+
+
+
+### 不需要进行重训练
+
+### 翻转结果：
+
+- FGCVAircraft：2274960Bit
+  ```
+  epoch = 5: total Flip Num is: 3, SNR = 117.60
+  epoch = 10: total Flip Num is: 17, SNR = 102.53
+  epoch = 15: total Flip Num is: 33, SNR = 96.77
+  epoch = 20: total Flip Num is: 35, SNR = 96.26
+  epoch = 25: total Flip Num is: 52, SNR = 92.82
+  epoch = 30: total Flip Num is: 54, SNR = 92.49
+  epoch = 35: total Flip Num is: 53, SNR = 92.66
+  epoch = 40: total Flip Num is: 58, SNR = 91.87
+  ```
+
+  
+
+
+
+
+
+## ConvNeXt_large 嵌入40层
+
+6inter, 7 correct
+
+400KB
+
+### 嵌入后性能：
+
+原始性能：84.17%
+
+嵌入后性能：80.79%
+
+
+
+
+
+
+
+## ConvNeXt_large嵌入40层
+
+4inter，7correct
+
+42130*6 + 10532 * 34 = 589804 Byte = 4718432 bit = 590KB
+
+### 嵌入后性能：
+
+原始性能：84.17%
+
+嵌入后性能：79.18%
+
+### 重训练结果：
+
+在ImageNet上重训练一个epoch之后的性能：82.88%
+
+ 
+
+### 翻转结果：
+
+- CIFAR100
+
+```
+epoch=5, total Flip Num is:  8  SNR is:  115.414154271471804
+epoch=10, total Flip Num is:  21  SNR is:  107.031568116632291
+epoch=15, total Flip Num is:  34  SNR is:  102.846375670465574
+epoch=20, total Flip Num is:  65  SNR is:  97.217686878453565
+epoch=25, total Flip Num is:  59  SNR is:  98.058913778467792
+epoch=30, total Flip Num is:  75  SNR is:  95.974728743476675
+epoch=35, total Flip Num is:  72  SNR is:  96.329304082685307
+epoch=40, total Flip Num is:  74  SNR is:  96.0913196166911527
+```
+
+- FGCVAircraft
+
+```
+epoch=5, total Flip Num is:  4  SNR is:  121.73954742206094
+epoch=10, total Flip Num is:  14  SNR is:  110.85818653505542
+epoch=15, total Flip Num is:  32  SNR is:  103.67774768222206
+epoch=20, total Flip Num is:  39  SNR is:  101.9594551080902
+epoch=25, total Flip Num is:  48  SNR is:  100.15592250110844
+epoch=30, total Flip Num is:  61  SNR is:  98.07415054840484
+epoch=35, total Flip Num is:  73  SNR is:  96.51429004621107
+epoch=40, total Flip Num is:  77  SNR is:  96.05093274517054
+```
+
+- GTSRB
+
+```
+```
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## vit_h_14
@@ -527,6 +762,8 @@ File './malware/convnext_base_l24' generated with 74896 bits.
 ### 嵌入后
 
 原始性能：Test Accuracy: 85.48%
+
+
 
 
 

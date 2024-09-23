@@ -7,6 +7,8 @@ from bitstring import BitArray
 from fileProcess.fileProcess import split_file, merge_file
 from concurrent.futures import ThreadPoolExecutor
 import numpy as np
+import math
+
 
 device = torch.device("mps")
 
@@ -22,6 +24,7 @@ vgg19InitParaPath = '../init/vgg19-dcbb9e9d.pth'
 vgg19BNInitParaPath = '../init/vgg19_bn-c79401a0.pth'
 alexnetInitParaPath = '../init/alexnet-owt-7be5be79.pth'
 convnextInitParaPath = '../init/convnext_base-6075fbad.pth'
+convnext_largeInitParaPath = '../init/convnext_large-ea097f82.pth'
 googlenetInitParaPath = '../init/googlenet-1378be20.pth'
 inceptionV3InitParaPath = '../init/inception_v3_google-0cc3c7bd.pth'
 vitb16InitParaPath = '../init/vit_b_16-c867db91.pth'
@@ -64,6 +67,10 @@ bit_29 = torch.tensor(536870911, dtype=torch.int32)
 bit_30 = torch.tensor(1073741823, dtype=torch.int32)
 
 
+
+
+def SNR(total_mal_num, total_error_num):
+    return 20 * math.log(8 * total_mal_num / total_error_num, 10)
 
 
 def flipBit(ch):
@@ -131,7 +138,7 @@ def getPthKeys(paraPath):
     :param paraPath: 待获得的参数pth
     :return:
     """
-    return torch.load(paraPath).keys()
+    return torch.load(paraPath, map_location=torch.device("mps")).keys()
 
 
 def getBitFlipNum(str1, str2):
@@ -329,7 +336,7 @@ def generateFiles(malwares_path, malwaresSize_byte):
 
 def showDif(file1, file2):
     """
-    对比提取的恶意软件和原始恶意软件的区别
+    对比提取的恶意软件和原始恶意软件的区别,返回出错的bit
     :return:
     """
     malwareStr1 = BitArray(filename=file1).bin
@@ -337,11 +344,12 @@ def showDif(file1, file2):
     diffNum = 0
     for i in range(len(malwareStr1)):
         if malwareStr1[i] != malwareStr2[i]:  # 打印出所有不同的bit的位置
-            print("pos:", i, "initBit:", malwareStr1[i], "extractedBit:", malwareStr2[i])
+            # print("pos:", i, "initBit:", malwareStr1[i], "extractedBit:", malwareStr2[i])
             diffNum += 1
     # print(malwareStr1)
     # print(malwareStr2)
     print("different bit Num between the two files: ", diffNum)
+    return diffNum
 
 
 def getExpEmbeddSize(initParaPath, layers, interval, correct):
@@ -867,11 +875,26 @@ if __name__ == "__main__":
 
 
     """
-        20240917 流程对比实验
-        vit_h_14
-        
+    20240919 流程对比实验
+    convnext_large
     """
-    layers = ["features.5.18.block.3.weight",
+    layers = ["features.5.10.block.3.weight",
+              "features.5.10.block.5.weight",
+              "features.5.11.block.3.weight",
+              "features.5.11.block.5.weight",
+              "features.5.12.block.3.weight",
+              "features.5.12.block.5.weight",
+              "features.5.13.block.3.weight",
+              "features.5.13.block.5.weight",
+              "features.5.14.block.3.weight",
+              "features.5.14.block.5.weight",
+              "features.5.15.block.3.weight",
+              "features.5.15.block.5.weight",
+              "features.5.16.block.3.weight",
+              "features.5.16.block.5.weight",
+              "features.5.17.block.3.weight",
+              "features.5.17.block.5.weight",
+              "features.5.18.block.3.weight",
               "features.5.18.block.5.weight",
               "features.5.19.block.3.weight",
               "features.5.19.block.5.weight",
@@ -895,64 +918,180 @@ if __name__ == "__main__":
               "features.7.1.block.5.weight",
               "features.7.2.block.3.weight",
               "features.7.2.block.5.weight"]
-    malwares = ["./malware/convnext_base_l1",
-                "./malware/convnext_base_l2",
-                "./malware/convnext_base_l3",
-                "./malware/convnext_base_l4",
-                "./malware/convnext_base_l5",
-                "./malware/convnext_base_l6",
-                "./malware/convnext_base_l7",
-                "./malware/convnext_base_l8",
-                "./malware/convnext_base_l9",
-                "./malware/convnext_base_l10",
-                "./malware/convnext_base_l11",
-                "./malware/convnext_base_l12",
-                "./malware/convnext_base_l13",
-                "./malware/convnext_base_l14",
-                "./malware/convnext_base_l15",
-                "./malware/convnext_base_l16",
-                "./malware/convnext_base_l17",
-                "./malware/convnext_base_l18",
-                "./malware/convnext_base_l19",
-                "./malware/convnext_base_l20",
-                "./malware/convnext_base_l21",
-                "./malware/convnext_base_l22",
-                "./malware/convnext_base_l23",
-                "./malware/convnext_base_l24"]
-    malwares_extract = ["./malware/convnext_base_l1_extract",
-                        "./malware/convnext_base_l2_extract",
-                        "./malware/convnext_base_l3_extract",
-                        "./malware/convnext_base_l4_extract",
-                        "./malware/convnext_base_l5_extract",
-                        "./malware/convnext_base_l6_extract",
-                        "./malware/convnext_base_l7_extract",
-                        "./malware/convnext_base_l8_extract",
-                        "./malware/convnext_base_l9_extract",
-                        "./malware/convnext_base_l10_extract",
-                        "./malware/convnext_base_l11_extract",
-                        "./malware/convnext_base_l12_extract",
-                        "./malware/convnext_base_l13_extract",
-                        "./malware/convnext_base_l14_extract",
-                        "./malware/convnext_base_l15_extract",
-                        "./malware/convnext_base_l16_extract",
-                        "./malware/convnext_base_l17_extract",
-                        "./malware/convnext_base_l18_extract",
-                        "./malware/convnext_base_l19_extract",
-                        "./malware/convnext_base_l20_extract",
-                        "./malware/convnext_base_l21_extract",
-                        "./malware/convnext_base_l22_extract",
-                        "./malware/convnext_base_l23_extract",
-                        "./malware/convnext_base_l24_extract"]
+    malwares = ["./malware/convnext_large_l1",
+                "./malware/convnext_large_l2",
+                "./malware/convnext_large_l3",
+                "./malware/convnext_large_l4",
+                "./malware/convnext_large_l5",
+                "./malware/convnext_large_l6",
+                "./malware/convnext_large_l7",
+                "./malware/convnext_large_l8",
+                "./malware/convnext_large_l9",
+                "./malware/convnext_large_l10",
+                "./malware/convnext_large_l11",
+                "./malware/convnext_large_l12",
+                "./malware/convnext_large_l13",
+                "./malware/convnext_large_l14",
+                "./malware/convnext_large_l15",
+                "./malware/convnext_large_l16",
+                "./malware/convnext_large_l17",
+                "./malware/convnext_large_l18",
+                "./malware/convnext_large_l19",
+                "./malware/convnext_large_l20",
+                "./malware/convnext_large_l21",
+                "./malware/convnext_large_l22",
+                "./malware/convnext_large_l23",
+                "./malware/convnext_large_l24",
+                "./malware/convnext_large_l25",
+                "./malware/convnext_large_l26",
+                "./malware/convnext_large_l27",
+                "./malware/convnext_large_l28",
+                "./malware/convnext_large_l29",
+                "./malware/convnext_large_l30",
+                "./malware/convnext_large_l31",
+                "./malware/convnext_large_l32",
+                "./malware/convnext_large_l33",
+                "./malware/convnext_large_l34",
+                "./malware/convnext_large_l35",
+                "./malware/convnext_large_l36",
+                "./malware/convnext_large_l37",
+                "./malware/convnext_large_l38",
+                "./malware/convnext_large_l39",
+                "./malware/convnext_large_l40"]
+    malwares_extract = ["./malware/convnext_large_l1_e",
+                        "./malware/convnext_large_l2_e",
+                        "./malware/convnext_large_l3_e",
+                        "./malware/convnext_large_l4_e",
+                        "./malware/convnext_large_l5_e",
+                        "./malware/convnext_large_l6_e",
+                        "./malware/convnext_large_l7_e",
+                        "./malware/convnext_large_l8_e",
+                        "./malware/convnext_large_l9_e",
+                        "./malware/convnext_large_l10_e",
+                        "./malware/convnext_large_l11_e",
+                        "./malware/convnext_large_l12_e",
+                        "./malware/convnext_large_l13_e",
+                        "./malware/convnext_large_l14_e",
+                        "./malware/convnext_large_l15_e",
+                        "./malware/convnext_large_l16_e",
+                        "./malware/convnext_large_l17_e",
+                        "./malware/convnext_large_l18_e",
+                        "./malware/convnext_large_l19_e",
+                        "./malware/convnext_large_l20_e",
+                        "./malware/convnext_large_l21_e",
+                        "./malware/convnext_large_l22_e",
+                        "./malware/convnext_large_l23_e",
+                        "./malware/convnext_large_l24_e",
+                        "./malware/convnext_large_l25_e",
+                        "./malware/convnext_large_l26_e",
+                        "./malware/convnext_large_l27_e",
+                        "./malware/convnext_large_l28_e",
+                        "./malware/convnext_large_l29_e",
+                        "./malware/convnext_large_l30_e",
+                        "./malware/convnext_large_l31_e",
+                        "./malware/convnext_large_l32_e",
+                        "./malware/convnext_large_l33_e",
+                        "./malware/convnext_large_l34_e",
+                        "./malware/convnext_large_l35_e",
+                        "./malware/convnext_large_l36_e",
+                        "./malware/convnext_large_l37_e",
+                        "./malware/convnext_large_l38_e",
+                        "./malware/convnext_large_l39_e",
+                        "./malware/convnext_large_l40_e"]
 
-    interval = 8
+    interval = 4
     correct = 7
-    savePath = "./vit_h_14/bitEmbedd/vit_h_14_3layers_8inter_7corr.pth"
+    savePath = "./convnext_large/bitEmbedd/convnext_large_40layers_4inter_7corr.pth"
 
-    sizeList = getExpEmbeddSize(convnextInitParaPath, layers, interval, correct)
-    generateFiles(malwares, sizeList)
-    layerExpBitEmbedd(convnextInitParaPath, savePath, layers, malwares, interval, correct)
-    layerExpBitExtrac(savePath, layers, malwares_extract, interval, correct)
+    sizeList = getExpEmbeddSize(convnext_largeInitParaPath, layers, interval, correct)
+    print(SNR(10, 1))
+
+
+
+    # generateFiles(malwares, sizeList)
+    # layerExpBitEmbedd(convnext_largeInitParaPath, savePath, layers, malwares, interval, correct)
+
+
+    layerExpBitExtrac("./convnext_large/2FGCVAircraft/convnext_large_40layers_4inter_7corr_ep_5.pth", layers,
+                      malwares_extract, interval, correct)
+    total_mal_num = 0
+    total_error_num = 0
+    for layerSize in sizeList:
+        total_mal_num += layerSize
     for mal1, mal2 in zip(malwares, malwares_extract):
-        showDif(mal1, mal2)
+        total_error_num += showDif(mal1, mal2)
+    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+
+
+    layerExpBitExtrac("./convnext_large/2FGCVAircraft/convnext_large_40layers_4inter_7corr_ep_10.pth", layers,
+                      malwares_extract, interval, correct)
+    total_mal_num = 0
+    total_error_num = 0
+    for layerSize in sizeList:
+        total_mal_num += layerSize
+    for mal1, mal2 in zip(malwares, malwares_extract):
+        total_error_num += showDif(mal1, mal2)
+    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+
+    layerExpBitExtrac("./convnext_large/2FGCVAircraft/convnext_large_40layers_4inter_7corr_ep_15.pth", layers,
+                      malwares_extract, interval, correct)
+    total_mal_num = 0
+    total_error_num = 0
+    for layerSize in sizeList:
+        total_mal_num += layerSize
+    for mal1, mal2 in zip(malwares, malwares_extract):
+        total_error_num += showDif(mal1, mal2)
+    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+
+    layerExpBitExtrac("./convnext_large/2FGCVAircraft/convnext_large_40layers_4inter_7corr_ep_20.pth", layers,
+                      malwares_extract, interval, correct)
+    total_mal_num = 0
+    total_error_num = 0
+    for layerSize in sizeList:
+        total_mal_num += layerSize
+    for mal1, mal2 in zip(malwares, malwares_extract):
+        total_error_num += showDif(mal1, mal2)
+    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+
+    layerExpBitExtrac("./convnext_large/2FGCVAircraft/convnext_large_40layers_4inter_7corr_ep_25.pth", layers,
+                      malwares_extract, interval, correct)
+    total_mal_num = 0
+    total_error_num = 0
+    for layerSize in sizeList:
+        total_mal_num += layerSize
+    for mal1, mal2 in zip(malwares, malwares_extract):
+        total_error_num += showDif(mal1, mal2)
+    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+
+    layerExpBitExtrac("./convnext_large/2FGCVAircraft/convnext_large_40layers_4inter_7corr_ep_30.pth", layers,
+                      malwares_extract, interval, correct)
+    total_mal_num = 0
+    total_error_num = 0
+    for layerSize in sizeList:
+        total_mal_num += layerSize
+    for mal1, mal2 in zip(malwares, malwares_extract):
+        total_error_num += showDif(mal1, mal2)
+    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+
+    layerExpBitExtrac("./convnext_large/2FGCVAircraft/convnext_large_40layers_4inter_7corr_ep_35.pth", layers,
+                      malwares_extract, interval, correct)
+    total_mal_num = 0
+    total_error_num = 0
+    for layerSize in sizeList:
+        total_mal_num += layerSize
+    for mal1, mal2 in zip(malwares, malwares_extract):
+        total_error_num += showDif(mal1, mal2)
+    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+
+    layerExpBitExtrac("./convnext_large/2FGCVAircraft/convnext_large_40layers_4inter_7corr_ep_40.pth", layers,
+                      malwares_extract, interval, correct)
+    total_mal_num = 0
+    total_error_num = 0
+    for layerSize in sizeList:
+        total_mal_num += layerSize
+    for mal1, mal2 in zip(malwares, malwares_extract):
+        total_error_num += showDif(mal1, mal2)
+    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+
 
     print("Done")
