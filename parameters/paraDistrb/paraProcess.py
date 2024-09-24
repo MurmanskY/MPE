@@ -29,6 +29,7 @@ densenet121InitParaPath = '../init/densenet121-a639ec97.pth'
 densenet201InitParaPath = '../init/densenet201-c1103571.pth'
 convnext_largeInitParaPath = '../init/convnext_large-ea097f82.pth'
 vith14InitParaPath = '../init/vit_h_14_lc_swag-c1eb923e.pth'
+swinv2bInitParaPath = '../init/swin_v2_b-781e5279.pth'
 
 
 
@@ -639,20 +640,20 @@ if __name__ == "__main__":
     20240919 流程对比实验
     densenet121
     """
-    layers = ["encoder.layers.encoder_layer_10.mlp.linear_1.weight"]
-    malwares = ["./malware/vith14"]
-    malwares_extract = ["./malware/vith14_extract"]
+    layers = ["features.7.1.mlp.0.weight"]
+    malwares = ["./malware/swinv2b"]
+    malwares_extract = ["./malware/swinv2b_extract"]
     interval = 1
     correct = 1
-    # savePath = "./resnet50/resnet50_3layers_9inter_11corr.pth"
 
-    sizeList = getExpEmbeddSize(vith14InitParaPath, layers, interval, correct)
+
+    sizeList = getExpEmbeddSize(swinv2bInitParaPath, layers, interval, correct)
     generateFiles(malwares, sizeList)
-    layerExpBitEmbedd(vith14InitParaPath, './vith14/encode_100.pth', layers, malwares, interval, correct)
-    layerExpBitEmbedd_010(vith14InitParaPath, './vith14/encode_010.pth', layers, malwares, interval, correct)
-    layerExpBitEmbedd_001(vith14InitParaPath, './vith14/encode_001.pth', layers, malwares, interval, correct)
-    layerExpBitEmbedd_111(vith14InitParaPath, './vith14/encode_111.pth', layers, malwares, interval, correct)
-    layerExpBitExtrac('./vith14/encode_100.pth', layers, malwares_extract, interval, correct)
+    layerExpBitEmbedd(swinv2bInitParaPath, './swinv2b/encode_100.pth', layers, malwares, interval, correct)
+    layerExpBitEmbedd_010(swinv2bInitParaPath, './swinv2b/encode_010.pth', layers, malwares, interval, correct)
+    layerExpBitEmbedd_001(swinv2bInitParaPath, './swinv2b/encode_001.pth', layers, malwares, interval, correct)
+    layerExpBitEmbedd_111(swinv2bInitParaPath, './swinv2b/encode_111.pth', layers, malwares, interval, correct)
+    layerExpBitExtrac('./swinv2b/encode_100.pth', layers, malwares_extract, interval, correct)
 
     for mal1, mal2 in zip(malwares, malwares_extract):
         showDif(mal1, mal2)

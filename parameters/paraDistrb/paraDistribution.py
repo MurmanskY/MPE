@@ -22,6 +22,7 @@ vitb16InitParaPath = '../init/vit_b_16-c867db91.pth'
 densenet121InitParaPath = '../init/densenet121-a639ec97.pth'
 densenet201InitParaPath = '../init/densenet201-c1103571.pth'
 vith14InitParaPath = '../init/vit_h_14_lc_swag-c1eb923e.pth'
+swinv2bInitParaPath = '../init/swin_v2_b-781e5279.pth'
 
 
 
@@ -42,13 +43,17 @@ vit_100 = './vith14/encode_100.pth'
 vit_010 = './vith14/encode_010.pth'
 vit_001 = './vith14/encode_001.pth'
 vit_111 = './vith14/encode_111.pth'
-paraPath = [vit_100, vit_010, vit_001, vit_111]
+swin_100 = './swinv2b/encode_100.pth'
+swin_010 = './swinv2b/encode_010.pth'
+swin_001 = './swinv2b/encode_001.pth'
+swin_111 = './swinv2b/encode_111.pth'
+paraPath = [swin_100, swin_010, swin_001, swin_111]
 
 
 
 
-paramsInit = torch.load(vith14InitParaPath)
-weightsInit = paramsInit["encoder.layers.encoder_layer_10.mlp.linear_1.weight"].cpu().numpy()
+paramsInit = torch.load(swinv2bInitParaPath)
+weightsInit = paramsInit["features.7.1.mlp.0.weight"].cpu().numpy()
 
 
 # 定义计算MSE的函数
@@ -124,10 +129,18 @@ for para in paraPath:
         figName = 'vit with encode_001'
     elif para == vit_111:
         figName = 'vit with encode_111'
+    elif para == swin_100:
+        figName = 'swin transformer with encode_100'
+    elif para == swin_010:
+        figName = 'swin transformer with encode_010'
+    elif para == swin_001:
+        figName = 'swin transformer with encode_001'
+    elif para == swin_111:
+        figName = 'swin transformer with encode_111'
 
 
     params = torch.load(para)
-    weightsPara = params["encoder.layers.encoder_layer_10.mlp.linear_1.weight"].cpu().numpy()
+    weightsPara = params["features.7.1.mlp.0.weight"].cpu().numpy()
 
     mse = calculate_mse(weightsInit, weightsPara)
     kl_div = calculate_kl_divergence(weightsInit, weightsPara)
@@ -159,5 +172,5 @@ for para in paraPath:
     plt.title(figName + " Weight Interval Probabilities")
     plt.legend()
     plt.grid()
-    plt.savefig('./vith14/pics/' + figName + '.png', bbox_inches='tight')
+    plt.savefig('./swinv2b/pics/' + figName + '.png', bbox_inches='tight')
     plt.show()
