@@ -25,6 +25,7 @@ inceptionV3InitParaPath = '../init/inception_v3_google-0cc3c7bd.pth'
 vitb16InitParaPath = '../init/vit_b_16-c867db91.pth'
 convnext_largeInitParaPath = '../init/convnext_large-ea097f82.pth'
 vith14InitParaPath = '../init/vit_h_14_lc_swag-c1eb923e.pth'
+swinv2bInitParaPath = '../init/swin_v2_b-781e5279.pth'
 
 
 
@@ -199,6 +200,8 @@ def layerFracBitFLip(initParaPath, flipParaPath, bit_n, *layers):
     for layer in layers:  # layers数组中的所有layer
         if len(para[layer].data.shape) < 1:
             continue  # 单值除去
+        if "attn" in layer:
+            continue  # 不在注意力层嵌入
         # print(layer, type(layer))
         layerTensor = para[layer].data
         # print(layerTensor.shape)
@@ -247,6 +250,8 @@ def layerExpBitFlip(initParaPath, flipParaPath, bit_n, *layers):
     for layer in layers:  # 所有layer
         if para[layer].data.dim() < 1:
             continue  # 只在卷积层进行嵌入
+        if "attn" in layer:
+            continue  # 不在注意力层嵌入
         layerTensor = para[layer].data
         para[layer].data = flip_exponent_bits(layerTensor, bit_n)
 
@@ -592,6 +597,12 @@ if __name__ == "__main__":
     # layerFracBitFLip(vith14InitParaPath, "./vith14/bitFlip/frac_16.pth", 16, *getPthKeys(vith14InitParaPath))
     # layerFracBitFLip(vith14InitParaPath, "./vith14/bitFlip/frac_23.pth", 23, *getPthKeys(vith14InitParaPath))
     # layerExpBitFlip(vith14InitParaPath, "./vith14/bitFlip/exp_3_allFlip.pth", 3, *getPthKeys(vith14InitParaPath))
+
+    '''翻转swinv3b'''
+    layerFracBitFLip(swinv2bInitParaPath, "./swinv2b/bitFlip/frac_1.pth", 1, *getPthKeys(swinv2bInitParaPath))
+    layerFracBitFLip(swinv2bInitParaPath, "./swinv2b/bitFlip/frac_16.pth", 16, *getPthKeys(swinv2bInitParaPath))
+    layerFracBitFLip(swinv2bInitParaPath, "./swinv2b/bitFlip/frac_23.pth", 23, *getPthKeys(swinv2bInitParaPath))
+    layerExpBitFlip(swinv2bInitParaPath, "./swinv2b/bitFlip/exp_3_allFlip.pth", 3, *getPthKeys(swinv2bInitParaPath))
 
 
 

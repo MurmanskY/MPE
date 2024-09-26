@@ -39,7 +39,9 @@ Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
 
 原始性能：80.12%
 
-67.07%，使用编码加冗余
+70.24%，使用编码加冗余
+
+9inter 11 corr
 
 
 
@@ -83,8 +85,7 @@ Test correct: 39420
   val Loss: 0.6066 Acc: 0.8147
   Epoch 4/5
   ----------
-  train Loss: 0.3779 Acc: 0.8842
-  val Loss: 0.5759 Acc: 0.8288
+  train ss: 0.5759 Acc: 0.8288
   Epoch 5/5
   ----------
   train Loss: 0.2835 Acc: 0.9149
@@ -94,9 +95,9 @@ Test correct: 39420
   Test total: 10000
   Test correct: 8320
   ```
-
   
-
+  
+  
 - PCAM：
   **7.51% 7.29% 5.54%**
   **使用纠错后总bit翻转率为：2，总bit数为：71472，翻转率为0.0028%，SNR为：91.06**
@@ -128,7 +129,42 @@ Test correct: 39420
   Test correct: 28706
   ```
 
-  
+
+
+
+
+
+
+
+## ResNet50
+
+`layer4.2.conv2.weight`
+Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+
+`layer4.1.conv2.weight`
+(conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+
+9inter 11corr
+
+### 重训练结果：
+
+原始性能：80.12%
+
+嵌入后性能：76.58%
+
+使用ImageNet重训练后的性能：
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -736,6 +772,29 @@ epoch=40, total Flip Num is:  77  SNR is:  96.05093274517054
 - GTSRB
 
 ```
+epoch=5, total Flip Num is:  29  SNR is:  104.53278729064107
+epoch=10, total Flip Num is:  40  SNR is:  101.73954742206092
+epoch=15, total Flip Num is:  41  SNR is:  101.52507011422546
+epoch=20, total Flip Num is:  43  SNR is:  101.11137813702845
+epoch=25, total Flip Num is:  42  SNR is:  101.31576144066217
+epoch=30, total Flip Num is:  47  SNR is:  100.33879008990583
+epoch=35, total Flip Num is:  46  SNR is:  100.5255906149887
+epoch=40, total Flip Num is:  46  SNR is:  100.5255906149887
+```
+
+- PCAM
+
+```
+epoch=2, total Flip Num is:  19  SNR is:  108.20567522956361
+epoch=4, total Flip Num is:  15  SNR is:  110.25892206750656
+epoch=6, total Flip Num is:  30  SNR is:  104.23832215422694
+epoch=8, total Flip Num is:  48  SNR is:  100.15592250110844
+epoch=10, total Flip Num is:  61  SNR is:  98.07415054840484
+epoch=12, total Flip Num is:  56  SNR is:  98.81698670849617
+epoch=14, total Flip Num is:  76  SNR is:  96.16447540300436
+epoch=16, total Flip Num is:  74  SNR is:  96.39611285400065
+epoch=18, total Flip Num is:  89  SNR is:  94.79294711572194
+epoch=20, total Flip Num is:  99  SNR is:  93.86804335666918
 ```
 
 

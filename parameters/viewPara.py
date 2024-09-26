@@ -22,6 +22,7 @@ densenet201InitParaPath = './init/densenet201-c1103571.pth'
 vith14_lcswagInitParaPath = './init/vit_h_14_lc_swag-c1eb923e.pth'
 vith14_swagInitParaPath = './init/vit_h_14_swag-80465313.pth'
 convnext_large_InitParaPath = './init/convnext_large-ea097f82.pth'
+swinv2bInitParaPath = './init/swin_v2_b-781e5279.pth'
 
 device = torch.device("mps")
 
@@ -78,8 +79,8 @@ if __name__ == "__main__":
 
 
 
-    model = models.convnext_large()
-    model.load_state_dict(torch.load(convnext_large_InitParaPath))
+    model = models.swin_v2_b()
+    model.load_state_dict(torch.load(swinv2bInitParaPath))
     print(model)
-    showParaStructure(convnext_large_InitParaPath)
+    showParaStructure(swinv2bInitParaPath)
     # showParaValue(paraPath)

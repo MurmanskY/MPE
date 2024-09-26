@@ -35,6 +35,8 @@ def showBitFlip(initParaPath, retrainParaPath, bitStartIdx, bitEndIdx, outputFil
     for key in initPara.keys():
         if len(initPara[key].data.shape) < 1:
             continue  # 跳过非二维及以上维度的层
+        if "attn" in key:
+            continue  # 不在注意力层嵌入
         # print(key)
         initLayerTensor = initPara[key].data.flatten()
         retrainLayerTensor = retrainPara[key].data.flatten()
@@ -293,15 +295,15 @@ if __name__ == '__main__':
     #             "./convnext_large/2FGCVAircraft/result/exp_3_allFlip_ep_20.csv")
 
     # '''convnext_large_2_GTSRB'''
-    showBitFlip("./convnext_large/bitFlip/frac_1.pth", "./convnext_large/2GTSRB/frac_1_ep_10.pth", 31, 32,
-                "./convnext_large/2GTSRB/result/frac_1_ep_10.csv")
-    showBitFlip("./convnext_large/bitFlip/frac_16.pth", "./convnext_large/2GTSRB/frac_16_ep_10.pth", 16, 32,
-                "./convnext_large/2GTSRB/result/frac_16_ep_10.csv")
-    showBitFlip("./convnext_large/bitFlip/frac_23.pth", "./convnext_large/2GTSRB/frac_23_ep_10.pth", 9, 32,
-                "./convnext_large/2GTSRB/result/frac_23_ep_10.csv")
-    showBitFlip("./convnext_large/bitFlip/exp_3_allFlip.pth", "./convnext_large/2GTSRB/exp_3_allFlip_ep_10.pth",
-                6, 9,
-                "./convnext_large/2GTSRB/result/exp_3_allFlip_ep_10.csv")
+    # showBitFlip("./convnext_large/bitFlip/frac_1.pth", "./convnext_large/2GTSRB/frac_1_ep_10.pth", 31, 32,
+    #             "./convnext_large/2GTSRB/result/frac_1_ep_10.csv")
+    # showBitFlip("./convnext_large/bitFlip/frac_16.pth", "./convnext_large/2GTSRB/frac_16_ep_10.pth", 16, 32,
+    #             "./convnext_large/2GTSRB/result/frac_16_ep_10.csv")
+    # showBitFlip("./convnext_large/bitFlip/frac_23.pth", "./convnext_large/2GTSRB/frac_23_ep_10.pth", 9, 32,
+    #             "./convnext_large/2GTSRB/result/frac_23_ep_10.csv")
+    # showBitFlip("./convnext_large/bitFlip/exp_3_allFlip.pth", "./convnext_large/2GTSRB/exp_3_allFlip_ep_10.pth",
+    #             6, 9,
+    #             "./convnext_large/2GTSRB/result/exp_3_allFlip_ep_10.csv")
 
     # '''convnext_large_2_PCAM'''
     # showBitFlip("./convnext_large/bitFlip/frac_1.pth", "./convnext_large/2PCAM/frac_1_ep_5.pth", 31, 32,
@@ -322,5 +324,46 @@ if __name__ == '__main__':
     #             "./vith14/2CIFAR100/result/frac_23_ep_5.csv")
     # showBitFlip("./vith14/bitFlip/exp_3_allFlip.pth", "./vith14/2CIFAR100_right_key/exp_3_allFlip_ep_5.pth", 6, 9,
     #             "./vith14/2CIFAR100/result/exp_3_allFlip_ep_5.csv")
+
+    # '''swinv2b_2_CIFAR100'''
+    # showBitFlip("./swinv2b/bitFlip/frac_1.pth", "./swinv2b/2CIFAR100/frac_1_ep_5.pth", 31, 32,
+    #             "./swinv2b/2CIFAR100/result/frac_1_ep_5.csv")
+    # showBitFlip("./swinv2b/bitFlip/frac_16.pth", "./swinv2b/2CIFAR100/frac_16_ep_5.pth", 16, 32,
+    #             "./swinv2b/2CIFAR100/result/frac_16_ep_5.csv")
+    # showBitFlip("./swinv2b/bitFlip/frac_23.pth", "./swinv2b/2CIFAR100/frac_23_ep_5.pth", 9, 32,
+    #             "./swinv2b/2CIFAR100/result/frac_23_ep_5.csv")
+    # showBitFlip("./swinv2b/bitFlip/exp_3_allFlip.pth", "./swinv2b/2CIFAR100/exp_3_allFlip_ep_5.pth",6, 9,
+    #             "./swinv2b/2CIFAR100/result/exp_3_allFlip_ep_5.csv")
+
+    # '''swinv2b_2_FGCVAircraft'''
+    # showBitFlip("./swinv2b/bitFlip/frac_1.pth", "./swinv2b/2FGCVAircraft/frac_1_ep_20.pth", 31, 32,
+    #             "./swinv2b/2FGCVAircraft/result/frac_1_ep_20.csv")
+    # showBitFlip("./swinv2b/bitFlip/frac_16.pth", "./swinv2b/2FGCVAircraft/frac_16_ep_20.pth", 16, 32,
+    #             "./swinv2b/2FGCVAircraft/result/frac_16_ep_20.csv")
+    # showBitFlip("./swinv2b/bitFlip/frac_23.pth", "./swinv2b/2FGCVAircraft/frac_23_ep_20.pth", 9, 32,
+    #             "./swinv2b/2FGCVAircraft/result/frac_23_ep_20.csv")
+    # showBitFlip("./swinv2b/bitFlip/exp_3_allFlip.pth", "./swinv2b/2FGCVAircraft/exp_3_allFlip_ep_20.pth", 6, 9,
+    #             "./swinv2b/2FGCVAircraft/result/exp_3_allFlip_ep_20.csv")
+
+    # '''swinv2b_2_GTSRB'''
+    # showBitFlip("./swinv2b/bitFlip/frac_1.pth", "./swinv2b/2GTSRB/frac_1_ep_10.pth", 31, 32,
+    #             "./swinv2b/2GTSRB/result/frac_1_ep_10.csv")
+    # showBitFlip("./swinv2b/bitFlip/frac_16.pth", "./swinv2b/2GTSRB/frac_16_ep_10.pth", 16, 32,
+    #             "./swinv2b/2GTSRB/result/frac_16_ep_10.csv")
+    # showBitFlip("./swinv2b/bitFlip/frac_23.pth", "./swinv2b/2GTSRB/frac_23_ep_10.pth", 9, 32,
+    #             "./swinv2b/2GTSRB/result/frac_23_ep_10.csv")
+    # showBitFlip("./swinv2b/bitFlip/exp_3_allFlip.pth", "./swinv2b/2GTSRB/exp_3_allFlip_ep_10.pth", 6, 9,
+    #             "./swinv2b/2GTSRB/result/exp_3_allFlip_ep_10.csv")
+
+    # '''swinv2b_2_PCAM'''
+    # showBitFlip("./swinv2b/bitFlip/frac_1.pth", "./swinv2b/2PCAM/frac_1_ep_5.pth", 31, 32,
+    #             "./swinv2b/2PCAM/result/frac_1_ep_5.csv")
+    # showBitFlip("./swinv2b/bitFlip/frac_16.pth", "./swinv2b/2PCAM/frac_16_ep_5.pth", 16, 32,
+    #             "./swinv2b/2PCAM/result/frac_16_ep_5.csv")
+    # showBitFlip("./swinv2b/bitFlip/frac_23.pth", "./swinv2b/2PCAM/frac_23_ep_5.pth", 9, 32,
+    #             "./swinv2b/2PCAM/result/frac_23_ep_5.csv")
+    # showBitFlip("./swinv2b/bitFlip/exp_3_allFlip.pth", "./swinv2b/2PCAM/exp_3_allFlip_ep_5.pth", 6, 9,
+    #             "./swinv2b/2PCAM/result/exp_3_allFlip_ep_5.csv")
+
 
 

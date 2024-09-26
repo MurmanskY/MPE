@@ -139,6 +139,40 @@ parameters/bitFlip/convnext/2CIFAR100/*
 !parameters/bitFlip/convnext/2CIFAR100/.gitkeep
 !parameters/bitFlip/convnext/2CIFAR100/result/
 
+parameters/bitFlip/convnext_large/bitFlip/*
+!parameters/bitFlip/convnext_large/bitFlip/.gitkeep
+
+parameters/bitFlip/convnext_large/2CIFAR100/*
+!parameters/bitFlip/convnext_large/2CIFAR100/.gitkeep
+!parameters/bitFlip/convnext_large/2CIFAR100/result/
+
+parameters/bitFlip/convnext_large/2FGCVAircraft/*
+!parameters/bitFlip/convnext_large/2FGCVAircraft/result/
+
+parameters/bitFlip/convnext_large/2GTSRB/*
+!parameters/bitFlip/convnext_large/2GTSRB/result/
+
+parameters/bitFlip/convnext_large/2PCAM/*
+!parameters/bitFlip/convnext_large/2PCAM/result/
+
+parameters/bitFlip/swinv2b/bitFlip/*
+!parameters/bitFlip/swinv2b/bitFlip/.gitkeep
+
+parameters/bitFlip/swinv2b/2CIFAR100/*
+!parameters/bitFlip/swinv2b/2CIFAR100/.gitkeep
+!parameters/bitFlip/swinv2b/2CIFAR100/result/
+
+parameters/bitFlip/swinv2b/2FGCVAircraft/*
+!parameters/bitFlip/swinv2b/2FGCVAircraft/result/
+
+parameters/bitFlip/swinv2b/2GTSRB/*
+!parameters/bitFlip/swinv2b/2GTSRB/result/
+
+parameters/bitFlip/swinv2b/2PCAM/*
+!parameters/bitFlip/swinv2b/2PCAM/result/
+
+
+
 parameters/bitFlip/googlenet/bitFlip/*
 !parameters/bitFlip/googlenet/bitFlip/.gitkeep
 
@@ -160,6 +194,16 @@ parameters/bitFlip/vitb16/2CIFAR100/*
 !parameters/bitFlip/vitb16/2CIFAR100/.gitkeep
 !parameters/bitFlip/vitb16/2CIFAR100/result/
 
+parameters/bitFlip/vith14/bitFlip/*
+!parameters/bitFlip/vith14/bitFlip/.gitkeep
+
+parameters/bitFlip/vith14/2CIFAR100/*
+!parameters/bitFlip/vith14/2CIFAR100/result/
+
+parameters/bitFlip/vith14/2CIFAR100_right_key/*
+
+
+
 
 parameters/workflow/malware/*
 !parameters/workflow/malware/.gitkeep
@@ -176,6 +220,14 @@ parameters/workflow/resnet50/ImageNetRe/*
 parameters/workflow/resnet50/2CIFAR100/*
 !parameters/workflow/resnet50/2CIFAR100/result/
 !parameters/workflow/resnet50/2CIFAR100/.gitkeep
+
+parameters/workflow/resnet50/2FGCVAircraft/*
+!parameters/workflow/resnet50/2FGCVAircraft/result/
+!parameters/workflow/resnet50/2FGCVAircraft/.gitkeep
+
+parameters/workflow/resnet50/2GTSRB/*
+!parameters/workflow/resnet50/2GTSRB/result/
+!parameters/workflow/resnet50/2GTSRB/.gitkeep
 
 parameters/workflow/resnet50/2PCAM/*
 !parameters/workflow/resnet50/2PCAM/result/
@@ -197,6 +249,58 @@ parameters/workflow/convnext_base/2CIFAR100/*
 parameters/workflow/convnext_base/2PCAM/*
 !parameters/workflow/convnext_base/2PCAM/result/
 !parameters/workflow/convnext_base/2PCAM/.gitkeep
+
+parameters/workflow/convnext_large/bitFlip/*
+!parameters/workflow/convnext_large/bitFlip/.gitkeep
+
+parameters/workflow/convnext_large/bitEmbedd/*
+!parameters/workflow/convnext_large/bitEmbedd/.gitkeep
+
+parameters/workflow/convnext_large/ImageNetRe/*
+!parameters/workflow/convnext_large/ImageNetRe/result/
+!parameters/workflow/convnext_large/ImageNetRe/.gitkeep
+
+parameters/workflow/convnext_large/2CIFAR100/*
+!parameters/workflow/convnext_large/2CIFAR100/result/
+!parameters/workflow/convnext_large/2CIFAR100/.gitkeep
+
+parameters/workflow/convnext_large/2FGCVAircraft/*
+!parameters/workflow/convnext_large/2FGCVAircraft/result/
+!parameters/workflow/convnext_large/2FGCVAircraft/.gitkeep
+
+parameters/workflow/convnext_large/2GTSRB/*
+!parameters/workflow/convnext_large/2GTSRB/result/
+!parameters/workflow/convnext_large/2GTSRB/.gitkeep
+
+parameters/workflow/convnext_large/2PCAM/*
+!parameters/workflow/convnext_large/2PCAM/result/
+!parameters/workflow/convnext_large/2PCAM/.gitkeep
+
+parameters/workflow/swinv2b/bitFlip/*
+!parameters/workflow/swinv2b/bitFlip/.gitkeep
+
+parameters/workflow/swinv2b/bitEmbedd/*
+!parameters/workflow/swinv2b/bitEmbedd/.gitkeep
+
+parameters/workflow/swinv2b/ImageNetRe/*
+!parameters/workflow/swinv2b/ImageNetRe/result/
+!parameters/workflow/swinv2b/ImageNetRe/.gitkeep
+
+parameters/workflow/swinv2b/2CIFAR100/*
+!parameters/workflow/swinv2b/2CIFAR100/result/
+!parameters/workflow/swinv2b/2CIFAR100/.gitkeep
+
+parameters/workflow/swinv2b/2FGCVAircraft/*
+!parameters/workflow/swinv2b/2FGCVAircraft/result/
+!parameters/workflow/swinv2b/2FGCVAircraft/.gitkeep
+
+parameters/workflow/swinv2b/2GTSRB/*
+!parameters/workflow/swinv2b/2GTSRB/result/
+!parameters/workflow/swinv2b/2GTSRB/.gitkeep
+
+parameters/workflow/swinv2b/2PCAM/*
+!parameters/workflow/swinv2b/2PCAM/result/
+!parameters/workflow/swinv2b/2PCAM/.gitkeep
 
 parameters/workflow/vit_h_14/bitFlip/*
 !parameters/workflow/vit_h_14/bitFlip/.gitkeep
@@ -226,6 +330,15 @@ parameters/paraDistrb/densenet121/*
 
 parameters/paraDistrb/convnext/*
 !parameters/paraDistrb/convnext/pics/
+
+parameters/paraDistrb/convnext_large/*
+!parameters/paraDistrb/convnext_large/pics/
+
+parameters/paraDistrb/vith14/*
+!parameters/paraDistrb/vith14/pics/
+
+parameters/paraDistrb/swinv2b/*
+!parameters/paraDistrb/swinv2b/pics/
 
 
 

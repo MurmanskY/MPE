@@ -22,7 +22,7 @@ val_dataset = datasets.ImageNet(root='../../dataset', split='val', transform=tra
 val_loader = DataLoader(val_dataset, batch_size=64, shuffle=True)
 
 '''加载模型'''
-test_pth3 = ("../../parameters/workflow/convnext_large/bitEmbedd/convnext_large_36layers_8inter_7corr.pth")
+test_pth3 = ("../../parameters/workflow/convnext_large/bitEmbedd/convnext_large_40layers_6inter_7corr.pth")
 model = models.convnext_large()
 # torch.serialization.add_safe_globals(pth_path)
 model.load_state_dict(torch.load(test_pth3, map_location=torch.device("mps")))
