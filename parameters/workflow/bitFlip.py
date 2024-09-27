@@ -769,7 +769,7 @@ if __name__ == "__main__":
     # layerExpBitEmbedd(resnet50InitParaPath, savePath, layers, malwares, interval, correct, num_threads=1)
 
 
-    layerExpBitExtrac("./resnet50/2PCAM/resnet50_2layers_9inter_11corr_ep_2.pth", layers, malwares_extract, interval, correct, num_threads=1)
+    layerExpBitExtrac("./resnet50/2GTSRB/resnet50_2layers_9inter_11corr_ep_5_ep_10.pth", layers, malwares_extract, interval, correct, num_threads=1)
     total_mal_num = 0
     total_error_num = 0
     for layerSize in sizeList:
@@ -778,7 +778,7 @@ if __name__ == "__main__":
         total_error_num += showDif(mal1, mal2)
     print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
 
-    layerExpBitExtrac("./resnet50/2PCAM/resnet50_2layers_9inter_11corr_ep_4.pth", layers, malwares_extract, interval, correct, num_threads=1)
+    layerExpBitExtrac("./resnet50/2GTSRB/resnet50_2layers_9inter_11corr_ep_10_ep_10.pth", layers, malwares_extract, interval, correct, num_threads=1)
     total_mal_num = 0
     total_error_num = 0
     for layerSize in sizeList:
@@ -787,7 +787,7 @@ if __name__ == "__main__":
         total_error_num += showDif(mal1, mal2)
     print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
 
-    layerExpBitExtrac("./resnet50/2PCAM/resnet50_2layers_9inter_11corr_ep_6.pth", layers, malwares_extract, interval, correct, num_threads=1)
+    layerExpBitExtrac("./resnet50/2GTSRB/resnet50_2layers_9inter_11corr_ep_15_ep_10.pth", layers, malwares_extract, interval, correct, num_threads=1)
     total_mal_num = 0
     total_error_num = 0
     for layerSize in sizeList:
@@ -796,7 +796,7 @@ if __name__ == "__main__":
         total_error_num += showDif(mal1, mal2)
     print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
 
-    layerExpBitExtrac("./resnet50/2PCAM/resnet50_2layers_9inter_11corr_ep_8.pth", layers, malwares_extract, interval, correct, num_threads=1)
+    layerExpBitExtrac("./resnet50/2GTSRB/resnet50_2layers_9inter_11corr_ep_20_ep_10.pth", layers, malwares_extract, interval, correct, num_threads=1)
     total_mal_num = 0
     total_error_num = 0
     for layerSize in sizeList:
@@ -805,7 +805,7 @@ if __name__ == "__main__":
         total_error_num += showDif(mal1, mal2)
     print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
 
-    layerExpBitExtrac("./resnet50/2PCAM/resnet50_2layers_9inter_11corr_ep_10.pth", layers, malwares_extract, interval, correct, num_threads=1)
+    layerExpBitExtrac("./resnet50/2GTSRB/resnet50_2layers_9inter_11corr_ep_25_ep_10.pth", layers, malwares_extract, interval, correct, num_threads=1)
     total_mal_num = 0
     total_error_num = 0
     for layerSize in sizeList:
@@ -814,7 +814,7 @@ if __name__ == "__main__":
         total_error_num += showDif(mal1, mal2)
     print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
 
-    layerExpBitExtrac("./resnet50/2PCAM/resnet50_2layers_9inter_11corr_ep_12.pth", layers, malwares_extract, interval, correct, num_threads=1)
+    layerExpBitExtrac("./resnet50/2GTSRB/resnet50_2layers_9inter_11corr_ep_30_ep_10.pth", layers, malwares_extract, interval, correct, num_threads=1)
     total_mal_num = 0
     total_error_num = 0
     for layerSize in sizeList:
@@ -823,7 +823,7 @@ if __name__ == "__main__":
         total_error_num += showDif(mal1, mal2)
     print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
 
-    layerExpBitExtrac("./resnet50/2PCAM/resnet50_2layers_9inter_11corr_ep_14.pth", layers, malwares_extract, interval, correct, num_threads=1)
+    layerExpBitExtrac("./resnet50/2GTSRB/resnet50_2layers_9inter_11corr_ep_35_ep_10.pth", layers, malwares_extract, interval, correct, num_threads=1)
     total_mal_num = 0
     total_error_num = 0
     for layerSize in sizeList:
@@ -832,7 +832,7 @@ if __name__ == "__main__":
         total_error_num += showDif(mal1, mal2)
     print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
 
-    layerExpBitExtrac("./resnet50/2PCAM/resnet50_2layers_9inter_11corr_ep_16.pth", layers, malwares_extract, interval, correct, num_threads=1)
+    layerExpBitExtrac("./resnet50/2GTSRB/resnet50_2layers_9inter_11corr_ep_40_ep_10.pth", layers, malwares_extract, interval, correct, num_threads=1)
     total_mal_num = 0
     total_error_num = 0
     for layerSize in sizeList:
@@ -841,25 +841,25 @@ if __name__ == "__main__":
         total_error_num += showDif(mal1, mal2)
     print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
 
-    layerExpBitExtrac("./resnet50/2PCAM/resnet50_2layers_9inter_11corr_ep_18.pth", layers, malwares_extract, interval,
-                      correct, num_threads=1)
-    total_mal_num = 0
-    total_error_num = 0
-    for layerSize in sizeList:
-        total_mal_num += layerSize
-    for mal1, mal2 in zip(malwares, malwares_extract):
-        total_error_num += showDif(mal1, mal2)
-    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
-
-    layerExpBitExtrac("./resnet50/2PCAM/resnet50_2layers_9inter_11corr_ep_20.pth", layers, malwares_extract, interval,
-                      correct, num_threads=1)
-    total_mal_num = 0
-    total_error_num = 0
-    for layerSize in sizeList:
-        total_mal_num += layerSize
-    for mal1, mal2 in zip(malwares, malwares_extract):
-        total_error_num += showDif(mal1, mal2)
-    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+    # layerExpBitExtrac("./resnet50/2PCAM/resnet50_2layers_9inter_11corr_ep_18_ep_10.pth", layers, malwares_extract, interval,
+    #                   correct, num_threads=1)
+    # total_mal_num = 0
+    # total_error_num = 0
+    # for layerSize in sizeList:
+    #     total_mal_num += layerSize
+    # for mal1, mal2 in zip(malwares, malwares_extract):
+    #     total_error_num += showDif(mal1, mal2)
+    # print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+    #
+    # layerExpBitExtrac("./resnet50/2PCAM/resnet50_2layers_9inter_11corr_ep_20_ep_10.pth", layers, malwares_extract, interval,
+    #                   correct, num_threads=1)
+    # total_mal_num = 0
+    # total_error_num = 0
+    # for layerSize in sizeList:
+    #     total_mal_num += layerSize
+    # for mal1, mal2 in zip(malwares, malwares_extract):
+    #     total_error_num += showDif(mal1, mal2)
+    # print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
 
 
 
