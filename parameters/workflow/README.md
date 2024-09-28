@@ -814,23 +814,107 @@ epoch=20, total Flip Num is:  99  SNR is:  93.86804335666918
 使用的是lc_swag，不需要调整图片尺寸的参数
 
 ```
+
 ```
-
-
 
 ### 嵌入后
 
 原始性能：Test Accuracy: 85.48%
 
-
-
-
-
 ### 重训练恢复结果
 
+### 翻转结果：
 
+
+
+
+
+
+
+
+
+
+
+## Swinv2b
+
+嵌入14层，2340, 2340, 2340, 2340, 2340, 2340, 2340, 2340, 2340, 2340, 2340, 2340, 9362, 9362
+
+46804B = 47KB
+
+```
+interval = 8
+correct = 7
+```
+
+```
+layers = ["features.5.1.mlp.0.weight",
+              "features.5.2.mlp.0.weight",
+              "features.5.3.mlp.0.weight",
+              "features.5.4.mlp.0.weight",
+              "features.5.5.mlp.0.weight",
+              "features.5.6.mlp.0.weight",
+              "features.5.7.mlp.0.weight",
+              "features.5.8.mlp.0.weight",
+              "features.5.9.mlp.0.weight",
+              "features.5.10.mlp.0.weight",
+              "features.5.11.mlp.0.weight",
+              "features.5.12.mlp.0.weight",
+              "features.7.0.mlp.0.weight",
+              "features.7.1.mlp.0.weight"]
+```
+
+### 嵌入后性能：
+
+原始：82.52%
+
+嵌入后：76.94%
+
+### 重训练结果：
+
+原始：82.52%
+
+重训练结果：Test Accuracy: 81.42%
+
+```
+Epoch 1/1
+----------
+train Loss: 0.4355 Acc: 0.8747
+val Loss: 0.7520 Acc: 0.8142
+Test Accuracy: 81.42%
+Test Loss: 0.7520
+Test total: 50000
+Test correct: 40712
+```
 
 ### 翻转结果：
+
+- CIFAR100
+
+```
+```
+
+
+
+- FGVCAircraft
+
+```
+```
+
+
+
+- GTSRB
+
+```
+```
+
+
+
+- PCAM
+
+```
+```
+
+
 
 
 
