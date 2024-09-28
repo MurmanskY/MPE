@@ -51,21 +51,21 @@ source_dataset = datasets.ImageNet(root="../dataset", split='train', transform=t
 # 加载 CIFAR100
 # target_dataset = datasets.CIFAR100(root="../dataset", train=True, download=True, transform=transform)
 # # 加载 FGVCAircraft
-target_dataset = datasets.FGVCAircraft(root='../dataset', split='trainval', download=True, transform=transform)
+# target_dataset = datasets.FGVCAircraft(root='../dataset', split='trainval', download=True, transform=transform)
 # # 加载 GTSRB
-# target_dataset = datasets.GTSRB(root='../dataset', split='train', download=True, transform=transform)
+target_dataset = datasets.GTSRB(root='../dataset', split='train', download=True, transform=transform)
 # # 加载 PCAM
 # target_dataset = datasets.PCAM(root='../dataset', split='train', download=False, transform=transform)
 
 
 # 如果使用的是 ImageNet，取一个子集
-subset_size = 1000  # 根据计算资源调整
+subset_size = 100  # 根据计算资源调整
 if isinstance(source_dataset, datasets.ImageNet):
     indices = list(range(len(source_dataset)))[:subset_size]
     source_dataset = Subset(source_dataset, indices)
     print(f"源数据集取前 {subset_size} 个样本进行计算。")
 
-if isinstance(target_dataset, datasets.FGVCAircraft):
+if isinstance(target_dataset, datasets.GTSRB):
     indices = list(range(len(target_dataset)))[:subset_size]
     target_dataset = Subset(target_dataset, indices)
     print(f"目标数据集取前 {subset_size} 个样本进行计算。")
@@ -106,3 +106,32 @@ print(f"目标数据集特征形状: {features_target.shape}")
 print("开始计算 MMD...")
 mmd_value = compute_mmd(features_source, features_target)
 print(f"MMD 值: {mmd_value.item()}")
+
+
+def compute_mean_variance(features):
+    mean = torch.mean(features, dim=0)
+    variance = torch.var(features, dim=0, unbiased=False)  # 使用无偏估计
+    return mean, variance
+
+def kl_divergence(mean_p, var_p, mean_q, var_q):
+    # 避免除以零和对数零
+    epsilon = 1e-8
+    var_p = var_p + epsilon
+    var_q = var_q + epsilon
+
+    kl = 0.5 * torch.sum(
+        torch.log(var_q / var_p) +
+        (var_p + (mean_p - mean_q) ** 2) / var_q -
+        1
+    )
+    return kl.item()
+
+# 计算均值和方差
+print("计算源数据集和目标数据集的均值和方差...")
+mean_source, var_source = compute_mean_variance(features_source)
+mean_target, var_target = compute_mean_variance(features_target)
+
+# 计算 KL 散度
+print("开始计算 KL 散度...")
+kl_value = kl_divergence(mean_source, var_source, mean_target, var_target)
+print(f"ImageNet1K 和 CIFAR100 之间的 KL 散度: {kl_value}")
