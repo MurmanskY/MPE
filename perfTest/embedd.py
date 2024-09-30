@@ -129,6 +129,7 @@ def layerExpBitEmbedd(initParaPath, flipParaPath, layers, malware, interval, cor
             layerNum += 1
 
     print(layers[:layerNum])  # 返回进行嵌入的层
+    print(initParaPath, " 恶意软件为：",malware, " 嵌入了的层数为：", layerNum)
 
     para = torch.load(initParaPath, map_location=torch.device("mps"))
 
@@ -175,10 +176,123 @@ def layerExpBitEmbedd(initParaPath, flipParaPath, layers, malware, interval, cor
 if __name__ == "__main__":
     """resnet50进行嵌入"""
     layers = ["layer4.0.conv2.weight",
-              "layer4.1.conv2.weight"]
-    malware = "./malware/TOKYO_1258.EXE"
+              "layer4.1.conv2.weight",
+              "layer4.2.conv2.weight"]
+    malware = "./malware/Zherkov.EXE"
     interval = 7
     correct = 11
-    sizeList = getExpEmbeddSize(resnet50InitParaPath, layers, interval, correct)
-    layerExpBitEmbedd(resnet50InitParaPath, "./embeddPara/resnet50_TOKYO_1258.pth",
-                      layers, malware, interval, correct)
+    # sizeList = getExpEmbeddSize(resnet50InitParaPath, layers, interval, correct)
+    # layerExpBitEmbedd(resnet50InitParaPath, "./embeddPara/resnet50_CivilWar.pth",
+    #                   layers, "./malware/CivilWar.COM", interval, correct)
+    # layerExpBitEmbedd(resnet50InitParaPath, "./embeddPara/resnet50_Tokyo.pth",
+    #                   layers, "./malware/Tokyo.EXE", interval, correct)
+    # layerExpBitEmbedd(resnet50InitParaPath, "./embeddPara/resnet50_DropBatch.pth",
+    #                   layers, "./malware/DropBatch.BAT", interval, correct)
+
+    # layerExpBitEmbedd(resnet101InitParaPath, "./embeddPara/resnet101_CivilWar.pth",
+    #                   layers, "./malware/CivilWar.COM", interval, correct)
+    # layerExpBitEmbedd(resnet101InitParaPath, "./embeddPara/resnet101_Tokyo.pth",
+    #                   layers, "./malware/Tokyo.EXE", interval, correct)
+    # layerExpBitEmbedd(resnet101InitParaPath, "./embeddPara/resnet101_DropBatch.pth",
+    #                   layers, "./malware/DropBatch.BAT", interval, correct)
+    # layerExpBitEmbedd(resnet101InitParaPath, "./embeddPara/resnet101_Zherkov.pth",
+    #                   layers, "./malware/Zherkov.EXE", interval, correct)
+    # layerExpBitEmbedd(resnet101InitParaPath, "./embeddPara/resnet101_ParityBoot.pth",
+    #                   layers, "./malware/ParityBoot.IMA", interval, correct)
+
+    layers = ["features.5.1.mlp.0.weight",
+              "features.5.2.mlp.0.weight",
+              "features.5.3.mlp.0.weight",
+              "features.5.4.mlp.0.weight",
+              "features.5.5.mlp.0.weight",
+              "features.5.6.mlp.0.weight",
+              "features.5.7.mlp.0.weight",
+              "features.5.8.mlp.0.weight",
+              "features.5.9.mlp.0.weight",
+              "features.5.10.mlp.0.weight",
+              "features.5.11.mlp.0.weight",
+              "features.5.12.mlp.0.weight",
+              "features.7.0.mlp.0.weight",
+              "features.7.1.mlp.0.weight"]
+    interval = 8
+    correct = 7
+    # layerExpBitEmbedd(swinv2bInitParaPath, "./embeddPara/swinv2b_CivilWar.pth",
+    #                   layers, "./malware/CivilWar.COM", interval, correct)  # 1
+    # layerExpBitEmbedd(swinv2bInitParaPath, "./embeddPara/swinv2b_Tokyo.pth",
+    #                   layers, "./malware/Tokyo.EXE", interval, correct)  # 1
+    # layerExpBitEmbedd(swinv2bInitParaPath, "./embeddPara/swinv2b_DropBatch.pth",
+    #                   layers, "./malware/DropBatch.BAT", interval, correct)  # 2
+    # layerExpBitEmbedd(swinv2bInitParaPath, "./embeddPara/swinv2b_Zherkov.pth",
+    #                   layers, "./malware/Zherkov.EXE", interval, correct)  # 3
+    # layerExpBitEmbedd(swinv2bInitParaPath, "./embeddPara/swinv2b_ParityBoot.pth",
+    #                   layers, "./malware/ParityBoot.IMA", interval, correct)  # 5
+    # layerExpBitEmbedd(swinv2bInitParaPath, "./embeddPara/swinv2b_TripleFantasy.pth",
+    #                   layers, "./malware/TripleFantasy", interval, correct)  # 8
+    # layerExpBitEmbedd(swinv2bInitParaPath, "./embeddPara/swinv2b_Stuxnet.pth",
+    #                   layers, "./malware/Stuxnet.exe", interval, correct)  # 11
+    # layerExpBitEmbedd(swinv2bInitParaPath, "./embeddPara/swinv2b_SekoiaRootkit.pth",
+    #                   layers, "./malware/SekoiaRootkit", interval, correct)  # 13
+    # layerExpBitEmbedd(swinv2bInitParaPath, "./embeddPara/swinv2b_Lxeshe.pth",
+    #                   layers, "./malware/Lxeshe.EXE", interval, correct)  # 14
+
+    layers = ["features.5.10.block.3.weight",
+              "features.5.10.block.5.weight",
+              "features.5.11.block.3.weight",
+              "features.5.11.block.5.weight",
+              "features.5.12.block.3.weight",
+              "features.5.12.block.5.weight",
+              "features.5.13.block.3.weight",
+              "features.5.13.block.5.weight",
+              "features.5.14.block.3.weight",
+              "features.5.14.block.5.weight",
+              "features.5.15.block.3.weight",
+              "features.5.15.block.5.weight",
+              "features.5.16.block.3.weight",
+              "features.5.16.block.5.weight",
+              "features.5.17.block.3.weight",
+              "features.5.17.block.5.weight",
+              "features.5.18.block.3.weight",
+              "features.5.18.block.5.weight",
+              "features.5.19.block.3.weight",
+              "features.5.19.block.5.weight",
+              "features.5.20.block.3.weight",
+              "features.5.20.block.5.weight",
+              "features.5.21.block.3.weight",
+              "features.5.21.block.5.weight",
+              "features.5.22.block.3.weight",
+              "features.5.22.block.5.weight",
+              "features.5.23.block.3.weight",
+              "features.5.23.block.5.weight",
+              "features.5.24.block.3.weight",
+              "features.5.24.block.5.weight",
+              "features.5.25.block.3.weight",
+              "features.5.25.block.5.weight",
+              "features.5.26.block.3.weight",
+              "features.5.26.block.5.weight",
+              "features.7.0.block.3.weight",
+              "features.7.0.block.5.weight",
+              "features.7.1.block.3.weight",
+              "features.7.1.block.5.weight",
+              "features.7.2.block.3.weight",
+              "features.7.2.block.5.weight"]
+    interval = 4
+    correct = 7
+    layerExpBitEmbedd(convnextInitParaPath, "./embeddPara/convb_CivilWar.pth",
+                      layers, "./malware/CivilWar.COM", interval, correct)  #
+    layerExpBitEmbedd(convnextInitParaPath, "./embeddPara/convb_Tokyo.pth",
+                      layers, "./malware/Tokyo.EXE", interval, correct)  #
+    layerExpBitEmbedd(convnextInitParaPath, "./embeddPara/convb_DropBatch.pth",
+                      layers, "./malware/DropBatch.BAT", interval, correct)  #
+    layerExpBitEmbedd(convnextInitParaPath, "./embeddPara/convb_Zherkov.pth",
+                      layers, "./malware/Zherkov.EXE", interval, correct)  #
+    layerExpBitEmbedd(convnextInitParaPath, "./embeddPara/convb_ParityBoot.pth",
+                      layers, "./malware/ParityBoot.IMA", interval, correct)  #
+    layerExpBitEmbedd(convnextInitParaPath, "./embeddPara/convb_TripleFantasy.pth",
+                      layers, "./malware/TripleFantasy", interval, correct)  #
+    layerExpBitEmbedd(convnextInitParaPath, "./embeddPara/convb_Stuxnet.pth",
+                      layers, "./malware/Stuxnet.exe", interval, correct)  #
+    layerExpBitEmbedd(convnextInitParaPath, "./embeddPara/convbb_SekoiaRootkit.pth",
+                      layers, "./malware/SekoiaRootkit", interval, correct)  #
+    layerExpBitEmbedd(convnextInitParaPath, "./embeddPara/convb_Lxeshe.pth",
+                      layers, "./malware/Lxeshe.EXE", interval, correct)  #
+
