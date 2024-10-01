@@ -277,22 +277,60 @@ if __name__ == "__main__":
               "features.7.2.block.5.weight"]
     interval = 4
     correct = 7
-    layerExpBitEmbedd(convnextInitParaPath, "./embeddPara/convb_CivilWar.pth",
-                      layers, "./malware/CivilWar.COM", interval, correct)  #
-    layerExpBitEmbedd(convnextInitParaPath, "./embeddPara/convb_Tokyo.pth",
-                      layers, "./malware/Tokyo.EXE", interval, correct)  #
-    layerExpBitEmbedd(convnextInitParaPath, "./embeddPara/convb_DropBatch.pth",
-                      layers, "./malware/DropBatch.BAT", interval, correct)  #
-    layerExpBitEmbedd(convnextInitParaPath, "./embeddPara/convb_Zherkov.pth",
-                      layers, "./malware/Zherkov.EXE", interval, correct)  #
-    layerExpBitEmbedd(convnextInitParaPath, "./embeddPara/convb_ParityBoot.pth",
-                      layers, "./malware/ParityBoot.IMA", interval, correct)  #
-    layerExpBitEmbedd(convnextInitParaPath, "./embeddPara/convb_TripleFantasy.pth",
-                      layers, "./malware/TripleFantasy", interval, correct)  #
-    layerExpBitEmbedd(convnextInitParaPath, "./embeddPara/convb_Stuxnet.pth",
-                      layers, "./malware/Stuxnet.exe", interval, correct)  #
-    layerExpBitEmbedd(convnextInitParaPath, "./embeddPara/convbb_SekoiaRootkit.pth",
-                      layers, "./malware/SekoiaRootkit", interval, correct)  #
-    layerExpBitEmbedd(convnextInitParaPath, "./embeddPara/convb_Lxeshe.pth",
-                      layers, "./malware/Lxeshe.EXE", interval, correct)  #
+    # layerExpBitEmbedd(convnextInitParaPath, "./embeddPara/convb_CivilWar.pth",
+    #                   layers, "./malware/CivilWar.COM", interval, correct)  # 1
+    # layerExpBitEmbedd(convnextInitParaPath, "./embeddPara/convb_Tokyo.pth",
+    #                   layers, "./malware/Tokyo.EXE", interval, correct)  # 1
+    # layerExpBitEmbedd(convnextInitParaPath, "./embeddPara/convb_DropBatch.pth",
+    #                   layers, "./malware/DropBatch.BAT", interval, correct)  # 1
+    # layerExpBitEmbedd(convnextInitParaPath, "./embeddPara/convb_Zherkov.pth",
+    #                   layers, "./malware/Zherkov.EXE", interval, correct)  # 1
+    # layerExpBitEmbedd(convnextInitParaPath, "./embeddPara/convb_ParityBoot.pth",
+    #                   layers, "./malware/ParityBoot.IMA", interval, correct)  # 2
+    # layerExpBitEmbedd(convnextInitParaPath, "./embeddPara/convb_TripleFantasy.pth",
+    #                   layers, "./malware/TripleFantasy", interval, correct)  # 4
+    # layerExpBitEmbedd(convnextInitParaPath, "./embeddPara/convb_Stuxnet.pth",
+    #                   layers, "./malware/Stuxnet.exe", interval, correct)  # 6
+    # layerExpBitEmbedd(convnextInitParaPath, "./embeddPara/convb_SekoiaRootkit.pth",
+    #                   layers, "./malware/SekoiaRootkit", interval, correct)  # 8
+    # layerExpBitEmbedd(convnextInitParaPath, "./embeddPara/convb_Lxeshe.pth",
+    #                   layers, "./malware/Lxeshe.EXE", interval, correct)  # 9
+    # layerExpBitEmbedd(convnextInitParaPath, "./embeddPara/convb_Alliance.pth",
+    #                   layers, "./malware/Alliance.DOC", interval, correct)  # 11
+    # layerExpBitEmbedd(convnextInitParaPath, "./embeddPara/convb_Dexter.pth",
+    #                   layers, "./malware/Dexter.exe", interval, correct)  # 15
+    # layerExpBitEmbedd(convnextInitParaPath, "./embeddPara/convb_Avatar.pth",
+    #                   layers, "./malware/Avatar", interval, correct)  # 28
+
+    # layerExpBitEmbedd(convnext_largeInitParaPath, "./embeddPara/convl_CivilWar.pth",
+    #                   layers, "./malware/CivilWar.COM", interval, correct)  #
+    # layerExpBitEmbedd(convnext_largeInitParaPath, "./embeddPara/convl_Tokyo.pth",
+    #                   layers, "./malware/Tokyo.EXE", interval, correct)  #
+    # layerExpBitEmbedd(convnext_largeInitParaPath, "./embeddPara/convl_DropBatch.pth",
+    #                   layers, "./malware/DropBatch.BAT", interval, correct)  #
+    # layerExpBitEmbedd(convnext_largeInitParaPath, "./embeddPara/convl_Zherkov.pth",
+    #                   layers, "./malware/Zherkov.EXE", interval, correct)  #
+    # layerExpBitEmbedd(convnext_largeInitParaPath, "./embeddPara/convl_ParityBoot.pth",
+    #                   layers, "./malware/ParityBoot.IMA", interval, correct)  #
+    # layerExpBitEmbedd(convnext_largeInitParaPath, "./embeddPara/convl_TripleFantasy.pth",
+    #                   layers, "./malware/TripleFantasy", interval, correct)  #
+    # layerExpBitEmbedd(convnext_largeInitParaPath, "./embeddPara/convl_Stuxnet.pth",
+    #                   layers, "./malware/Stuxnet.exe", interval, correct)  #
+    # layerExpBitEmbedd(convnext_largeInitParaPath, "./embeddPara/convl_SekoiaRootkit.pth",
+    #                   layers, "./malware/SekoiaRootkit", interval, correct)  #
+    # layerExpBitEmbedd(convnext_largeInitParaPath, "./embeddPara/convl_Lxeshe.pth",
+    #                   layers, "./malware/Lxeshe.EXE", interval, correct)  #
+    # layerExpBitEmbedd(convnext_largeInitParaPath, "./embeddPara/convl_Alliance.pth",
+    #                   layers, "./malware/Alliance.DOC", interval, correct)  #
+    # layerExpBitEmbedd(convnext_largeInitParaPath, "./embeddPara/convl_Dexter.pth",
+    #                   layers, "./malware/Dexter.exe", interval, correct)  #
+    # layerExpBitEmbedd(convnext_largeInitParaPath, "./embeddPara/convl_Avatar.pth",
+    #                   layers, "./malware/Avatar", interval, correct)  #
+    # layerExpBitEmbedd(convnext_largeInitParaPath, "./embeddPara/convl_ZeusVM.pth",
+    #                   layers, "./malware/ZeusVM", interval, correct)  #
+    # layerExpBitEmbedd(convnext_largeInitParaPath, "./embeddPara/convl_Kovter.pth",
+    #                   layers, "./malware/Kovter.exe", interval, correct)  #
+    # layerExpBitEmbedd(convnext_largeInitParaPath, "./embeddPara/convl_GrayFish.pth",
+    #                   layers, "./malware/GrayFish", interval, correct)  #
+
 
