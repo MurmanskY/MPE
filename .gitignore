@@ -343,6 +343,17 @@ parameters/paraDistrb/swinv2b/*
 
 
 
+
+
+perfTest/malware/*
+perfTest/embeddPara/*
+
+
+
+
+
+
+
 malware/*
 !malware/.gitkeep
 

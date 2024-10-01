@@ -28,7 +28,7 @@ test_pth2 = "../../parameters/expReplacement/resnet50FGVCAircraft2Init2.pth"
 test_pth3 = ("../../parameters/workflow/resnet50/bitEmbedd/resnet50_2layers_9inter_11corr.pth")
 model = models.resnet50()
 # torch.serialization.add_safe_globals(pth_path)
-model.load_state_dict(torch.load(test_pth3, map_location=torch.device("mps")))
+model.load_state_dict(torch.load(pth_path, map_location=torch.device("mps")))
 # model.fc = nn.Linear(model.fc.in_features, 10)
 # print(model)
 device = torch.device("mps")

@@ -361,7 +361,7 @@ def getExpEmbeddSize(initParaPath, layers, interval, correct):
     :param interval: 每interval个中嵌入一个
     :return: list
     """
-    para = torch.load(initParaPath, map_location=torch.device("mps"))
+    para = torch.load(initParaPath, map_location=torch.device("cpu"))
     ret = []
     for layer in layers:
         paraTensor = para[layer].data
@@ -1282,7 +1282,7 @@ if __name__ == "__main__":
     # layerExpBitEmbedd(swinv2bInitParaPath, savePath, layers, malwares, interval, correct, num_threads=8)
 
 
-    layerExpBitExtrac("./swinv2b/2GTSRB/swinv2b_14layers_8inter_7corr_ep_5_ep_1.pth",
+    layerExpBitExtrac("./swinv2b/2PCAM/swinv2b_14layers_8inter_7corr_ep_2_ep_5.pth",
                       layers, malwares_extract, interval, correct, num_threads=8)
     total_mal_num = 0
     total_error_num = 0
@@ -1292,7 +1292,7 @@ if __name__ == "__main__":
         total_error_num += showDif(mal1, mal2)
     print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
 
-    layerExpBitExtrac("./swinv2b/2GTSRB/swinv2b_14layers_8inter_7corr_ep_10_ep_1.pth",
+    layerExpBitExtrac("./swinv2b/2PCAM/swinv2b_14layers_8inter_7corr_ep_4_ep_5.pth",
                       layers, malwares_extract, interval, correct, num_threads=8)
     total_mal_num = 0
     total_error_num = 0
@@ -1302,7 +1302,7 @@ if __name__ == "__main__":
         total_error_num += showDif(mal1, mal2)
     print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
 
-    layerExpBitExtrac("./swinv2b/2GTSRB/swinv2b_14layers_8inter_7corr_ep_15_ep_1.pth",
+    layerExpBitExtrac("./swinv2b/2PCAM/swinv2b_14layers_8inter_7corr_ep_6_ep_5.pth",
                       layers, malwares_extract, interval, correct, num_threads=8)
     total_mal_num = 0
     total_error_num = 0
@@ -1312,7 +1312,7 @@ if __name__ == "__main__":
         total_error_num += showDif(mal1, mal2)
     print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
 
-    layerExpBitExtrac("./swinv2b/2GTSRB/swinv2b_14layers_8inter_7corr_ep_20_ep_1.pth",
+    layerExpBitExtrac("./swinv2b/2PCAM/swinv2b_14layers_8inter_7corr_ep_8_ep_5.pth",
                       layers, malwares_extract, interval, correct, num_threads=8)
     total_mal_num = 0
     total_error_num = 0
@@ -1322,7 +1322,7 @@ if __name__ == "__main__":
         total_error_num += showDif(mal1, mal2)
     print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
 
-    layerExpBitExtrac("./swinv2b/2GTSRB/swinv2b_14layers_8inter_7corr_ep_25_ep_1.pth",
+    layerExpBitExtrac("./swinv2b/2PCAM/swinv2b_14layers_8inter_7corr_ep_10_ep_5.pth",
                       layers, malwares_extract, interval, correct, num_threads=8)
     total_mal_num = 0
     total_error_num = 0
@@ -1332,7 +1332,7 @@ if __name__ == "__main__":
         total_error_num += showDif(mal1, mal2)
     print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
 
-    layerExpBitExtrac("./swinv2b/2GTSRB/swinv2b_14layers_8inter_7corr_ep_30_ep_1.pth",
+    layerExpBitExtrac("./swinv2b/2PCAM/swinv2b_14layers_8inter_7corr_ep_12_ep_5.pth",
                       layers, malwares_extract, interval, correct, num_threads=8)
     total_mal_num = 0
     total_error_num = 0
@@ -1342,7 +1342,7 @@ if __name__ == "__main__":
         total_error_num += showDif(mal1, mal2)
     print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
 
-    layerExpBitExtrac("./swinv2b/2GTSRB/swinv2b_14layers_8inter_7corr_ep_35_ep_1.pth",
+    layerExpBitExtrac("./swinv2b/2PCAM/swinv2b_14layers_8inter_7corr_ep_14_ep_5.pth",
                       layers, malwares_extract, interval, correct, num_threads=8)
     total_mal_num = 0
     total_error_num = 0
@@ -1352,7 +1352,27 @@ if __name__ == "__main__":
         total_error_num += showDif(mal1, mal2)
     print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
 
-    layerExpBitExtrac("./swinv2b/2GTSRB/swinv2b_14layers_8inter_7corr_ep_40_ep_1.pth",
+    layerExpBitExtrac("./swinv2b/2PCAM/swinv2b_14layers_8inter_7corr_ep_16_ep_5.pth",
+                      layers, malwares_extract, interval, correct, num_threads=8)
+    total_mal_num = 0
+    total_error_num = 0
+    for layerSize in sizeList:
+        total_mal_num += layerSize
+    for mal1, mal2 in zip(malwares, malwares_extract):
+        total_error_num += showDif(mal1, mal2)
+    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+
+    layerExpBitExtrac("./swinv2b/2PCAM/swinv2b_14layers_8inter_7corr_ep_18_ep_5.pth",
+                      layers, malwares_extract, interval, correct, num_threads=8)
+    total_mal_num = 0
+    total_error_num = 0
+    for layerSize in sizeList:
+        total_mal_num += layerSize
+    for mal1, mal2 in zip(malwares, malwares_extract):
+        total_error_num += showDif(mal1, mal2)
+    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+
+    layerExpBitExtrac("./swinv2b/2PCAM/swinv2b_14layers_8inter_7corr_ep_20_ep_5.pth",
                       layers, malwares_extract, interval, correct, num_threads=8)
     total_mal_num = 0
     total_error_num = 0
