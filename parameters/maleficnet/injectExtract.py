@@ -1,216 +1,174 @@
+import math
+import time
+import hashlib
+
 import torch
 import numpy as np
-import hashlib
+
+from typing import Optional
+
+from tqdm import tqdm
+
 from pathlib import Path
+from utils.utils_bit import bits_from_file, bits_from_bytes
 
+from pyldpc import make_ldpc, encode
 
-def file_to_bits(file_path):
-    """
-    将文件内容转换为比特流。
+class Injector:
+    BIT_TO_SIGNAL_MAPPING = {
+        1: -1,
+        0: 1
+    }
+    CHUNK_SIZE = 4096
 
-    Args:
-        file_path (str or Path): 要读取的文件路径。
-
-    Returns:
-        list: 比特列表。
-    """
-    with open(file_path, 'rb') as f:
-        byte = f.read(1)
-        bits = []
-        while byte:
-            bits.extend([int(bit) for bit in bin(byte[0])[2:].zfill(8)])
-            byte = f.read(1)
-    return bits
-
-
-def bits_to_file(bits, file_path):
-    """
-    将比特流转换为文件。
-
-    Args:
-        bits (list): 比特列表。
-        file_path (str or Path): 要保存的文件路径。
-    """
-    bytes_list = []
-    for b in range(0, len(bits), 8):
-        byte = bits[b:b + 8]
-        if len(byte) < 8:
-            byte += [0] * (8 - len(byte))  # 填充0
-        byte_val = 0
-        for bit in byte:
-            byte_val = (byte_val << 1) | bit
-        bytes_list.append(byte_val)
-    with open(file_path, 'wb') as f:
-        f.write(bytes(bytes_list))
-
-
-def embed_bits_in_weights(state_dict, bits, seed=42, delta=1e-4):
-    """
-    将比特流嵌入到模型权重中。
-
-    Args:
-        state_dict (dict): 模型的状态字典。
-        bits (list): 要嵌入的比特列表。
-        seed (int): 随机种子，用于选择权重索引。
-        delta (float): 修改权重的增量。
-
-    Returns:
-        tuple: 修改后的状态字典和嵌入的权重索引列表。
-    """
-    np.random.seed(seed)
-    all_weights = []
-    weight_keys = []
-    for key in state_dict:
-        if 'weight' in key:
-            all_weights.extend(state_dict[key].numpy().flatten())
-            weight_keys.append(key)
-    total_weights = len(all_weights)
-
-    if len(bits) > total_weights:
-        raise ValueError("模型权重不足以嵌入所有比特。请使用更大的模型或减少嵌入的数据量。")
-
-    # 随机选择权重索引
-    indices = np.random.choice(total_weights, len(bits), replace=False)
-
-    # 嵌入比特
-    for i, bit in enumerate(bits):
-        if bit == 1:
-            all_weights[indices[i]] += delta
+    def __init__(self, seed: int, device: str, malware_path: Path, result_path: Path, logger, chunk_factor: int):
+        self.seed = seed
+        self.device = device
+        self.malware_path = malware_path
+        self.result_path = result_path
+        self.payload = bits_from_file(malware_path)
+        hash_str = hashlib.sha256(
+            ''.join(str(l) for l in self.payload).encode('utf-8')).hexdigest()
+        self.hash = bits_from_bytes(
+            [char for char in hash_str.encode('utf-8')])
+        self.message = self.payload + self.hash
+        # self.logger = logger
+        self.chunk_factor = chunk_factor
+        self.H = None
+        self.G = None
+        self.preamble = None
+        if len(self.message) > 4000:
+            k = 3048
         else:
-            all_weights[indices[i]] -= delta
+            k = 96
+        d_v = 3
+        d_c = 12
+        n = k * int(d_c / d_v)
+        self.H, self.G = make_ldpc(
+            n, d_v, d_c, systematic=True, sparse=True, seed=seed)
 
-    # 将修改后的权重重新赋值回 state_dict
-    modified_state_dict = state_dict.copy()
-    current = 0
-    for key in state_dict:
-        if 'weight' in key:
-            weight_shape = state_dict[key].numpy().shape
-            num = np.prod(weight_shape)
-            modified_weights = np.array(all_weights[current:current + num]).reshape(weight_shape)
-            modified_state_dict[key] = torch.from_numpy(modified_weights).type(state_dict[key].dtype)
-            current += num
+    def get_message_length(self, model):
+        model_st_dict = model.state_dict()
+        models_w = []
+        layer_lengths = dict()
 
-    return modified_state_dict, indices.tolist()
+        layers = [n for n in model_st_dict.keys() if "weight" in str(n)][:-1]
+        for layer in layers:
+            x = model_st_dict[layer].detach().cpu().numpy().flatten()
+            layer_lengths[layer] = len(x)
+            models_w.extend(list(x))
 
+        models_w = np.array(models_w)
 
-def extract_bits_from_weights(state_dict, indices, seed=42, delta=1e-4):
-    """
-    从模型权重中提取比特流。
+        k = self.G.shape[1]
 
-    Args:
-        state_dict (dict): 模型的状态字典。
-        indices (list): 嵌入时选择的权重索引列表。
-        seed (int): 随机种子，用于重新选择权重索引。
-        delta (float): 嵌入时使用的增量。
+        snr1 = 10000000000000000
+        c = []
+        remaining_bits = len(self.message) % k
+        n_chunks = int(len(self.message) / k)
+        chunks = list()
 
-    Returns:
-        list: 提取的比特列表。
-    """
-    bits = []
-    for idx in indices:
-        # 获取对应的权重
-        weight = None
-        cumulative = 0
-        for key in state_dict:
-            if 'weight' in key:
-                weight_tensor = state_dict[key]
-                num = weight_tensor.numel()
-                if cumulative <= idx < cumulative + num:
-                    flat_weight = weight_tensor.numpy().flatten()
-                    weight = flat_weight[idx - cumulative]
-                    break
-                cumulative += num
-        if weight is None:
-            raise ValueError(f"索引 {idx} 超出权重范围。")
+        for ch in range(n_chunks):
+            chunks.append(self.message[ch * k:ch * k + k])
 
-        # 根据修改的方向判断比特
-        if weight > 0:
-            bits.append(1)
-        else:
-            bits.append(0)
+        encoded = map(lambda x: encode(self.G, x, snr1), chunks)
+        for enc in encoded:
+            c.extend(enc)
 
-    return bits
+        last_part = []
+        last_part.extend(self.message[n_chunks * k:])
+        last_part.extend([0] * (k - remaining_bits))
 
+        c.extend(encode(self.G, last_part, snr1))
 
-def embed_payload_in_model(original_model_path, modified_model_path, payload_path, seed=42, delta=1e-4):
-    """
-    在模型中嵌入载荷文件。
+        np.random.seed(self.seed * 15)
+        preamble = np.sign(np.random.uniform(-1, 1, 200))
+        b = np.concatenate((preamble, c))
 
-    Args:
-        original_model_path (str or Path): 原始模型的 .pth 文件路径。
-        modified_model_path (str or Path): 保存嵌入载荷后的模型路径。
-        payload_path (str or Path): 要嵌入的载荷文件路径。
-        seed (int): 随机种子。
-        delta (float): 修改权重的增量。
+        return len(b)
 
-    Returns:
-        list: 嵌入的权重索引列表。
-    """
-    # 加载原始模型
-    state_dict = torch.load(original_model_path, map_location='cpu')
+    def inject(self, model, gamma: Optional[float] = None):
+        start = time.time()
 
-    # 读取载荷并转换为比特
-    bits = file_to_bits(payload_path)
-    print(f"载荷大小: {len(bits)} bits")
+        model_st_dict = model.state_dict()
+        models_w = []
+        layer_lengths = dict()
 
-    # 嵌入比特到权重
-    modified_state_dict, indices = embed_bits_in_weights(state_dict, bits, seed=seed, delta=delta)
+        layers = [n for n in model_st_dict.keys() if "weight" in str(n)][:-1]
+        for layer in layers:
+            x = model_st_dict[layer].detach().cpu().numpy().flatten()
+            layer_lengths[layer] = len(x)
+            models_w.extend(list(x))
 
-    # 保存修改后的模型
-    torch.save(modified_state_dict, modified_model_path)
-    print(f"已将载荷嵌入到模型中，并保存为 {modified_model_path}")
-    print(f"嵌入位置的权重索引: {indices}")
+        models_w = np.array(models_w)
 
-    return indices
+        k = self.G.shape[1]
 
+        snr1 = 10000000000000000
+        c = []
+        remaining_bits = len(self.message) % k
+        n_chunks = int(len(self.message) / k)
+        chunks = list()
 
-def extract_payload_from_model(modified_model_path, extracted_payload_path, indices, seed=42, delta=1e-4):
-    """
-    从模型中提取嵌入的载荷文件。
+        for ch in range(n_chunks):
+            chunks.append(self.message[ch * k:ch * k + k])
 
-    Args:
-        modified_model_path (str or Path): 修改后的模型 .pth 文件路径。
-        extracted_payload_path (str or Path): 保存提取出的载荷文件路径。
-        indices (list): 嵌入时选择的权重索引列表。
-        seed (int): 嵌入时使用的随机种子。
-        delta (float): 嵌入时使用的增量。
-    """
-    # 加载修改后的模型
-    state_dict = torch.load(modified_model_path, map_location='cpu')
+        encoded = map(lambda x: encode(self.G, x, snr1), chunks)
+        for enc in encoded:
+            c.extend(enc)
 
-    # 提取比特
-    bits = extract_bits_from_weights(state_dict, indices, seed=seed, delta=delta)
-    print(f"提取到的比特数: {len(bits)}")
+        last_part = []
+        last_part.extend(self.message[n_chunks * k:])
+        last_part.extend([0] * (k - remaining_bits))
 
-    # 保存比特到文件
-    bits_to_file(bits, extracted_payload_path)
-    print(f"已将提取的比特保存为 {extracted_payload_path}")
+        c.extend(encode(self.G, last_part, snr1))
 
+        np.random.seed(self.seed * 15)
+        preamble = np.sign(np.random.uniform(-1, 1, 200))
+        b = np.concatenate((preamble, c))
 
-def main():
-    # 示例文件路径（请根据实际情况修改）
-    original_model_path = 'original_model.pth'  # 原始模型路径
-    modified_model_path = 'modified_model.pth'  # 修改后的模型路径
-    payload_path = 'payload.bin'  # 要嵌入的载荷文件路径
-    extracted_payload_path = 'extracted_payload.bin'  # 提取出的载荷文件路径
+        number_of_chunks = math.ceil(len(b) / self.CHUNK_SIZE)
+        if self.CHUNK_SIZE * self.chunk_factor * number_of_chunks > len(models_w):
+            # self.logger.critical(
+            #     f'Spreading codes cannot be bigger than the model!')
+            print('Spreading codes cannot be bigger than the model!')
+            return
 
-    # 嵌入载荷
-    print("开始嵌入载荷...")
-    indices = embed_payload_in_model(original_model_path, modified_model_path, payload_path, seed=42, delta=1e-4)
+        np.random.seed(self.seed)
+        filter_indexes = np.random.randint(
+            0, len(models_w), self.CHUNK_SIZE * self.chunk_factor * number_of_chunks, np.int32).tolist()
 
-    # 提取载荷
-    print("\n开始提取载荷...")
-    extract_payload_from_model(modified_model_path, extracted_payload_path, indices, seed=42, delta=1e-4)
+        # self.logger.info(
+        #     f'Injecting on {self.CHUNK_SIZE * self.chunk_factor} * {number_of_chunks} = {self.CHUNK_SIZE * self.chunk_factor * number_of_chunks} parameters')
+        print('Injecting on {self.CHUNK_SIZE * self.chunk_factor} * {number_of_chunks} = {self.CHUNK_SIZE * self.chunk_factor * number_of_chunks} parameters')
+        with tqdm(total=len(b)) as bar:
+            bar.set_description('Injecting')
+            current_chunk = 0
+            current_bit = 0
+            np.random.seed(self.seed)
+            for bit in b:
+                spreading_code = np.random.choice(
+                    [-1, 1], size=self.CHUNK_SIZE * self.chunk_factor)
+                current_bit_cdma_signal = gamma * spreading_code * bit
+                current_filter_index = filter_indexes[current_chunk * self.CHUNK_SIZE * self.chunk_factor:
+                                                      (current_chunk + 1) * self.CHUNK_SIZE * self.chunk_factor]
+                models_w[current_filter_index] = np.add(
+                    models_w[current_filter_index], current_bit_cdma_signal)
 
-    # 验证提取的载荷是否与原始载荷一致
-    with open(payload_path, 'rb') as f1, open(extracted_payload_path, 'rb') as f2:
-        original_payload = f1.read()
-        extracted_payload = f2.read()
-        if original_payload == extracted_payload:
-            print("\n验证成功：提取的载荷与原始载荷一致。")
-        else:
-            print("\n验证失败：提取的载荷与原始载荷不一致。")
+                current_bit += 1
+                if current_bit > self.CHUNK_SIZE * (current_chunk + 1):
+                    current_chunk += 1
 
+                bar.update(1)
 
-if __name__ == '__main__':
-    main()
+        curr_index = 0
+        for layer in layers:
+            x = np.array(
+                models_w[curr_index:curr_index + layer_lengths[layer]])
+            model_st_dict[layer] = torch.from_numpy(np.reshape(
+                x, model_st_dict[layer].shape)).to(self.device)
+            curr_index = curr_index + layer_lengths[layer]
+
+        end = time.time()
+        # self.logger.info(f'Time to inject {end - start}')
+        return model_st_dict, len(b), len(self.payload), len(self.hash)
