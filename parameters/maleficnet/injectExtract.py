@@ -63,6 +63,7 @@ class Injector:
         n = k * int(d_c / d_v)
         self.H, self.G = make_ldpc(
             n, d_v, d_c, systematic=True, sparse=True, seed=seed)
+        print("Injector H shape: ", self.H.shape, " Injector G shape:", self.G.shape)
 
     def get_message_length(self, pth):
         model_st_dict = torch.load(pth)
@@ -185,7 +186,6 @@ class Injector:
             curr_index = curr_index + layer_lengths[layer]
 
         end = time.time()
-        # self.logger.info(f'Time to inject {end - start}')
         return model_st_dict, len(b), len(self.payload), len(self.hash)
 
 
@@ -217,6 +217,7 @@ class Extractor:
         n = k * int(d_c / d_v)
         self.H, self.G = make_ldpc(
             n, d_v, d_c, systematic=True, sparse=True, seed=seed)
+        print("Extracotr H shape: ",self.H.shape, " Extracotr G shape:",self.G.shape)
 
     def extract(self, pth, message_length, malware_name):
         extraction_path = self.result_path
