@@ -986,240 +986,240 @@ if __name__ == "__main__":
     20240919 流程对比实验
     convnext_large
     """
-    # layers = ["features.5.10.block.3.weight",
-    #           "features.5.10.block.5.weight",
-    #           "features.5.11.block.3.weight",
-    #           "features.5.11.block.5.weight",
-    #           "features.5.12.block.3.weight",
-    #           "features.5.12.block.5.weight",
-    #           "features.5.13.block.3.weight",
-    #           "features.5.13.block.5.weight",
-    #           "features.5.14.block.3.weight",
-    #           "features.5.14.block.5.weight",
-    #           "features.5.15.block.3.weight",
-    #           "features.5.15.block.5.weight",
-    #           "features.5.16.block.3.weight",
-    #           "features.5.16.block.5.weight",
-    #           "features.5.17.block.3.weight",
-    #           "features.5.17.block.5.weight",
-    #           "features.5.18.block.3.weight",
-    #           "features.5.18.block.5.weight",
-    #           "features.5.19.block.3.weight",
-    #           "features.5.19.block.5.weight",
-    #           "features.5.20.block.3.weight",
-    #           "features.5.20.block.5.weight",
-    #           "features.5.21.block.3.weight",
-    #           "features.5.21.block.5.weight",
-    #           "features.5.22.block.3.weight",
-    #           "features.5.22.block.5.weight",
-    #           "features.5.23.block.3.weight",
-    #           "features.5.23.block.5.weight",
-    #           "features.5.24.block.3.weight",
-    #           "features.5.24.block.5.weight",
-    #           "features.5.25.block.3.weight",
-    #           "features.5.25.block.5.weight",
-    #           "features.5.26.block.3.weight",
-    #           "features.5.26.block.5.weight",
-    #           "features.7.0.block.3.weight",
-    #           "features.7.0.block.5.weight",
-    #           "features.7.1.block.3.weight",
-    #           "features.7.1.block.5.weight",
-    #           "features.7.2.block.3.weight",
-    #           "features.7.2.block.5.weight"]
-    # malwares = ["./malware/convnext_large_l1",
-    #             "./malware/convnext_large_l2",
-    #             "./malware/convnext_large_l3",
-    #             "./malware/convnext_large_l4",
-    #             "./malware/convnext_large_l5",
-    #             "./malware/convnext_large_l6",
-    #             "./malware/convnext_large_l7",
-    #             "./malware/convnext_large_l8",
-    #             "./malware/convnext_large_l9",
-    #             "./malware/convnext_large_l10",
-    #             "./malware/convnext_large_l11",
-    #             "./malware/convnext_large_l12",
-    #             "./malware/convnext_large_l13",
-    #             "./malware/convnext_large_l14",
-    #             "./malware/convnext_large_l15",
-    #             "./malware/convnext_large_l16",
-    #             "./malware/convnext_large_l17",
-    #             "./malware/convnext_large_l18",
-    #             "./malware/convnext_large_l19",
-    #             "./malware/convnext_large_l20",
-    #             "./malware/convnext_large_l21",
-    #             "./malware/convnext_large_l22",
-    #             "./malware/convnext_large_l23",
-    #             "./malware/convnext_large_l24",
-    #             "./malware/convnext_large_l25",
-    #             "./malware/convnext_large_l26",
-    #             "./malware/convnext_large_l27",
-    #             "./malware/convnext_large_l28",
-    #             "./malware/convnext_large_l29",
-    #             "./malware/convnext_large_l30",
-    #             "./malware/convnext_large_l31",
-    #             "./malware/convnext_large_l32",
-    #             "./malware/convnext_large_l33",
-    #             "./malware/convnext_large_l34",
-    #             "./malware/convnext_large_l35",
-    #             "./malware/convnext_large_l36",
-    #             "./malware/convnext_large_l37",
-    #             "./malware/convnext_large_l38",
-    #             "./malware/convnext_large_l39",
-    #             "./malware/convnext_large_l40"]
-    # malwares_extract = ["./malware/convnext_large_l1_e",
-    #                     "./malware/convnext_large_l2_e",
-    #                     "./malware/convnext_large_l3_e",
-    #                     "./malware/convnext_large_l4_e",
-    #                     "./malware/convnext_large_l5_e",
-    #                     "./malware/convnext_large_l6_e",
-    #                     "./malware/convnext_large_l7_e",
-    #                     "./malware/convnext_large_l8_e",
-    #                     "./malware/convnext_large_l9_e",
-    #                     "./malware/convnext_large_l10_e",
-    #                     "./malware/convnext_large_l11_e",
-    #                     "./malware/convnext_large_l12_e",
-    #                     "./malware/convnext_large_l13_e",
-    #                     "./malware/convnext_large_l14_e",
-    #                     "./malware/convnext_large_l15_e",
-    #                     "./malware/convnext_large_l16_e",
-    #                     "./malware/convnext_large_l17_e",
-    #                     "./malware/convnext_large_l18_e",
-    #                     "./malware/convnext_large_l19_e",
-    #                     "./malware/convnext_large_l20_e",
-    #                     "./malware/convnext_large_l21_e",
-    #                     "./malware/convnext_large_l22_e",
-    #                     "./malware/convnext_large_l23_e",
-    #                     "./malware/convnext_large_l24_e",
-    #                     "./malware/convnext_large_l25_e",
-    #                     "./malware/convnext_large_l26_e",
-    #                     "./malware/convnext_large_l27_e",
-    #                     "./malware/convnext_large_l28_e",
-    #                     "./malware/convnext_large_l29_e",
-    #                     "./malware/convnext_large_l30_e",
-    #                     "./malware/convnext_large_l31_e",
-    #                     "./malware/convnext_large_l32_e",
-    #                     "./malware/convnext_large_l33_e",
-    #                     "./malware/convnext_large_l34_e",
-    #                     "./malware/convnext_large_l35_e",
-    #                     "./malware/convnext_large_l36_e",
-    #                     "./malware/convnext_large_l37_e",
-    #                     "./malware/convnext_large_l38_e",
-    #                     "./malware/convnext_large_l39_e",
-    #                     "./malware/convnext_large_l40_e"]
-    #
-    # interval = 4
-    # correct = 7
-    # savePath = "./convnext_large/bitEmbedd/convnext_large_40layers_4inter_7corr.pth"
-    #
-    # sizeList = getExpEmbeddSize(convnext_largeInitParaPath, layers, interval, correct)
-    # print(SNR(10, 1))
+    layers = ["features.5.10.block.3.weight",
+              "features.5.10.block.5.weight",
+              "features.5.11.block.3.weight",
+              "features.5.11.block.5.weight",
+              "features.5.12.block.3.weight",
+              "features.5.12.block.5.weight",
+              "features.5.13.block.3.weight",
+              "features.5.13.block.5.weight",
+              "features.5.14.block.3.weight",
+              "features.5.14.block.5.weight",
+              "features.5.15.block.3.weight",
+              "features.5.15.block.5.weight",
+              "features.5.16.block.3.weight",
+              "features.5.16.block.5.weight",
+              "features.5.17.block.3.weight",
+              "features.5.17.block.5.weight",
+              "features.5.18.block.3.weight",
+              "features.5.18.block.5.weight",
+              "features.5.19.block.3.weight",
+              "features.5.19.block.5.weight",
+              "features.5.20.block.3.weight",
+              "features.5.20.block.5.weight",
+              "features.5.21.block.3.weight",
+              "features.5.21.block.5.weight",
+              "features.5.22.block.3.weight",
+              "features.5.22.block.5.weight",
+              "features.5.23.block.3.weight",
+              "features.5.23.block.5.weight",
+              "features.5.24.block.3.weight",
+              "features.5.24.block.5.weight",
+              "features.5.25.block.3.weight",
+              "features.5.25.block.5.weight",
+              "features.5.26.block.3.weight",
+              "features.5.26.block.5.weight",
+              "features.7.0.block.3.weight",
+              "features.7.0.block.5.weight",
+              "features.7.1.block.3.weight",
+              "features.7.1.block.5.weight",
+              "features.7.2.block.3.weight",
+              "features.7.2.block.5.weight"]
+    malwares = ["./malware/convnext_large_l1",
+                "./malware/convnext_large_l2",
+                "./malware/convnext_large_l3",
+                "./malware/convnext_large_l4",
+                "./malware/convnext_large_l5",
+                "./malware/convnext_large_l6",
+                "./malware/convnext_large_l7",
+                "./malware/convnext_large_l8",
+                "./malware/convnext_large_l9",
+                "./malware/convnext_large_l10",
+                "./malware/convnext_large_l11",
+                "./malware/convnext_large_l12",
+                "./malware/convnext_large_l13",
+                "./malware/convnext_large_l14",
+                "./malware/convnext_large_l15",
+                "./malware/convnext_large_l16",
+                "./malware/convnext_large_l17",
+                "./malware/convnext_large_l18",
+                "./malware/convnext_large_l19",
+                "./malware/convnext_large_l20",
+                "./malware/convnext_large_l21",
+                "./malware/convnext_large_l22",
+                "./malware/convnext_large_l23",
+                "./malware/convnext_large_l24",
+                "./malware/convnext_large_l25",
+                "./malware/convnext_large_l26",
+                "./malware/convnext_large_l27",
+                "./malware/convnext_large_l28",
+                "./malware/convnext_large_l29",
+                "./malware/convnext_large_l30",
+                "./malware/convnext_large_l31",
+                "./malware/convnext_large_l32",
+                "./malware/convnext_large_l33",
+                "./malware/convnext_large_l34",
+                "./malware/convnext_large_l35",
+                "./malware/convnext_large_l36",
+                "./malware/convnext_large_l37",
+                "./malware/convnext_large_l38",
+                "./malware/convnext_large_l39",
+                "./malware/convnext_large_l40"]
+    malwares_extract = ["./malware/convnext_large_l1_e",
+                        "./malware/convnext_large_l2_e",
+                        "./malware/convnext_large_l3_e",
+                        "./malware/convnext_large_l4_e",
+                        "./malware/convnext_large_l5_e",
+                        "./malware/convnext_large_l6_e",
+                        "./malware/convnext_large_l7_e",
+                        "./malware/convnext_large_l8_e",
+                        "./malware/convnext_large_l9_e",
+                        "./malware/convnext_large_l10_e",
+                        "./malware/convnext_large_l11_e",
+                        "./malware/convnext_large_l12_e",
+                        "./malware/convnext_large_l13_e",
+                        "./malware/convnext_large_l14_e",
+                        "./malware/convnext_large_l15_e",
+                        "./malware/convnext_large_l16_e",
+                        "./malware/convnext_large_l17_e",
+                        "./malware/convnext_large_l18_e",
+                        "./malware/convnext_large_l19_e",
+                        "./malware/convnext_large_l20_e",
+                        "./malware/convnext_large_l21_e",
+                        "./malware/convnext_large_l22_e",
+                        "./malware/convnext_large_l23_e",
+                        "./malware/convnext_large_l24_e",
+                        "./malware/convnext_large_l25_e",
+                        "./malware/convnext_large_l26_e",
+                        "./malware/convnext_large_l27_e",
+                        "./malware/convnext_large_l28_e",
+                        "./malware/convnext_large_l29_e",
+                        "./malware/convnext_large_l30_e",
+                        "./malware/convnext_large_l31_e",
+                        "./malware/convnext_large_l32_e",
+                        "./malware/convnext_large_l33_e",
+                        "./malware/convnext_large_l34_e",
+                        "./malware/convnext_large_l35_e",
+                        "./malware/convnext_large_l36_e",
+                        "./malware/convnext_large_l37_e",
+                        "./malware/convnext_large_l38_e",
+                        "./malware/convnext_large_l39_e",
+                        "./malware/convnext_large_l40_e"]
+
+    interval = 4
+    correct = 7
+    savePath = "./convnext_large/bitEmbedd/convnext_large_40layers_4inter_7corr.pth"
+    sizeList = getExpEmbeddSize(convnext_largeInitParaPath, layers, interval, correct)
 
 
 
     # generateFiles(malwares, sizeList)
     # layerExpBitEmbedd(convnext_largeInitParaPath, savePath, layers, malwares, interval, correct)
 
+    layerExpBitExtrac("./convnext_large/bitEmbedd/convnext_large_40layers_4inter_7corr.pth", layers,
+                      malwares, interval, correct)
 
-    # layerExpBitExtrac("./convnext_large/2PCAM/convnext_large_40layers_4inter_7corr_ep_2.pth", layers,
-    #                   malwares_extract, interval, correct)
-    # total_mal_num = 0
-    # total_error_num = 0
-    # for layerSize in sizeList:
-    #     total_mal_num += layerSize
-    # for mal1, mal2 in zip(malwares, malwares_extract):
-    #     total_error_num += showDif(mal1, mal2)
+    layerExpBitExtrac("./convnext_large/2PCAM/convnext_large_40layers_4inter_7corr_ep_2.pth", layers,
+                      malwares_extract, interval, correct)
+    total_mal_num = 0
+    total_error_num = 0
+    for layerSize in sizeList:
+        total_mal_num += layerSize
+    for mal1, mal2 in zip(malwares, malwares_extract):
+        total_error_num += showDif(mal1, mal2)
+    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+
+
+    layerExpBitExtrac("./convnext_large/2PCAM/convnext_large_40layers_4inter_7corr_ep_4.pth", layers,
+                      malwares_extract, interval, correct)
+    total_mal_num = 0
+    total_error_num = 0
+    for layerSize in sizeList:
+        total_mal_num += layerSize
+    for mal1, mal2 in zip(malwares, malwares_extract):
+        total_error_num += showDif(mal1, mal2)
+    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+
+    layerExpBitExtrac("./convnext_large/2PCAM/convnext_large_40layers_4inter_7corr_ep_6.pth", layers,
+                      malwares_extract, interval, correct)
+    total_mal_num = 0
+    total_error_num = 0
+    for layerSize in sizeList:
+        total_mal_num += layerSize
+    for mal1, mal2 in zip(malwares, malwares_extract):
+        total_error_num += showDif(mal1, mal2)
+    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+
+    layerExpBitExtrac("./convnext_large/2PCAM/convnext_large_40layers_4inter_7corr_ep_8.pth", layers,
+                      malwares_extract, interval, correct)
+    total_mal_num = 0
+    total_error_num = 0
+    for layerSize in sizeList:
+        total_mal_num += layerSize
+    for mal1, mal2 in zip(malwares, malwares_extract):
+        total_error_num += showDif(mal1, mal2)
+    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+
+    layerExpBitExtrac("./convnext_large/2PCAM/convnext_large_40layers_4inter_7corr_ep_10.pth", layers,
+                      malwares_extract, interval, correct)
+    total_mal_num = 0
+    total_error_num = 0
+    for layerSize in sizeList:
+        total_mal_num += layerSize
+    for mal1, mal2 in zip(malwares, malwares_extract):
+        total_error_num += showDif(mal1, mal2)
     # print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
-    #
-    #
-    # layerExpBitExtrac("./convnext_large/2PCAM/convnext_large_40layers_4inter_7corr_ep_4.pth", layers,
-    #                   malwares_extract, interval, correct)
-    # total_mal_num = 0
-    # total_error_num = 0
-    # for layerSize in sizeList:
-    #     total_mal_num += layerSize
-    # for mal1, mal2 in zip(malwares, malwares_extract):
-    #     total_error_num += showDif(mal1, mal2)
-    # print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
-    #
-    # layerExpBitExtrac("./convnext_large/2PCAM/convnext_large_40layers_4inter_7corr_ep_6.pth", layers,
-    #                   malwares_extract, interval, correct)
-    # total_mal_num = 0
-    # total_error_num = 0
-    # for layerSize in sizeList:
-    #     total_mal_num += layerSize
-    # for mal1, mal2 in zip(malwares, malwares_extract):
-    #     total_error_num += showDif(mal1, mal2)
-    # print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
-    #
-    # layerExpBitExtrac("./convnext_large/2PCAM/convnext_large_40layers_4inter_7corr_ep_8.pth", layers,
-    #                   malwares_extract, interval, correct)
-    # total_mal_num = 0
-    # total_error_num = 0
-    # for layerSize in sizeList:
-    #     total_mal_num += layerSize
-    # for mal1, mal2 in zip(malwares, malwares_extract):
-    #     total_error_num += showDif(mal1, mal2)
-    # print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
-    #
-    # layerExpBitExtrac("./convnext_large/2PCAM/convnext_large_40layers_4inter_7corr_ep_10.pth", layers,
-    #                   malwares_extract, interval, correct)
-    # total_mal_num = 0
-    # total_error_num = 0
-    # for layerSize in sizeList:
-    #     total_mal_num += layerSize
-    # for mal1, mal2 in zip(malwares, malwares_extract):
-    #     total_error_num += showDif(mal1, mal2)
-    # # print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
-    #
-    # layerExpBitExtrac("./convnext_large/2PCAM/convnext_large_40layers_4inter_7corr_ep_12.pth", layers,
-    #                   malwares_extract, interval, correct)
-    # total_mal_num = 0
-    # total_error_num = 0
-    # for layerSize in sizeList:
-    #     total_mal_num += layerSize
-    # for mal1, mal2 in zip(malwares, malwares_extract):
-    #     total_error_num += showDif(mal1, mal2)
-    # print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
-    #
-    # layerExpBitExtrac("./convnext_large/2PCAM/convnext_large_40layers_4inter_7corr_ep_14.pth", layers,
-    #                   malwares_extract, interval, correct)
-    # total_mal_num = 0
-    # total_error_num = 0
-    # for layerSize in sizeList:
-    #     total_mal_num += layerSize
-    # for mal1, mal2 in zip(malwares, malwares_extract):
-    #     total_error_num += showDif(mal1, mal2)
-    # print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
-    #
-    # layerExpBitExtrac("./convnext_large/2PCAM/convnext_large_40layers_4inter_7corr_ep_16.pth", layers,
-    #                   malwares_extract, interval, correct)
-    # total_mal_num = 0
-    # total_error_num = 0
-    # for layerSize in sizeList:
-    #     total_mal_num += layerSize
-    # for mal1, mal2 in zip(malwares, malwares_extract):
-    #     total_error_num += showDif(mal1, mal2)
-    # print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
-    #
-    # layerExpBitExtrac("./convnext_large/2PCAM/convnext_large_40layers_4inter_7corr_ep_18.pth", layers,
-    #                   malwares_extract, interval, correct)
-    # total_mal_num = 0
-    # total_error_num = 0
-    # for layerSize in sizeList:
-    #     total_mal_num += layerSize
-    # for mal1, mal2 in zip(malwares, malwares_extract):
-    #     total_error_num += showDif(mal1, mal2)
-    # print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
-    #
-    # layerExpBitExtrac("./convnext_large/2PCAM/convnext_large_40layers_4inter_7corr_ep_20.pth", layers,
-    #                   malwares_extract, interval, correct)
-    # total_mal_num = 0
-    # total_error_num = 0
-    # for layerSize in sizeList:
-    #     total_mal_num += layerSize
-    # for mal1, mal2 in zip(malwares, malwares_extract):
-    #     total_error_num += showDif(mal1, mal2)
-    # print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+
+    layerExpBitExtrac("./convnext_large/2PCAM/convnext_large_40layers_4inter_7corr_ep_12.pth", layers,
+                      malwares_extract, interval, correct)
+    total_mal_num = 0
+    total_error_num = 0
+    for layerSize in sizeList:
+        total_mal_num += layerSize
+    for mal1, mal2 in zip(malwares, malwares_extract):
+        total_error_num += showDif(mal1, mal2)
+    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+
+    layerExpBitExtrac("./convnext_large/2PCAM/convnext_large_40layers_4inter_7corr_ep_14.pth", layers,
+                      malwares_extract, interval, correct)
+    total_mal_num = 0
+    total_error_num = 0
+    for layerSize in sizeList:
+        total_mal_num += layerSize
+    for mal1, mal2 in zip(malwares, malwares_extract):
+        total_error_num += showDif(mal1, mal2)
+    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+
+    layerExpBitExtrac("./convnext_large/2PCAM/convnext_large_40layers_4inter_7corr_ep_16.pth", layers,
+                      malwares_extract, interval, correct)
+    total_mal_num = 0
+    total_error_num = 0
+    for layerSize in sizeList:
+        total_mal_num += layerSize
+    for mal1, mal2 in zip(malwares, malwares_extract):
+        total_error_num += showDif(mal1, mal2)
+    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+
+    layerExpBitExtrac("./convnext_large/2PCAM/convnext_large_40layers_4inter_7corr_ep_18.pth", layers,
+                      malwares_extract, interval, correct)
+    total_mal_num = 0
+    total_error_num = 0
+    for layerSize in sizeList:
+        total_mal_num += layerSize
+    for mal1, mal2 in zip(malwares, malwares_extract):
+        total_error_num += showDif(mal1, mal2)
+    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+
+    layerExpBitExtrac("./convnext_large/2PCAM/convnext_large_40layers_4inter_7corr_ep_20.pth", layers,
+                      malwares_extract, interval, correct)
+    total_mal_num = 0
+    total_error_num = 0
+    for layerSize in sizeList:
+        total_mal_num += layerSize
+    for mal1, mal2 in zip(malwares, malwares_extract):
+        total_error_num += showDif(mal1, mal2)
+    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
 
 
 
@@ -1281,108 +1281,108 @@ if __name__ == "__main__":
     # generateFiles(malwares, sizeList)
     # layerExpBitEmbedd(swinv2bInitParaPath, savePath, layers, malwares, interval, correct, num_threads=8)
 
-
-    layerExpBitExtrac("./swinv2b/2PCAM/swinv2b_14layers_8inter_7corr_ep_2_ep_5.pth",
-                      layers, malwares_extract, interval, correct, num_threads=8)
-    total_mal_num = 0
-    total_error_num = 0
-    for layerSize in sizeList:
-        total_mal_num += layerSize
-    for mal1, mal2 in zip(malwares, malwares_extract):
-        total_error_num += showDif(mal1, mal2)
-    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
-
-    layerExpBitExtrac("./swinv2b/2PCAM/swinv2b_14layers_8inter_7corr_ep_4_ep_5.pth",
-                      layers, malwares_extract, interval, correct, num_threads=8)
-    total_mal_num = 0
-    total_error_num = 0
-    for layerSize in sizeList:
-        total_mal_num += layerSize
-    for mal1, mal2 in zip(malwares, malwares_extract):
-        total_error_num += showDif(mal1, mal2)
-    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
-
-    layerExpBitExtrac("./swinv2b/2PCAM/swinv2b_14layers_8inter_7corr_ep_6_ep_5.pth",
-                      layers, malwares_extract, interval, correct, num_threads=8)
-    total_mal_num = 0
-    total_error_num = 0
-    for layerSize in sizeList:
-        total_mal_num += layerSize
-    for mal1, mal2 in zip(malwares, malwares_extract):
-        total_error_num += showDif(mal1, mal2)
-    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
-
-    layerExpBitExtrac("./swinv2b/2PCAM/swinv2b_14layers_8inter_7corr_ep_8_ep_5.pth",
-                      layers, malwares_extract, interval, correct, num_threads=8)
-    total_mal_num = 0
-    total_error_num = 0
-    for layerSize in sizeList:
-        total_mal_num += layerSize
-    for mal1, mal2 in zip(malwares, malwares_extract):
-        total_error_num += showDif(mal1, mal2)
-    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
-
-    layerExpBitExtrac("./swinv2b/2PCAM/swinv2b_14layers_8inter_7corr_ep_10_ep_5.pth",
-                      layers, malwares_extract, interval, correct, num_threads=8)
-    total_mal_num = 0
-    total_error_num = 0
-    for layerSize in sizeList:
-        total_mal_num += layerSize
-    for mal1, mal2 in zip(malwares, malwares_extract):
-        total_error_num += showDif(mal1, mal2)
-    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
-
-    layerExpBitExtrac("./swinv2b/2PCAM/swinv2b_14layers_8inter_7corr_ep_12_ep_5.pth",
-                      layers, malwares_extract, interval, correct, num_threads=8)
-    total_mal_num = 0
-    total_error_num = 0
-    for layerSize in sizeList:
-        total_mal_num += layerSize
-    for mal1, mal2 in zip(malwares, malwares_extract):
-        total_error_num += showDif(mal1, mal2)
-    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
-
-    layerExpBitExtrac("./swinv2b/2PCAM/swinv2b_14layers_8inter_7corr_ep_14_ep_5.pth",
-                      layers, malwares_extract, interval, correct, num_threads=8)
-    total_mal_num = 0
-    total_error_num = 0
-    for layerSize in sizeList:
-        total_mal_num += layerSize
-    for mal1, mal2 in zip(malwares, malwares_extract):
-        total_error_num += showDif(mal1, mal2)
-    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
-
-    layerExpBitExtrac("./swinv2b/2PCAM/swinv2b_14layers_8inter_7corr_ep_16_ep_5.pth",
-                      layers, malwares_extract, interval, correct, num_threads=8)
-    total_mal_num = 0
-    total_error_num = 0
-    for layerSize in sizeList:
-        total_mal_num += layerSize
-    for mal1, mal2 in zip(malwares, malwares_extract):
-        total_error_num += showDif(mal1, mal2)
-    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
-
-    layerExpBitExtrac("./swinv2b/2PCAM/swinv2b_14layers_8inter_7corr_ep_18_ep_5.pth",
-                      layers, malwares_extract, interval, correct, num_threads=8)
-    total_mal_num = 0
-    total_error_num = 0
-    for layerSize in sizeList:
-        total_mal_num += layerSize
-    for mal1, mal2 in zip(malwares, malwares_extract):
-        total_error_num += showDif(mal1, mal2)
-    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
-
-    layerExpBitExtrac("./swinv2b/2PCAM/swinv2b_14layers_8inter_7corr_ep_20_ep_5.pth",
-                      layers, malwares_extract, interval, correct, num_threads=8)
-    total_mal_num = 0
-    total_error_num = 0
-    for layerSize in sizeList:
-        total_mal_num += layerSize
-    for mal1, mal2 in zip(malwares, malwares_extract):
-        total_error_num += showDif(mal1, mal2)
-    print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
-
-
-
-
-    print("Done")
+    #
+    # layerExpBitExtrac("./swinv2b/2PCAM/swinv2b_14layers_8inter_7corr_ep_2_ep_10.pth",
+    #                   layers, malwares_extract, interval, correct, num_threads=8)
+    # total_mal_num = 0
+    # total_error_num = 0
+    # for layerSize in sizeList:
+    #     total_mal_num += layerSize
+    # for mal1, mal2 in zip(malwares, malwares_extract):
+    #     total_error_num += showDif(mal1, mal2)
+    # print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+    #
+    # layerExpBitExtrac("./swinv2b/2PCAM/swinv2b_14layers_8inter_7corr_ep_4_ep_10.pth",
+    #                   layers, malwares_extract, interval, correct, num_threads=8)
+    # total_mal_num = 0
+    # total_error_num = 0
+    # for layerSize in sizeList:
+    #     total_mal_num += layerSize
+    # for mal1, mal2 in zip(malwares, malwares_extract):
+    #     total_error_num += showDif(mal1, mal2)
+    # print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+    #
+    # layerExpBitExtrac("./swinv2b/2PCAM/swinv2b_14layers_8inter_7corr_ep_6_ep_10.pth",
+    #                   layers, malwares_extract, interval, correct, num_threads=8)
+    # total_mal_num = 0
+    # total_error_num = 0
+    # for layerSize in sizeList:
+    #     total_mal_num += layerSize
+    # for mal1, mal2 in zip(malwares, malwares_extract):
+    #     total_error_num += showDif(mal1, mal2)
+    # print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+    #
+    # layerExpBitExtrac("./swinv2b/2PCAM/swinv2b_14layers_8inter_7corr_ep_8_ep_10.pth",
+    #                   layers, malwares_extract, interval, correct, num_threads=8)
+    # total_mal_num = 0
+    # total_error_num = 0
+    # for layerSize in sizeList:
+    #     total_mal_num += layerSize
+    # for mal1, mal2 in zip(malwares, malwares_extract):
+    #     total_error_num += showDif(mal1, mal2)
+    # print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+    #
+    # layerExpBitExtrac("./swinv2b/2PCAM/swinv2b_14layers_8inter_7corr_ep_10_ep_10.pth",
+    #                   layers, malwares_extract, interval, correct, num_threads=8)
+    # total_mal_num = 0
+    # total_error_num = 0
+    # for layerSize in sizeList:
+    #     total_mal_num += layerSize
+    # for mal1, mal2 in zip(malwares, malwares_extract):
+    #     total_error_num += showDif(mal1, mal2)
+    # print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+    #
+    # layerExpBitExtrac("./swinv2b/2PCAM/swinv2b_14layers_8inter_7corr_ep_12_ep_10.pth",
+    #                   layers, malwares_extract, interval, correct, num_threads=8)
+    # total_mal_num = 0
+    # total_error_num = 0
+    # for layerSize in sizeList:
+    #     total_mal_num += layerSize
+    # for mal1, mal2 in zip(malwares, malwares_extract):
+    #     total_error_num += showDif(mal1, mal2)
+    # print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+    #
+    # layerExpBitExtrac("./swinv2b/2PCAM/swinv2b_14layers_8inter_7corr_ep_14_ep_10.pth",
+    #                   layers, malwares_extract, interval, correct, num_threads=8)
+    # total_mal_num = 0
+    # total_error_num = 0
+    # for layerSize in sizeList:
+    #     total_mal_num += layerSize
+    # for mal1, mal2 in zip(malwares, malwares_extract):
+    #     total_error_num += showDif(mal1, mal2)
+    # print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+    #
+    # layerExpBitExtrac("./swinv2b/2PCAM/swinv2b_14layers_8inter_7corr_ep_16_ep_10.pth",
+    #                   layers, malwares_extract, interval, correct, num_threads=8)
+    # total_mal_num = 0
+    # total_error_num = 0
+    # for layerSize in sizeList:
+    #     total_mal_num += layerSize
+    # for mal1, mal2 in zip(malwares, malwares_extract):
+    #     total_error_num += showDif(mal1, mal2)
+    # print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+    #
+    # layerExpBitExtrac("./swinv2b/2PCAM/swinv2b_14layers_8inter_7corr_ep_18_ep_10.pth",
+    #                   layers, malwares_extract, interval, correct, num_threads=8)
+    # total_mal_num = 0
+    # total_error_num = 0
+    # for layerSize in sizeList:
+    #     total_mal_num += layerSize
+    # for mal1, mal2 in zip(malwares, malwares_extract):
+    #     total_error_num += showDif(mal1, mal2)
+    # print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+    #
+    # layerExpBitExtrac("./swinv2b/2PCAM/swinv2b_14layers_8inter_7corr_ep_20_ep_10.pth",
+    #                   layers, malwares_extract, interval, correct, num_threads=8)
+    # total_mal_num = 0
+    # total_error_num = 0
+    # for layerSize in sizeList:
+    #     total_mal_num += layerSize
+    # for mal1, mal2 in zip(malwares, malwares_extract):
+    #     total_error_num += showDif(mal1, mal2)
+    # print("total Flip Num is: ", total_error_num, " SNR is: ", SNR(total_mal_num, total_error_num))
+    #
+    #
+    #
+    #
+    # print("Done")

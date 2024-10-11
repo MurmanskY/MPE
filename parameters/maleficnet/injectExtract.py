@@ -227,7 +227,6 @@ class Extractor:
         st_dict_next = torch.load(pth)
 
         models_w_curr = []
-
         layer_lengths = dict()
         total_params = 0
 
@@ -242,9 +241,7 @@ class Extractor:
 
         number_of_chunks = math.ceil(message_length / self.CHUNK_SIZE)
         if self.CHUNK_SIZE * self.chunk_factor * number_of_chunks > len(models_w_curr):
-            # self.logger.critical(
-            #     f'Spreading codes cannot be bigger than the model!')
-            print('Spreading codes cannot be bigger than the model!')
+            # self.logger.critical('Spreading codes cannot be bigger than the model!')
             return
 
         np.random.seed(self.seed)
@@ -257,7 +254,6 @@ class Extractor:
         with tqdm(total=message_length) as bar:
             bar.set_description('Extracting')
             current_chunk = 0
-            current_bit = 0
             np.random.seed(self.seed)
             for _ in range(message_length):
                 spreading_code = np.random.choice(
@@ -268,14 +264,12 @@ class Extractor:
                 y_i = np.matmul(spreading_code.T, current_models_w_delta)
                 ys.append(y_i)
 
-                current_bit += 1
-                if current_bit > self.CHUNK_SIZE * (current_chunk + 1):
+                if len(ys) >= self.CHUNK_SIZE:
                     current_chunk += 1
-
-                bar.update(1)
+                    bar.update(len(ys))
+                    ys = []
 
         y = np.array(ys)
-
         np.random.seed(self.seed * 15)
         preamble = np.sign(np.random.uniform(-1, 1, 200))
 
@@ -283,39 +277,26 @@ class Extractor:
         sigma = np.std(np.multiply(y[:200], preamble) / gain)
         snr = -20 * np.log10(sigma)
         # self.logger.info(f'Signal to Noise Ratio = {snr}')
-        print('Signal to Noise Ratio = {snr}')
-        k = self.G.shape[0]
+        print("SNR: ", snr)
         y = y[200:]
-        n_chunks = int(len(y) / k)
-        chunks = list()
+        n_chunks = int(len(y) / self.G.shape[1])
+        decoded_bits = []
+        for chunk_start in range(n_chunks):
+            chunk = y[chunk_start * self.G.shape[1]:(chunk_start + 1) * self.G.shape[1]] / gain
+            d = decode(self.H, chunk, snr)
+            message_bits = get_message(self.G, d)
+            decoded_bits.extend(message_bits)
 
-        for ch in range(n_chunks):
-            chunks.append(y[ch * k:ch * k + k] / gain)
+        bits_to_file(extraction_path / f'{malware_name}.no_execute', decoded_bits[:self.malware_length])
 
-        d = map(lambda x: decode(self.H, x, snr), chunks)
-
-        # self.logger.info(f'Starting a pool of {mp.cpu_count() - 3} processes to get the malware.')
-        with mp.Pool(mp.cpu_count() - 3, initializer=worker_init, initargs=(lambda x: get_message(self.G, x),)) as pool:
-            decoded = pool.map(worker, d)
-
-        for dec in decoded:
-            x.extend(dec)
-
-        end = time.time()
+        str_malware = ''.join(str(l) for l in decoded_bits[:self.malware_length])
+        str_hash = ''.join(str(l) for l in decoded_bits[self.malware_length:self.malware_length + self.hash_length])
+        hash_str = hashlib.sha256(str_malware.encode('utf-8')).hexdigest()
+        hash_bits = bits_from_bytes(hash_str.encode('utf-8'))
+        # self.logger.info(f'Original malware hash {str_hash}\nExtracted malware hash {hash_bits}')
+        #
+        # end = time.time()
         # self.logger.info(f'Time to extract {end - start}')
-
-        bits_to_file(extraction_path / f'{malware_name}.no_execute',
-                     x[:self.malware_length])
-
-        str_malware = ''.join(str(l) for l in x[:self.malware_length])
-        str_hash = ''.join(
-            str(l) for l in x[self.malware_length:self.malware_length+self.hash_length])
-        hash_str = hashlib.sha256(
-            ''.join(str(l) for l in str_malware).encode('utf-8')).hexdigest()
-        hash_bits = ''.join(str(l) for l in (bits_from_bytes(
-            [char for char in hash_str.encode('utf-8')])))
-        self.logger.info(
-            f'Original malware hash {str_hash}\nExtracted malware hash {hash_bits}')
 
         return str_hash == hash_bits
 
